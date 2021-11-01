@@ -27,12 +27,13 @@
     "babel-jest": "^27.1.1",
     "determinismus": "https://github.com/concentricio/determinismus",
     "fauna-test-setup": "https://github.com/concentricio/fauna-test-setup",
-    "jest": "^27.1.1",
+    "jest": "^27.3.1",
     "nodemon": "^2.0.12",
     "tulleries": "https://github.com/concentricio/tulleries",
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "faunadb": "^4.4.1"
+    "faunadb": "^4.4.1",
+    "node-machine-id": "^1.1.12"
   }
 }
