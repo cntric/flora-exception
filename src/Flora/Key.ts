@@ -11,10 +11,12 @@ export const sessionId = generate();
  * @returns 
  */
  export const generateFloraKey = (type : string) : string=>{
-    return `${machineId}@${sessionId}:${generate()}-${generate()}-floraKey-${type}-${generate()}-${generate()}`
+    return `machine-${machineId}-session-${sessionId}-${generate()}-${generate()}-floraKey-${type}-${generate()}-${generate()}`
 }
 
-export const floraKey = generateFloraKey("key");
+export const floraKey = "Flora-Exception-Collection";
+
+export const floraDocumentKey = generateFloraKey("floraDocument");
 
 export const floraNoneVal = generateFloraKey("none");
 

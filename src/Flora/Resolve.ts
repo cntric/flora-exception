@@ -1,18 +1,18 @@
 import {
     Do,
+    Length,
     query
 } from "faunadb"
 import {
     AddToBlight,
     Blight,
-    BlightI
+    BlightI,
+    IsBlight
 } from "./Blight";
 import { BotherI } from "./Bother";
 import { DefaultCatalog } from "./Catalog";
-import { FruitT, HasBlightedFruit, IsFruitBlighted } from "./Fruit";
 import { GuideI } from "./Guide";
 import { DefaultInterpret } from "./Interpret";
-import { GetSeedBlight, SeedI } from "./Seed";
 import { SpringI } from "./Spring";
 const {
     If,
@@ -26,17 +26,18 @@ const {
     Filter,
     Let,
     Lambda,
-    Map
+    Map,
+    GT
 } = query;
 
-export interface ResolveArgsI<A extends FruitT<any>[], T>{
+export interface ResolveArgsI<A extends any[], T>{
     soil : A,
     name : string,
     guide : GuideI<A>,
     spring : SpringI<A, T>
 }
-export interface ResolveI<A extends FruitT<any>[], T>{
-    (args : ResolveArgsI<A, T>) : SeedI<T>
+export interface ResolveI<A extends any[], T>{
+    (args : ResolveArgsI<A, T>) : T
 }
 
 const fruit = "fruit";
@@ -45,30 +46,31 @@ const fruit = "fruit";
  * @param fuits 
  * @returns 
  */
-export const FilterToBlighted = (fuits : FruitT<any>[]) : FruitT<any>[]=>{
+export const FilterToBlighted = (fuits : any[]) : any[]=>{
     return Filter(
         fuits,
         Lambda(
             [fruit],
-            IsFruitBlighted(fruit)
+            IsBlight(fruit)
         )
-    ) as FruitT<any> []
+    ) as BlightI[]
 }
 
+const blight = "blight";
 /**
- * 
- * @param fruits 
+ * Adds a bother to blights.
+ * @param blights 
  * @param bother 
  * @returns 
  */
-export const AddAtBlighted = (fruits : FruitT<any>[], bother : BotherI) : BlightI[]=>{
+export const _AddAtBlighted = (blights : BlightI[], bother : BotherI) : BlightI[]=>{
 
     return Map(
-        fruits,
+        blights,
         Lambda(
-            [fruit],
+            [blight],
             AddToBlight(
-                GetSeedBlight(Var(fruit) as SeedI<any>),
+                Var(blight) as BlightI,
                 bother
             )
         )
@@ -76,7 +78,19 @@ export const AddAtBlighted = (fruits : FruitT<any>[], bother : BotherI) : Blight
 
 }
 
-const blight = "blight";
+export const AddAtBlighted = (blights : BlightI[], bother : BotherI) : BlightI[]=>{
+    return If(
+        GT(0, Length(blights)),
+        _AddAtBlighted(blights, bother),
+        [
+            Blight({
+                spread : [bother]
+            })
+        ]
+    ) as BlightI[]
+}
+
+
 export const UpdateBlighted = (
     blights : BlightI[],
     catalog : (blight : BlightI)=>BlightI,
@@ -92,36 +106,28 @@ export const UpdateBlighted = (
 
 const bother = "bother";
 const blights = "blights";
-export const mkResolve = <A extends FruitT<any>[], T>(
+export const mkResolve = <A extends any[], T>(
     catalog : (blight : BlightI)=>BlightI,
     interpret : (args : ResolveArgsI<A, T>)=>BotherI
-)=>(args : ResolveArgsI<A, T>) : SeedI<T>=>{
+)=>(args : ResolveArgsI<A, T>) : T=>{
 
 
     return Let(
         {
             [bother] : interpret(args),
-            [blights] : UpdateBlighted(
-                AddAtBlighted(
-                    FilterToBlighted(
-                        args.soil
-                    ),
-                    Var(bother) as BotherI
-                ),
-                catalog
-            )
+            
         },
-        args.soil
-    ) as SeedI<T>
+        Var(bother)
+    ) as T
 
 
 }
 
-export const Resolver = <A extends FruitT<any>[], T>(
+export const Resolver = <A extends any[], T>(
     catalog : (blight : BlightI)=>BlightI,
     interpret : (args : ResolveArgsI<A, T>)=>BotherI,
     args : ResolveArgsI<A, T>
-) : SeedI<T>=>{
+) : T=>{
 
 
     return Let(
@@ -137,8 +143,8 @@ export const Resolver = <A extends FruitT<any>[], T>(
                 catalog
             )
         },
-        args.soil
-    ) as SeedI<T>
+        Var(blights)
+    ) as T
 
 
 }
@@ -148,21 +154,18 @@ export const Resolver = <A extends FruitT<any>[], T>(
  * @param args 
  * @returns 
  */
-export const DefaultResolve = <A extends FruitT<any>[], T>(
+export const DefaultResolve = <A extends any[], T>(
     args : ResolveArgsI<A, T>
-) : SeedI<T> =>{
-
+) : T =>{
 
     return Resolver(DefaultCatalog, DefaultInterpret, args);
 
 }
 
-export const mkDefaultResolve = <A extends FruitT<any>[], T>(
+export const mkDefaultResolve = <A extends any[], T>(
     args : ResolveArgsI<A, T>
 )=>(bargs : ResolveArgsI<A, T>)=>{
 
-    console.log(args);
-
-    DefaultResolve(args);
+    return DefaultResolve(args);
 
 }

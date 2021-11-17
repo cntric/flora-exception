@@ -76,7 +76,6 @@ export const DefaultGarden : GardenI<[]> = {
 export interface GardenArgsI<A extends any[]> {
     name ? : string,
     soil ? : GardenI<A>["soil"],
-    guide ? : GuideI<A>
 }
 const merge = "merge";
 const soil = "soil";
@@ -88,7 +87,8 @@ const soil = "soil";
 export const Garden = <A extends any[]>(
     args? : GardenArgsI<A>
 ) : GardenI<A>=>{
- 
+
+    
 
     // need to merge first, then select
     return Merge(
@@ -100,6 +100,17 @@ export const Garden = <A extends any[]>(
 
 }
 
+export const garden = <A extends any[]>(
+    args ? : GardenArgsI<A>
+)=>{
+
+    return {
+        ...DefaultGarden,
+        ...args
+    }
+
+}
+
 
 /**
  * Checks if the garden does not have a blight.
@@ -108,6 +119,14 @@ export const Garden = <A extends any[]>(
  */
 export const IsHealthyGarden = (garden : GardenI<any>, guide : GuideI<any>) : boolean=>{
 
-    return guide(garden.soil);
+    return guide(Select(soil, garden));
+
+}
+
+export const IsHealthyClientGarden = (
+    garden : GardenI<any>, guide : GuideI<any>
+) : boolean =>{
+    
+    return guide(...garden.soil);
 
 }

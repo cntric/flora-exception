@@ -14,10 +14,9 @@ import {
 import {
     generate
 } from "shortid";
-import { Garden, GardenI, IsHealthyGarden } from "./Garden";
+import { Garden, garden as createGarden, GardenI, IsHealthyGarden, IsHealthyClientGarden } from "./Garden";
 import { DefaultResolve, mkDefaultResolve, ResolveI } from "./Resolve";
-import {SeedI} from "./Seed";
-import { AllPluckedT, PluckAll } from "./Pluck";
+
 const {
     If,
     IsObject,
@@ -49,27 +48,33 @@ const healthy = "healthy";
  * @param args 
  * @returns 
  */
- export const _Yield = <A extends any[], T>(args : _YieldArgsI<A, T>) : SeedI<T>=>{
+ export const _Yield = <A extends any[], T>(args : _YieldArgsI<A, T>) : T=>{
 
-    console.log(args);
+    const {
+        resolve,
+        spring,
+        guide,
+        ...rest
+    } = args;
 
+    
+    
 
     return Let(
         {
-            [garden] : Garden(args),
-            [healthy] : IsHealthyGarden(Var(garden) as GardenI<A>, args.guide),
+            [healthy] : IsHealthyClientGarden(createGarden(rest), guide),
         },
         If(
             Equals(Var(healthy), true),
-            args.spring(...args.soil),
-            args.resolve({
+            spring(...args.soil),
+            resolve({
                 soil : args.soil,
-                guide : args.guide,
+                guide : guide,
                 name : args.name,
-                spring : args.spring
+                spring : spring
             })
         )
-    ) as SeedI<T>
+    ) as T
 
 }
 
@@ -81,19 +86,19 @@ export interface YieldArgsI<A extends any[], T>{
     resolve? : ResolveI<A, T>
 }
 
-export const Yield =  <A extends any[], T>(args : YieldArgsI<A, T>) : SeedI<T>=>{
+export const Yield =  <A extends any[], T>(args : YieldArgsI<A, T>) : T=>{
 
     const caller = (new Error()).stack?.split("\n")[2].trim().split(" ")[1];
 
-    console.log(args);
-
-    return _Yield({
+    const _args = {
         name : caller || "undefined",
         resolve : mkDefaultResolve({
             ...args,
             name : caller || "undefined"
         }),
         ...args
-    } as _YieldArgsI<A, T>)
+    }
+
+    return _Yield(_args as _YieldArgsI<A, T>)
 
 }

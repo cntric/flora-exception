@@ -1,5 +1,5 @@
 import { Length, query, Subtract } from "faunadb";
-import { Garden, GardenI } from "./Garden";
+import { garden, Garden, GardenI } from "./Garden";
 
 const {
     If,
@@ -65,7 +65,7 @@ export const DefaultBother :BotherI= {
     result : false,
     msg : NoExceptionMessage,
     type : BotherType,
-    garden : Garden() // something wrong with the garden
+    garden : garden()
 }
 
 /**

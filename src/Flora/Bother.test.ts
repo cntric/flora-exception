@@ -44,7 +44,7 @@ export const BotherSuiteA = ()=>{
         test("No arg initialization.", async ()=>{
 
             const result = await db.client.query<BotherI>(Bother());
-            console.log(result);
+            (result);
             expect(isBother(result)).toBe(true);
 
         })

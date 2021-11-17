@@ -1,20 +1,37 @@
-import { CreateIndex, Do, Index, query } from "faunadb";
+import { 
+    ContainsPath,
+    Create, 
+    CreateIndex, 
+
+    CreateRole, 
+
+    Do,
+    Exists, 
+    Get, 
+    Index, 
+    IsNull, 
+    Not, 
+    query,
+    Tokens,
+    Update,
+    values 
+} from "faunadb";
 import { Yield } from "./Yield";
-import {SeedI} from "./Seed";
 import {generate} from "shortid";
 import {
+    floraDocumentKey,
     floraKey, generateFloraKey
 } from "./Key";
 import {
     Blight,
-    BlightI
+    BlightI,
+    GetBlightName
 } from "./Blight";
-import { FruitT } from "./Fruit";
 const {
     Let,
     If,
     IsObject,
-    Object : CreateObject,
+    ToObject,
     Select,
     Contains,
     Equals,
@@ -23,103 +40,266 @@ const {
     Var,
     Collection,
     Database,
-    Delete
+    Delete,
+    Ref,
+    CreateCollection,
+    Login
 } = query;
 
 
 export interface FloraI<T> {
-    (expr : SeedI<T>) : SeedI<T> 
+    (expr : T) : T
 }
 
-export const BlightEnvironmentCollection = (name : string)=>{
-    return Collection(name)
+const templateDoc = "templateDoc";
+const identifyStep = "identify";
+const floraDoc = "floraDoc";
+export const usedFloraIdentity = "usedFloraIdentity";
+export const withIdentity = "withIdentity";
+export const blight = "blight";
+
+const {
+    And,
+    CurrentIdentity,
+    Query,
+    Lambda
+} = query;
+
+/**
+ * 
+ * @returns 
+ */
+ export const IsIdentityDefined = ()=>{
+    return Exists(Tokens())
 }
 
-export const BlightEnvironmentIndex = (name : string, collectionName : string)=>{
+export const _DefaultCheckPermission = (
+    floraDocument : FloraDocumentT,
+) : boolean=>{
 
-    return CreateIndex({
-        name : name,
-        source : Collection(collectionName),
-        terms : {
-            name : ['data', 'name']
-        }
-    })
+    return Equals(Select(["data", withIdentity], floraDocument), CurrentIdentity()) as boolean; 
 
 }
+
+export const DefaultCheckPermission = (
+    floraDocument : FloraDocumentT
+) : boolean =>{
+    return If(
+        And(
+            ContainsPath(["data", withIdentity], floraDocument),
+            IsIdentityDefined()
+        ),
+        If(
+            Not(Equals(false, Select(["data", withIdentity], floraDocument))),
+            _DefaultCheckPermission(floraDocument),
+            true
+        ),
+        false
+    ) as boolean
+}
+
+export interface PermissionsI {
+    create : query.ExprArg,
+    read : query.ExprArg
+    write : query.ExprArg
+}
+
+export const DefaultPermissions : PermissionsI = {
+    create : true,
+    read : Query(
+        Lambda(
+            floraDoc,
+            DefaultCheckPermission(Var(floraDoc) as FloraDocumentT)
+        )
+    ),
+    write : Query(
+        Lambda(
+            floraDoc,
+            DefaultCheckPermission(Var(floraDoc) as FloraDocumentT)
+        )
+    )
+}
+
+/**
+ * 
+ * @param name 
+ * @returns 
+ */
+export const FloraCollection = (name : string = floraKey)=>{
+    return If(
+        Exists(Collection(name)),
+        Collection(name),
+        CreateCollection(
+            {
+                name : name,
+               //  permissions : DefaultPermissions
+            }
+        )
+    )
+}
+
 
 export interface FloraEnvironmentI {
     collection : string,
-    index  : string
 }
 
 const collectionKey = "collection";
-const indexKey = "index";
-export const FloraEnvironment = (
-    collection : string,
-    index : string
-) : FloraEnvironmentI=>{
-
-    return CreateObject([
-        [collectionKey, collection],
-        [indexKey, index] 
-    ]) as FloraEnvironmentI
-} 
 
 
 /**
- * Gets a the FloraEnvironment by retrieving the object stored at the Flora Key.
+ * 
+ */
+ export const UpdateBlightOnFloraDocument = (
+    blight : BlightI
+)=>{
+
+    return Update(
+        Select("ref", Var(floraDocumentKey)),
+        {
+            data : {
+                blights : Merge(
+                    Select(["data", blights], Var(floraDocumentKey)),
+                    ToObject([
+                        [
+                            GetBlightName(blight),
+                            blight
+                        ]
+                    ])
+                )
+            }
+        }
+    )
+
+}
+
+const blights = "blights";
+export type FloraDocumentT = values.Document<{
+    [usedFloraIdentity] : boolean,
+    [withIdentity] : values.Ref | false,
+    [blights] : {
+        [key : string] : BlightI
+    }
+}>
+
+/**
+ * Causes a FloraDocument to use itself as an identity.
+ * @param floraDocument 
+ */
+export const SelfIdentifyFloraDocument = (floraDocument : FloraDocumentT)=>{
+
+    return Update(
+        Select("ref", floraDocument),
+        {
+            data : {
+                [withIdentity] : Select("ref", floraDocument),
+                [usedFloraIdentity] : true,
+                [blights] : {}
+            }
+        }
+    )
+
+}
+
+
+/**
+ * Assigns an external identity to a floraDocument.
+ * @param floraDocument 
  * @returns 
  */
-export const GetFloraEnvironment = () : FloraEnvironmentI=>{
-    return Var(floraKey) as FloraEnvironmentI;
+export const ExternalIdentifyFloraDocument = (floraDocument : FloraDocumentT)=>{
+    return Update(
+        Select("ref", floraDocument),
+        {
+            data : {
+                [withIdentity] : CurrentIdentity(),
+                [usedFloraIdentity] : true
+            }
+        }
+    )
 }
 
 /**
- * Gets the Flora collection name.
- * @returns 
+ * 
+ * @param name 
  */
-export const GetFloraCollectionName = () : string=>{
-    return Select(collectionKey, GetFloraEnvironment()) as string
+export const FloraDocument = (
+    password : string,
+    collectionName : string = floraKey
+)=>{
+
+    return Let(
+        {
+            [templateDoc] : Create(
+                FloraCollection(collectionName),
+                {
+                    data : {
+                        [usedFloraIdentity] : false,
+                        [withIdentity] : false
+                    },
+                    credentials : {
+                        password : password
+                    }
+                }
+            ),
+            [identifyStep] : If(
+                IsIdentityDefined(),
+                ExternalIdentifyFloraDocument(Var(templateDoc) as FloraDocumentT),
+                SelfIdentifyFloraDocument(Var(templateDoc) as FloraDocumentT)
+            ),
+            [floraDoc] : Get(Select("ref", Var(templateDoc)))
+        },
+        Var(identifyStep)
+    )
+
 }
+
+
 
 /**
- * Gets the Flora Collection index.
- * @returns 
+ * 
  */
-export const GetFloraIndexName = () : string=>{
-    return Select(indexKey, GetFloraEnvironment()) as string
+export const LoginFloraDocument = (FloraDocument : FloraDocumentT, password : string)=>{
+
+    return Do(
+        If(
+            Equals(true, Select(["data", usedFloraIdentity], FloraDocument)),
+            Login(Select("ref", FloraDocument), password),
+            false
+        ),
+        Get(Select("ref", FloraDocument))
+    )
+
 }
 
-export const TeardownFloraColleciton = ()=>{
-    return Delete(Collection(GetFloraCollectionName()))
-}
+const login = "login";
+export const ReadyFloraDocument = (password : string)=>{
 
-export const TeardownFloraIndex = ()=>{
-    return Delete(Index(GetFloraIndexName()))
+    return Let( 
+        {
+            [floraDoc] : FloraDocument(password),
+            // [login] : LoginFloraDocument(Var(floraDoc) as FloraDocumentT, password)
+        },
+        Get(Select("ref", Var(floraDoc)))
+    )
+
 }
 
 const fruit = "fruit";
-const teardown = "teardown";
 /**
  * Runs an expression in a flora environment.
  * @param expr 
  * @returns 
  */
-export const Flora = <T>(expr :FruitT<T>) : FruitT<T> =>{
+export const Flora = <T>(expr :T) :  T =>{
 
-    const collection = generateFloraKey("collection");
-    const index = generateFloraKey("index");
+    const password = generateFloraKey("password");
 
     return Let(
         {
-            [floraKey] : [collection, index],
+            [floraDocumentKey] : ReadyFloraDocument(password),
             [fruit] : expr,
-            [teardown] : Do([
-                TeardownFloraIndex(),
-                TeardownFloraColleciton()
-            ])
         },
         Var(fruit)
-    ) as SeedI<T>
+    ) as T
 
 }

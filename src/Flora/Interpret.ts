@@ -2,7 +2,6 @@ import {
     Bother,
     BotherI
 } from "./Bother";
-import { FruitT } from "./Fruit";
 import {
     ResolveArgsI
 } from "./Resolve";
@@ -11,17 +10,18 @@ import {
 } from "faunadb";
 
 const {
-    Object : CreateObject
+    Object : CreateObject,
+    Select
 } = query;
 
-export interface InterpretI<A extends FruitT<any>[], T> {
+export interface InterpretI<A extends any[], T> {
     (args : ResolveArgsI<A, T>) : BotherI
 }
 
 
 const BotherType = "Bother";
 
-export const makeDefaultBotherMessage = <A extends FruitT<any>[],T>(args : ResolveArgsI<A, T>) : string=>{
+export const makeDefaultBotherMessage = <A extends any[],T>(args : ResolveArgsI<A, T>) : string=>{
 
     return `Bother: ${args.name} received input which did not meet its guide.\n`
     + `Input:\n ${args.soil}\n`
@@ -29,9 +29,7 @@ export const makeDefaultBotherMessage = <A extends FruitT<any>[],T>(args : Resol
 
 }
 
-export const DefaultInterpret = <A extends FruitT<any>[],T>(args : ResolveArgsI<A, T>) : BotherI=>{
-
-    console.log(args);
+export const DefaultInterpret = <A extends any[],T>(args : ResolveArgsI<A, T>) : BotherI=>{
 
     return Bother({
         result : args.soil,

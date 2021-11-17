@@ -14,7 +14,7 @@ const {
 } = query;
 
 export const isBlightKey = "isBlight";
-export interface BlightI extends String{
+export interface BlightI {
     [isBlightKey] : true,
     name : string,
     blighted : boolean,

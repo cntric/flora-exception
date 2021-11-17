@@ -14,15 +14,13 @@ const {
     Append,
     Merge
 } = query;
-import { AllPluckedT } from "./Pluck";
-import { FruitT } from "./Fruit";
 
-export interface GuidePostI<A extends FruitT<any>[]>{
+export interface GuidePostI<A extends any[]>{
     (...args : A) : boolean
 }
 
 export const isGuideSectionKey = "isGuideSection";
-export interface GuideSectionI<A extends FruitT<any>[]>{
+export interface GuideSectionI<A extends any[]>{
     [isGuideSectionKey] : true
     post : GuidePostI<A>,
     rail : string
@@ -35,12 +33,12 @@ export const DefaultGuideSection : GuideSectionI<any[]> = {
     rail : DefaultRail
 } as const
 
-export interface GuideSectionArgsI<A extends FruitT<any>[]> {
+export interface GuideSectionArgsI<A extends any[]> {
     post : GuidePostI<A>,
     rail : string
 }
 
-export const GuideSection = <A extends FruitT<any>[]>(args ? : GuideSectionArgsI<A>) : GuideSectionI<A>=>{
+export const GuideSection = <A extends any[]>(args ? : GuideSectionArgsI<A>) : GuideSectionI<A>=>{
 
     return {
         ...DefaultGuideSection,
@@ -51,6 +49,6 @@ export const GuideSection = <A extends FruitT<any>[]>(args ? : GuideSectionArgsI
 }
 
 
-export interface GuideI<A extends FruitT<any>[]>{
+export interface GuideI<A extends any[]>{
     (...args : A) : boolean
 }
