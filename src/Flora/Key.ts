@@ -14,16 +14,6 @@ export const sessionId = generate();
     return `machine-${machineId}-session-${sessionId}-${generate()}-${generate()}-floraKey-${type}-${generate()}-${generate()}`
 }
 
-export const floraKey = "Flora-Exception-Collection";
+export const floraCollectionKey = "Flora-Exception-Collection";
 
 export const floraDocumentKey = generateFloraKey("floraDocument");
-
-export const floraNoneVal = generateFloraKey("none");
-
-export const floraBlightedVal = generateFloraKey("blight"); 
-
-export const floraBlightName = generateFloraKey("blightName");
-
-export const floraNoFunctionName = generateFloraKey("noMethodName");
-
-export const floraNoExpression = generateFloraKey("noExpression");

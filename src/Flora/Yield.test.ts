@@ -1,26 +1,32 @@
 import {
     query,
-    Client,
-    CreateCollection,
     Var,
-    Exists,
     IsNumber,
-    IsString
+    Do,
+    And
 } from "faunadb";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import {
-    Yield,
-} from "./Yield";
-import {
-    generate
-} from "shortid";
-import { Bother, BotherI } from "./Bother";
-import { mkDefaultResolve, mkResolve } from "./Resolve";
+    blight,
+    DefaultCheckPermission,
+    Flora,
+    FloraCollection,
+    FloraDocumentT,
+    GetStack,
+    usedFloraIdentity,
+    withIdentity,
+} from "./Flora";
+import {Raise} from "./Raise";
+import { FloraError, FloraErrorI, isFloraError } from "./Error";
+import { Yield } from "./Yield";
 
 const {
     Add,
+    IsString,
     Create,
-    Get
+    Get,
+    Select,
+    ContainsPath
 } = query;
 
 export const YieldSuiteA = ()=>{
@@ -34,80 +40,83 @@ export const YieldSuiteA = ()=>{
             db = await FaunaTestDb();
         })
 
-        test("Yield works", async ()=>{
+        test("Simple yield", async ()=>{
 
-            const result = await db.client.query<number>(Yield({
-                soil : [Add(2, 2) as number],
-                spring : (sum : number) : number =>{
-                    
-                    return Add(sum, 2) as number
-                },
-                guide : (sum : number) : boolean =>{
-                    
-                    return IsNumber(sum) as boolean
-                },
-                resolve : mkResolve(
-                    (blight)=>{return blight},
-                    (interpret)=>{return Bother()}
-                )
-            }));
-            
-            expect(result).toBe(6);
-    
-        }, 10000)
-
-        test("Nested yields", async ()=>{
-
-            const InterestingFunc = (sum : number) =>{
-                return Yield({
-                    soil : [sum],
-                    spring : (sum : number) : number=>{
-                        return Add(sum, 2) as number
-                    },
-                    guide : (sum : number)=>{
-                        return IsNumber(sum) as boolean;
-                    },
-                    resolve : mkResolve(
-                        (blight)=>{return blight},
-                        (interpret)=>{return Bother()}
-                    )
+           const result = await db.client.query(Flora(
+                Yield({
+                    args : [2, 2],
+                    expr : (a, b)=>{
+                        return Add(2, 2)
+                    }
                 })
-            }
-    
-            const result = await db.client.query<number>(InterestingFunc(
-                InterestingFunc(2) as number
-            ));
+           ))
 
-            expect(result).toBe(6);
+           expect(result).toBe(4);
             
 
-        });
+        })
 
-        test("Blight", async ()=>{
+        test("Yield within yield", async ()=>{
 
-            const InterestingFunc = (sum : number) : number =>{
+
+            const InterestingFunc = (a : number) : number=>{
                 return Yield({
-                    soil : [sum],
-                    spring : (sum) : number=>{
-                        return Add(sum, 2) as number
-                    },
-                    guide : (sum)=>{
-                        return IsString(sum) as boolean;
-                    },
-                    resolve : mkResolve(
-                        (blight)=>{return blight},
-                        (interpret)=>{return Bother()}
-                    )
-                })
+                    args : [a],
+                    expr : (a)=>{
+                        return Add(a, 2)
+                    }
+                }) as number
             }
-    
-            const result = await db.client.query<number>(InterestingFunc(
-                2
-            ));
 
-            console.log(result);
+            const result = await db.client.query(Flora(
+                InterestingFunc(InterestingFunc(2))
+           ))
 
-            
+           expect(result).toBe(6);
+
+        })
+
+        test("Handles error in yield", async()=>{
+
+            const InterestingFunc = (a : number) : number=>{
+                return Yield({
+                    args : [a],
+                    expr : (a)=>{
+                        
+                        return Add(a, 2)
+                    }
+                }) as number
+            }
+
+            const result = await db.client.query<FloraErrorI>(Flora(
+                InterestingFunc(FloraError() as unknown as number)
+           ))
+
+           expect(result[isFloraError]).toBe(true);
+           expect(result.at?.length).toBe(1);
+           expect(result.location).toBe(InterestingFunc.name);
+
+        })
+
+        test("Handles error in yield in yield", async ()=>{
+
+
+            const InterestingFunc = (a : number) : number=>{
+                return Yield({
+                    args : [a],
+                    expr : (a)=>{
+                        return Add(a, 2)
+                    }
+                }) as number
+            }
+
+            const result = await db.client.query<FloraErrorI>(Flora(
+                InterestingFunc(InterestingFunc(FloraError() as unknown as number))
+           ))
+
+           expect(result[isFloraError]).toBe(true);
+           expect(result.at?.length).toBe(1);
+           expect(result.location).toBe(InterestingFunc.name);
 
         })
 

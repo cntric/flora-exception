@@ -2,20 +2,10 @@ import {
     query
 } from "faunadb"
 import {
-    Blight,
-    BlightI
-} from "./Blight";
-import {
-    GuideI
-} from "./Guide"
-import {
-    SpringI
-} from "./Spring";
-import {
     generate
 } from "shortid";
-import { Garden, garden as createGarden, GardenI, IsHealthyGarden, IsHealthyClientGarden } from "./Garden";
-import { DefaultResolve, mkDefaultResolve, ResolveI } from "./Resolve";
+import { ContainsError, FloraError, GetErrors } from "./Error";
+import { Reraise } from "./Raise";
 
 const {
     If,
@@ -34,15 +24,11 @@ const {
 
 export interface _YieldArgsI<A extends any[], T>{
     name : string,
-    soil : A,
-    guide : GuideI<A>
-    spring : SpringI<A, T>,
-    resolve : ResolveI<A, T>
+    args : A,
+    expr : (...args : A)=>T
 }
 
-
-const garden = "garden";
-const healthy = "healthy";
+const bargs = "bargs";
 /**
  * Yields 
  * @param args 
@@ -50,55 +36,33 @@ const healthy = "healthy";
  */
  export const _Yield = <A extends any[], T>(args : _YieldArgsI<A, T>) : T=>{
 
-    const {
-        resolve,
-        spring,
-        guide,
-        ...rest
-    } = args;
+    console.log(args.name, args.args);
 
-    
-    
-
-    return Let(
-        {
-            [healthy] : IsHealthyClientGarden(createGarden(rest), guide),
-        },
-        If(
-            Equals(Var(healthy), true),
-            spring(...args.soil),
-            resolve({
-                soil : args.soil,
-                guide : guide,
-                name : args.name,
-                spring : spring
-            })
-        )
-    ) as T
+    return If(
+            ContainsError(args.args),
+            Reraise(GetErrors(args.args), FloraError({
+                location : args.name
+            })),
+            args.expr(...args.args)
+        ) as T
 
 }
 
 export interface YieldArgsI<A extends any[], T>{
     name? : string,
-    soil : A,
-    guide : GuideI<A>
-    spring : SpringI<A, T>,
-    resolve? : ResolveI<A, T>
+    args : A,
+    expr : (...args : A)=>T
 }
 
 export const Yield =  <A extends any[], T>(args : YieldArgsI<A, T>) : T=>{
 
     const caller = (new Error()).stack?.split("\n")[2].trim().split(" ")[1];
 
-    const _args = {
+    const _args : _YieldArgsI<A, T> = {
         name : caller || "undefined",
-        resolve : mkDefaultResolve({
-            ...args,
-            name : caller || "undefined"
-        }),
         ...args
     }
 
-    return _Yield(_args as _YieldArgsI<A, T>)
+    return _Yield(_args)
 
 }

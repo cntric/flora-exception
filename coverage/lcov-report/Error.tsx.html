@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for Yield.ts</title>
+    <title>Code coverage report for Error.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> Yield.ts</h1>
+        <h1><a href="index.html">All files</a> Error.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">93.75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/2</span>
+                <span class='fraction'>15/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -124,12 +124,23 @@
 <a name='L65'></a><a href='#L65'>65</a>
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -149,24 +160,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -181,83 +175,107 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
-    query
-} from "faunadb"
-import {
-    generate
-} from "shortid";
-import { ContainsError, FloraError, GetErrors } from "./Error";
-import { Reraise } from "./Raise";
-&nbsp;
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {Lambda, Or, query, Reduce} from "faunadb";
 const {
-    If,
-    IsObject,
-    Select,
-    Contains,
-    Equals,
-    Append,
-    Merge,
     Var,
-    Let
+    Select,
+    If, 
+    IsObject,
+    ContainsPath,
+    Equals
 } = query;
 &nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-export interface _YieldArgsI&lt;A extends any[], T&gt;{
+export const isFloraError = "isFloraError";
+export interface FloraErrorI {
+    location ? : string,
     name : string,
-    args : A,
-    expr : (...args : A)=&gt;T
+    msg : string,
+    above ? : FloraErrorI[]
+    [isFloraError] : true
 }
 &nbsp;
-const bargs = "bargs";
 /**
- * Yields 
+ * 
  * @param args 
  * @returns 
  */
- export const _Yield = &lt;A extends any[], T&gt;(args : _YieldArgsI&lt;A, T&gt;) : T=&gt;{
+export const FloraError = (args ? : {
+    name ? : string,
+    above ? : FloraErrorI[],
+    location ? : string
+    msg ? : string
+}) : FloraErrorI=&gt;{
+    return {
+        name : args &amp;&amp; args.name ? args.name : "FloraError",
+        msg : args &amp;&amp; args.msg ? args.msg : "None",
+        above : args &amp;&amp; args.above ? <span class="branch-0 cbranch-no" title="branch not covered" >args.above </span>: "None",
+        location : args &amp;&amp; args.location ? args.location : "None", 
+        [isFloraError] : true
+    } as FloraErrorI
+}
 &nbsp;
-    console.log(args.name, args.args);
-&nbsp;
+/**
+ * Checks if object is an error on Flora.
+ * @param expr 
+ * @returns 
+ */
+export const IsError = (expr : query.ExprArg) : boolean=&gt;{
     return If(
-            ContainsError(args.args),
-            Reraise(GetErrors(args.args), FloraError({
-                location : args.name
-            })),
-            args.expr(...args.args)
-        ) as T
-&nbsp;
+        IsObject(expr),
+        If(
+            ContainsPath(isFloraError, expr),
+            Equals(
+                Select(isFloraError, expr),
+                true
+            ),
+            false
+        ),
+        false
+    ) as boolean
 }
 &nbsp;
-export interface YieldArgsI&lt;A extends any[], T&gt;{
-    name? : string,
-    args : A,
-    expr : (...args : A)=&gt;T
-}
-&nbsp;
-export const Yield =  &lt;A extends any[], T&gt;(args : YieldArgsI&lt;A, T&gt;) : T=&gt;{
-&nbsp;
-    const caller = (new Error()).stack?.split("\n")[2].trim().split(" ")[1];
-&nbsp;
-    const _args : _YieldArgsI&lt;A, T&gt; = {
-        name : caller || <span class="branch-1 cbranch-no" title="branch not covered" >"undefined",</span>
-        ...args
-    }
-&nbsp;
-    return _Yield(_args)
-&nbsp;
+const agg = "agg";
+const el = "el";
+export const ContainsError = (exprs : query.ExprArg) : boolean=&gt;{
+    return Reduce(
+        Lambda(
+            [agg, el],
+            Or(
+                Var(agg),
+                IsError(el)
+            )
+        ),
+        false,
+        exprs
+    ) as boolean
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -265,7 +283,7 @@ export const Yield =  &lt;A extends any[], T&gt;(args : YieldArgsI&lt;A, T&gt;) 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Nov 17 2021 00:40:41 GMT-0800 (Pacific Standard Time)
+                at Tue Nov 16 2021 21:49:02 GMT-0800 (Pacific Standard Time)
             </div>
         </div>
         <script src="prettify.js"></script>

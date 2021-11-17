@@ -1,32 +1,21 @@
 import { 
     ContainsPath,
     Create, 
-    CreateIndex, 
-
-    CreateRole, 
-
     Do,
     Exists, 
     Get, 
-    Index, 
-    IsNull, 
     Not, 
     query,
     Tokens,
     Update,
     values 
 } from "faunadb";
-import { Yield } from "./Yield";
-import {generate} from "shortid";
+import { FloraErrorI } from "./Error";
+import { ErrorStackT } from "./ErrorStack";
 import {
     floraDocumentKey,
-    floraKey, generateFloraKey
+    floraCollectionKey, generateFloraKey
 } from "./Key";
-import {
-    Blight,
-    BlightI,
-    GetBlightName
-} from "./Blight";
 const {
     Let,
     If,
@@ -46,10 +35,6 @@ const {
     Login
 } = query;
 
-
-export interface FloraI<T> {
-    (expr : T) : T
-}
 
 const templateDoc = "templateDoc";
 const identifyStep = "identify";
@@ -125,7 +110,7 @@ export const DefaultPermissions : PermissionsI = {
  * @param name 
  * @returns 
  */
-export const FloraCollection = (name : string = floraKey)=>{
+export const FloraCollection = (name : string = floraCollectionKey)=>{
     return If(
         Exists(Collection(name)),
         Collection(name),
@@ -138,48 +123,27 @@ export const FloraCollection = (name : string = floraKey)=>{
     )
 }
 
-
-export interface FloraEnvironmentI {
-    collection : string,
-}
-
-const collectionKey = "collection";
-
-
-/**
- * 
- */
- export const UpdateBlightOnFloraDocument = (
-    blight : BlightI
-)=>{
-
-    return Update(
-        Select("ref", Var(floraDocumentKey)),
-        {
-            data : {
-                blights : Merge(
-                    Select(["data", blights], Var(floraDocumentKey)),
-                    ToObject([
-                        [
-                            GetBlightName(blight),
-                            blight
-                        ]
-                    ])
-                )
-            }
-        }
-    )
-
-}
-
-const blights = "blights";
+export const stack = "stack";
+export const stackPath = ["data", stack];
 export type FloraDocumentT = values.Document<{
     [usedFloraIdentity] : boolean,
     [withIdentity] : values.Ref | false,
-    [blights] : {
-        [key : string] : BlightI
-    }
+    [stack] : ErrorStackT
 }>
+
+
+export const GetFloraDocumentRef = ()=>{
+    return Select("ref", Var(floraDocumentKey));
+}
+
+/**
+ * 
+ * @returns 
+ */
+export const GetFloraDocument = ()=>{
+    return Get(GetFloraDocumentRef())
+}
+
 
 /**
  * Causes a FloraDocument to use itself as an identity.
@@ -193,7 +157,7 @@ export const SelfIdentifyFloraDocument = (floraDocument : FloraDocumentT)=>{
             data : {
                 [withIdentity] : Select("ref", floraDocument),
                 [usedFloraIdentity] : true,
-                [blights] : {}
+                [stack] : []
             }
         }
     )
@@ -212,7 +176,8 @@ export const ExternalIdentifyFloraDocument = (floraDocument : FloraDocumentT)=>{
         {
             data : {
                 [withIdentity] : CurrentIdentity(),
-                [usedFloraIdentity] : true
+                [usedFloraIdentity] : true,
+                [stack] : []
             }
         }
     )
@@ -224,7 +189,7 @@ export const ExternalIdentifyFloraDocument = (floraDocument : FloraDocumentT)=>{
  */
 export const FloraDocument = (
     password : string,
-    collectionName : string = floraKey
+    collectionName : string = floraCollectionKey
 )=>{
 
     return Let(
@@ -253,6 +218,13 @@ export const FloraDocument = (
 
 }
 
+/**
+ * Gets the current error stack.
+ * @returns 
+ */
+export const GetStack = ()=>{
+    return Select(stackPath, GetFloraDocument());
+}
 
 
 /**
