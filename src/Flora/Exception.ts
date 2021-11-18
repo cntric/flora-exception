@@ -11,13 +11,14 @@ const {
     And
 } = query;
 
-export const isFloraError = "isFloraError";
-export interface FloraErrorI {
+export const isFloraException = "isFloraException";
+export interface FloraExceptionI {
     location ? : string,
     name : string,
     msg : string,
-    at ? : FloraErrorI[]
-    [isFloraError] : true
+    at ? : FloraExceptionI[],
+    stack ? : FloraExceptionI[]
+    [isFloraException] : true
 }
 
 /**
@@ -25,36 +26,38 @@ export interface FloraErrorI {
  * @param args 
  * @returns 
  */
-export const FloraError = (args ? : {
+export const FloraException = (args ? : {
     name ? : string,
-    at ? : FloraErrorI[],
+    at ? : FloraExceptionI[],
     location ? : string
-    msg ? : string
-}) : FloraErrorI=>{
+    msg ? : string,
+    stack ? : FloraExceptionI[]
+}) : FloraExceptionI=>{
     return {
-        name : args && args.name ? args.name : "FloraError",
+        name : args && args.name ? args.name : "FloraException",
         msg : args && args.msg ? args.msg : "None",
         at : args && args.at ? args.at : [],
         location : args && args.location ? args.location : "None", 
-        [isFloraError] : true
-    } as FloraErrorI
+        stack : args && args.stack ? args.stack : [],
+        [isFloraException] : true
+    } as FloraExceptionI
 }
 
 /**
- * Checks if object is an error on Flora.
+ * Checks if object is an Exception on Flora.
  * @param expr 
  * @returns 
  */
-export const IsError = (expr : query.ExprArg) : boolean=>{
+export const IsException = (expr : query.ExprArg) : boolean=>{
     return If(
         And(
             Not(IsArray(expr)),
             IsObject(expr)
         ),
         If(
-            ContainsPath(isFloraError, expr),
+            ContainsPath(isFloraException, expr),
             Equals(
-                Select(isFloraError, expr),
+                Select(isFloraException, expr),
                 true
             ),
             false
@@ -65,13 +68,13 @@ export const IsError = (expr : query.ExprArg) : boolean=>{
 
 const agg = "agg";
 const el = "el";
-export const ContainsError = (exprs : query.ExprArg) : boolean=>{
+export const ContainsException = (exprs : query.ExprArg) : boolean=>{
     return Reduce(
         Lambda(
             [agg, el],
             Or(
                 Var(agg),
-                IsError(Var(el))
+                IsException(Var(el))
             )
         ),
         false,
@@ -79,18 +82,18 @@ export const ContainsError = (exprs : query.ExprArg) : boolean=>{
     ) as boolean
 }
 
-export const GetErrors = (exprs : any[]) : FloraErrorI[]=>{
+export const GetExceptions = (exprs : any[]) : FloraExceptionI[]=>{
 
     return Reduce(
         Lambda(
             [agg, el],
             If(
-                IsError(Var(el)),
-                Append([el], Var(agg)),
+                IsException(Var(el)),
+                Append([Var(el)], Var(agg)),
                 Var(agg)
             )
         ),
         [],
         exprs
-    ) as FloraErrorI[]
+    ) as FloraExceptionI[]
 }

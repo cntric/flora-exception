@@ -1,10 +1,11 @@
 import {
+    ContainsPath,
     query
 } from "faunadb"
 import {
     generate
 } from "shortid";
-import { ContainsError, FloraError, GetErrors } from "./Error";
+import { ContainsException, FloraException, GetExceptions } from "./Exception";
 import { Reraise } from "./Raise";
 
 const {
@@ -20,6 +21,19 @@ const {
 } = query;
 
 
+export const expressArgs = <A extends any[]>(args : A, evaluatedArgs : query.ExprArg, loc : string) : A=>{
+    return args.map((arg, index)=>{
+        return If(
+            ContainsPath(index, evaluatedArgs),
+            Select(index, evaluatedArgs),
+            FloraException({
+                name : "UndefinedArgException",
+                msg : `The arg at index ${index} was not defined.`,
+                location : loc
+            })
+        )
+    }) as A
+}
 
 
 export interface _YieldArgsI<A extends any[], T>{
@@ -29,23 +43,28 @@ export interface _YieldArgsI<A extends any[], T>{
 }
 
 const bargs = "bargs";
+const result = "result";
 /**
- * Yields 
+ * Yields the result of an expression.
  * @param args 
  * @returns 
  */
  export const _Yield = <A extends any[], T>(args : _YieldArgsI<A, T>) : T=>{
-
-    console.log(args.name, args.args);
-
-    return If(
-            ContainsError(args.args),
-            Reraise(GetErrors(args.args), FloraError({
-                location : args.name
-            })),
-            args.expr(...args.args)
-        ) as T
-
+    return Let(
+        {
+            [bargs] : args.args, // need to evaluate the args so that we do not have any stateful nonesense
+            [result] : If(
+                ContainsException(Var(bargs)),
+                Reraise(GetExceptions(Var(bargs) as any[]), FloraException({
+                    name : "ReraisedException",
+                    msg : "This exception was reraised in a yield expression.",
+                    location : args.name
+                })),
+                args.expr(...expressArgs(args.args, Var(bargs), args.name))
+            ) as T
+        },
+        Var(result)
+    ) as T
 }
 
 export interface YieldArgsI<A extends any[], T>{

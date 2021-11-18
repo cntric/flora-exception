@@ -17,7 +17,7 @@ import {
     withIdentity,
 } from "./Flora";
 import {Raise, Reraise} from "./Raise";
-import { FloraError, FloraErrorI } from "./Error";
+import { FloraException, FloraExceptionI } from "./Exception";
 import { Yield } from "./Yield";
 
 const {
@@ -42,40 +42,33 @@ export const RaiseSuiteA = ()=>{
 
         test("Reraises", async ()=>{
 
-            const testError = FloraError({
+            const testException = FloraException({
                 name : "Hello",
                 msg : "fail"
             });
 
-            const result = await db.client.query<FloraErrorI[]>(Flora(
-                Do(
-                    Reraise([Raise(testError)], FloraError()),
-                    GetStack()
-                )
+            const result = await db.client.query<FloraExceptionI>(Flora(
+                Reraise([Raise(testException)], FloraException()),
             ));
 
-           expect(result[1].at).toStrictEqual([testError]);
+           expect(result.stack ? result.stack[1].at : undefined).toStrictEqual([testException]);
             
 
         })
 
         test("Deep reraises", async ()=>{
 
-            const testError = FloraError({
+            const testException = FloraException({
                 name : "Hello",
                 msg : "fail"
             });
 
-            const result = await db.client.query<FloraErrorI[]>(Flora(
-                Do(
-                    Reraise([Reraise([Raise(testError),],FloraError())], FloraError()),
-                    GetStack()
-                )
+            const result = await db.client.query<FloraExceptionI>(Flora(
+                Reraise([Reraise([Raise(testException),],FloraException())], FloraException()),
             ));
-
             
 
-           expect(result[1].at).toStrictEqual([testError]);
+           expect(result.stack ? result.stack[1].at : undefined).toStrictEqual([testException]);
             
 
         })

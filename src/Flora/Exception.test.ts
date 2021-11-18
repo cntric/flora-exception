@@ -16,7 +16,7 @@ import {
     usedFloraIdentity,
     withIdentity,
 } from "./Flora";
-import {FloraError, ContainsError, IsError, GetErrors, FloraErrorI} from "./Error";
+import {FloraException, ContainsException, IsException, GetExceptions, FloraExceptionI} from "./Exception";
 import { Yield } from "./Yield";
 import { extractArgs, FxArgI } from "./Fx";
 
@@ -30,7 +30,7 @@ const {
     IsArray
 } = query;
 
-export const ErrorSuiteA = ()=>{
+export const ExceptionSuiteA = ()=>{
 
 
     describe("Flora exceptions basic functionality", ()=>{
@@ -41,20 +41,20 @@ export const ErrorSuiteA = ()=>{
             db = await FaunaTestDb();
         })
 
-        test("Is error", async()=>{
+        test("Is Exception", async()=>{
 
-            const result = await db.client.query(IsError(
-                FloraError()
+            const result = await db.client.query(IsException(
+                FloraException()
             ));
 
            expect(result).toBe(true);
 
         })
 
-        test("Contains error", async ()=>{
+        test("Contains Exception", async ()=>{
 
             const result = await db.client.query(Flora(
-                ContainsError([1,2,FloraError()])
+                ContainsException([1,2,FloraException()])
             ));
 
            expect(result).toBe(true);
@@ -62,15 +62,15 @@ export const ErrorSuiteA = ()=>{
 
         })
 
-        test("Gets errors", async()=>{
+        test("Gets Exceptions", async()=>{
             const result = await db.client.query<any[]>(Flora(
-                GetErrors([1,2, FloraError(), 1, 2, FloraError(), 3])
+                GetExceptions([1,2, FloraException(), 1, 2, FloraException(), 3])
             ));
 
            expect(result.length).toBe(2);
         })
 
-        test("Gets complex errors", async()=>{
+        test("Gets complex Exceptions", async()=>{
 
             const args : FxArgI<any>[] = [
                 [[2, 2, 2, 2], IsArray as ()=>boolean],
@@ -78,21 +78,21 @@ export const ErrorSuiteA = ()=>{
             ]
 
 
-            const result = await db.client.query<FloraErrorI[]>(Flora(
+            const result = await db.client.query<FloraExceptionI[]>(Flora(
                 extractArgs(args, "here") as any[]
             ));
 
-            console.log("extraction: ", result);
+            
 
-            const secondResult = await db.client.query<FloraErrorI[]>(Flora(
-                ContainsError(extractArgs(args, "here") as any[])
+            const secondResult = await db.client.query<FloraExceptionI[]>(Flora(
+                ContainsException(extractArgs(args, "here") as any[])
             ));
 
-            console.log(secondResult);
+            
 
         })
 
     })
 
 
-}; ErrorSuiteA();
+}; ExceptionSuiteA();

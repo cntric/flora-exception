@@ -1,13 +1,16 @@
-import { IsNumber, Lambda, Let, query } from "faunadb";
-import { FloraError, FloraErrorI } from "./Error";
-import { AddErrorToStack, Raise } from "./Raise";
+import { Concat, query } from "faunadb";
+import { FloraException, FloraExceptionI } from "./Exception";
+import { AddExceptionToStack, Raise } from "./Raise";
 import { Yield } from "./Yield";
+import {generate} from "shortid";
+import { generateSlug } from "random-word-slugs";
 const {
     Map ,
     If,
     Var,
-    Select, 
-    Add
+    Lambda,
+    ToString,
+    Let
 } = query;
 
 export interface FxArgI<T> {
@@ -20,47 +23,49 @@ type FxExtractedArgsT<T extends FxArgI<any>[]> = {
     [key in keyof T] : FxArgExtractedT<T[key]>
 }
 
-export const ValidateArg = <A extends FxArgI<any>>(arg : A, loc : string) : true | FloraErrorI=>{
-
-    const Predicate = arg[1] ? arg[1] : ()=>true
-
-    return If(
-        Predicate(arg[0]),
-        true,
-        FloraError({
-            name : "Type Error",
-            location : loc
-        })
-    ) as true | FloraErrorI
-}
-
+const result = "result";
 const arg = "arg";
-export const ValidateArgs = <A extends FxArgI<any>[]>(args : A, loc : string)=>{
-
-    return Map(
-        args,
-        Lambda(
-            arg,
-            ValidateArg(Var(arg) as FxArgI<any>, loc)
-        )
-    )
-
-}
-
+const xarg = "xarg";
+/**
+ * Extracts an arg from a TypePredicate tuple.
+ * @param arg 
+ * @param loc 
+ * @returns 
+ */
 export const ExtractArg = <A extends FxArgI<any>>(arg : A, loc : string) : FxArgExtractedT<A>=>{
 
+    const predicateName = arg[1] ? arg[1].name||"$Unspecified" : "$Unspecified";
     const Predicate = arg[1] ? arg[1] : ()=>true
 
-    return If(
-        Predicate(arg[0]),
-        arg[0],
-        Raise(FloraError({
-            name : "Type Error",
-            location : loc
-        }))
+    return Let(
+        {
+            [xarg] : arg[0],
+            [result] : If(
+                Predicate(Var(xarg)),
+                Var(xarg),
+                Raise(FloraException({
+                    name : "TypeException",
+                    msg : Concat(
+                        [
+                            `Argument does not match type ${predicateName}: Value {`,
+                            ToString(JSON.stringify(arg[0])),
+                            `} is not of type ${predicateName}`
+                        ]
+                    ) as string,
+                    location : loc
+                }))
+            )
+        },
+        Var(result)
     ) as FxArgExtractedT<A>
 }
 
+/**
+ * Extracts args for a n array of TypePredicate tuples.
+ * @param args 
+ * @param loc 
+ * @returns 
+ */
 export const ExtractArgs = <A extends FxArgI<any>[]>(args : A, loc : string) : FxExtractedArgsT<A>=>{
 
     return Map(
@@ -73,6 +78,12 @@ export const ExtractArgs = <A extends FxArgI<any>[]>(args : A, loc : string) : F
 
 }
 
+/**
+ * Extracts args from an array of type predicate Tuples on the client.
+ * @param args 
+ * @param loc 
+ * @returns 
+ */
 export const extractArgs = <A extends FxArgI<any>[]>(args : A, loc : string) : FxExtractedArgsT<A>=>{
     return args.map((arg)=>{
         return ExtractArg(arg, loc)
@@ -80,18 +91,43 @@ export const extractArgs = <A extends FxArgI<any>[]>(args : A, loc : string) : F
 }
 
 
-const bargs = "bargs";
+export const getInstance = ()=>{
+    return `${generateSlug(1, {
+        format : "title",
+        partsOfSpeech : ["adjective",],
+        categories : {
+            adjective : ["personality"]
+        }
+    })}${generateSlug(1, {
+        format : "title",
+        partsOfSpeech : ["noun",],
+        categories : {
+            noun : ["animals"]
+        }
+    })}/${generate()}`
+}
+
+export const getLocation = (errorStack : string) : [string, string]=>{
+    const abbrev = errorStack.split("\n").slice(1).join("\n");
+    const caller = errorStack.split("\n")[2].trim().split(" ")[1];
+    const _location = `${getInstance()}/${errorStack.split("\n").length}`
+    const mainLoaction =`${caller} $(${_location}/MAIN)\n${abbrev}`
+    const yieldLocation = `${caller} $(${_location}/YIELD)\n${abbrev}`
+    return [mainLoaction, yieldLocation]
+}
+
 const xargs = "xargs"
 export const Fx = <A extends FxArgI<any>[], T>(
     args : A,
     expr : (...args : FxExtractedArgsT<A>)=>T
 )=>{
 
-    const caller = (new Error()).stack?.split("\n")[2].trim().split(" ")[1];
+    const errorStack = new Error().stack || "";
+    const [mainLocation, yieldLocation] = getLocation(errorStack);
 
     return Yield({
-            name : caller || "",
-            args : extractArgs(args, caller||""),
+            name : yieldLocation,
+            args : extractArgs(args, mainLocation),
             expr : expr
         })
     

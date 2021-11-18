@@ -17,7 +17,7 @@ import {
     withIdentity,
 } from "./Flora";
 import {Raise} from "./Raise";
-import { FloraError } from "./Error";
+import { FloraException, FloraExceptionI } from "./Exception";
 
 const {
     Add,
@@ -67,21 +67,18 @@ export const FloraSuiteA = ()=>{
     
         }, 10000)
 
-        test("Raises Flora error", async()=>{
+        test("Raises Flora Exception", async()=>{
 
-            const testError = FloraError({
+            const testException = FloraException({
                 name : "Hello",
                 msg : "fail"
             });
 
-            const result = await db.client.query(Flora(
-                Do(
-                    Raise(testError),
-                    GetStack()
-                )
+            const result = await db.client.query<FloraExceptionI>(Flora(
+                Raise(testException),
             ));
 
-            expect(result).toStrictEqual([testError]);
+            expect(result.stack ? result.stack[0] : undefined).toStrictEqual(testException);
 
         })
 

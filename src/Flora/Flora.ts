@@ -4,14 +4,16 @@ import {
     Do,
     Exists, 
     Get, 
+    GT, 
+    Length, 
     Not, 
     query,
     Tokens,
     Update,
     values 
 } from "faunadb";
-import { FloraErrorI } from "./Error";
-import { ErrorStackT } from "./ErrorStack";
+import { FloraExceptionI, IsException } from "./Exception";
+import { ExceptionStackT } from "./ExceptionStack";
 import {
     floraDocumentKey,
     floraCollectionKey, generateFloraKey
@@ -32,7 +34,9 @@ const {
     Delete,
     Ref,
     CreateCollection,
-    Login
+    Login,
+    Or,
+    Count
 } = query;
 
 
@@ -128,7 +132,7 @@ export const stackPath = ["data", stack];
 export type FloraDocumentT = values.Document<{
     [usedFloraIdentity] : boolean,
     [withIdentity] : values.Ref | false,
-    [stack] : ErrorStackT
+    [stack] : ExceptionStackT
 }>
 
 
@@ -219,13 +223,27 @@ export const FloraDocument = (
 }
 
 /**
- * Gets the current error stack.
+ * Gets the current Exception stack.
  * @returns 
  */
 export const GetStack = ()=>{
     return Select(stackPath, GetFloraDocument());
 }
 
+export const StackError = (exception : FloraExceptionI) : FloraExceptionI=>{
+    return If(
+        GT(Count(GetStack()), 0),
+        Merge(
+            Select(0, GetStack()),
+            ToObject(
+                [
+                    ["stack", GetStack()]
+                ]
+            )
+        ),
+        exception
+    ) as FloraExceptionI
+}
 
 /**
  * 
@@ -262,7 +280,7 @@ const fruit = "fruit";
  * @param expr 
  * @returns 
  */
-export const Flora = <T>(expr :T) :  T =>{
+export const Flora = <T>(expr :T) :  T | FloraExceptionI =>{
 
     const password = generateFloraKey("password");
 
@@ -271,7 +289,14 @@ export const Flora = <T>(expr :T) :  T =>{
             [floraDocumentKey] : ReadyFloraDocument(password),
             [fruit] : expr,
         },
-        Var(fruit)
-    ) as T
+        If(
+            Or(
+                IsException(Var(fruit)),
+                GT(Count(GetStack()), 0)
+            ),
+            StackError(Var(fruit) as FloraExceptionI),
+            Var(fruit)
+        )
+    ) as T | FloraExceptionI
 
 }

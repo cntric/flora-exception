@@ -1,4 +1,4 @@
-import {FloraErrorI} from "./Error";
+import {FloraExceptionI} from "./Exception";
 import {GetFloraDocument, GetFloraDocumentRef, GetStack} from "./Flora";
 import { Let, Merge, query, ToObject } from "faunadb";
 const {
@@ -11,8 +11,8 @@ const {
 /**
  * 
  */
- export const AddErrorToStack = (
-    error : FloraErrorI
+ export const AddExceptionToStack = (
+    Exception : FloraExceptionI
 )=>{
 
     return Do(
@@ -20,7 +20,7 @@ const {
             GetFloraDocumentRef(),
             {
                 data : {
-                    stack : Append([error], GetStack())
+                    stack : Append([Exception], GetStack())
                 }
             }
         ),
@@ -30,48 +30,48 @@ const {
 }
 
 /**
- * Raises a Flora Error then returns it.
- * @param floraError
+ * Raises a Flora Exception then returns it.
+ * @param floraException
  * @returns 
  */
-export const _Raise = (floraError : FloraErrorI) : FloraErrorI=>{
+export const _Raise = (floraException : FloraExceptionI) : FloraExceptionI=>{
     return Do(
-        AddErrorToStack(floraError),
-        floraError
-    ) as FloraErrorI
+        AddExceptionToStack(floraException),
+        floraException
+    ) as FloraExceptionI
 }
 
 const raise = "raise";
-export const Raise = (floraError : FloraErrorI) : FloraErrorI=>{
+export const Raise = (floraException : FloraExceptionI) : FloraExceptionI=>{
     return Let(
         {
-            [raise] : _Raise(floraError)
+            [raise] : _Raise(floraException)
         },
         Var(raise)
-    ) as FloraErrorI
+    ) as FloraExceptionI
 }
 
 /**
- * Reraises an error if one is encountered.
- * @param prevError 
- * @param newError 
+ * Reraises an Exception if one is encountered.
+ * @param prevException 
+ * @param newException 
  * @returns 
  */
-export const Reraise = (prevErrors : FloraErrorI[], newError : FloraErrorI) : FloraErrorI=>{
+export const Reraise = (prevExceptions : FloraExceptionI[], newException : FloraExceptionI) : FloraExceptionI=>{
 
     return Let(
         {
             [raise] : Merge(
-                    newError,
+                    newException,
                     ToObject([
-                        ["at", prevErrors]
+                        ["at", prevExceptions]
                     ])
                 )
         },
         Do(
-            AddErrorToStack(Var(raise) as FloraErrorI),
+            AddExceptionToStack(Var(raise) as FloraExceptionI),
             Var(raise)
         )
-    ) as FloraErrorI
+    ) as FloraExceptionI
 
 }

@@ -21,7 +21,7 @@ import {
     withIdentity,
 } from "./Flora";
 import {Raise, Reraise} from "./Raise";
-import { FloraError, FloraErrorI, isFloraError } from "./Error";
+import { FloraException, FloraExceptionI, isFloraException } from "./Exception";
 import { Yield } from "./Yield";
 import { extractArgs, Fx, FxArgI } from "./Fx";
 
@@ -59,7 +59,7 @@ export const FxSuiteA = ()=>{
                 )
             }
 
-            const result = await db.client.query<FloraErrorI[]>(Flora(
+            const result = await db.client.query<FloraExceptionI[]>(Flora(
                 CoolFunc(2, 2)
             ));
             
@@ -80,7 +80,7 @@ export const FxSuiteA = ()=>{
                 )
             }
 
-            const result = await db.client.query<FloraErrorI[]>(Flora(
+            const result = await db.client.query<FloraExceptionI[]>(Flora(
                 CoolFunc([2, 2, 2, 2])
             ));
             
@@ -102,7 +102,7 @@ export const FxSuiteA = ()=>{
                 )
             }
 
-            const result = await db.client.query<FloraErrorI[]>(Flora(
+            const result = await db.client.query<FloraExceptionI[]>(Flora(
                 CoolFunc(
                     [2, 2, 2, 2],
                     " is Liam's score."
@@ -113,7 +113,7 @@ export const FxSuiteA = ()=>{
 
         })
 
-        test("Can get extracted errors", async()=>{
+        test("Can get extracted Exceptions", async()=>{
 
             const args : FxArgI<any>[] = [
                 [2, IsNumber as ()=>boolean],
@@ -121,13 +121,13 @@ export const FxSuiteA = ()=>{
                 [[4, 5, 6], IsString as ()=>boolean]
             ]
 
-            const result = await db.client.query<FloraErrorI[]>(Flora(
+            const result = await db.client.query<FloraExceptionI[]>(Flora(
                 extractArgs(args, "Here")
             ));
 
             
 
-            const secondResult = await db.client.query<FloraErrorI[]>(Flora(
+            const secondResult = await db.client.query<FloraExceptionI[]>(Flora(
                 Yield({
                     args : extractArgs(args, "Here"),
                     expr : (a ,b, c)=>{
@@ -140,9 +140,9 @@ export const FxSuiteA = ()=>{
 
         })
 
-        test("Error", async ()=>{
+        test("Exception", async ()=>{
 
-            const ErrorFunc = (a : number[])=>{
+            const ExceptionFunc = (a : number[])=>{
                 return Fx(
                     [
                         [a, IsString as ()=>boolean],
@@ -153,19 +153,19 @@ export const FxSuiteA = ()=>{
                 )
             }
 
-            const result = await db.client.query<FloraErrorI[]>(Flora(
-                ErrorFunc(
+            const result = await db.client.query<FloraExceptionI[]>(Flora(
+                ExceptionFunc(
                     [2, 2, 2, 2],
                 )
             ));
             
-            expect((result as any)[isFloraError]).toBe(true);
+            expect((result as any)[isFloraException]).toBe(true);
 
         })
 
-        test("Complex error", async ()=>{
+        test("Complex Exception", async ()=>{
 
-            const ErrorFunc = (a : number[], b : string)=>{
+            const ExceptionFunc = (a : number[], b : string)=>{
                 return Fx(
                     [
                         [a, IsArray as ()=>boolean],
@@ -177,8 +177,8 @@ export const FxSuiteA = ()=>{
                 )
             }
 
-            const result = await db.client.query<FloraErrorI[]>(Flora(
-                ErrorFunc(
+            const result = await db.client.query<FloraExceptionI[]>(Flora(
+                ExceptionFunc(
                     [2, 2, 2, 2],
                     " a thing"
                 )
@@ -187,7 +187,7 @@ export const FxSuiteA = ()=>{
             console.log(result);
             
             
-            // expect((result as any)[isFloraError]).toBe(true);
+            // expect((result as any)[isFloraException]).toBe(true);
 
         })
 

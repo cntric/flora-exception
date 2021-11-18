@@ -17,7 +17,7 @@ import {
     withIdentity,
 } from "./Flora";
 import {Raise} from "./Raise";
-import { FloraError, FloraErrorI, isFloraError } from "./Error";
+import { FloraException, FloraExceptionI, isFloraException } from "./Exception";
 import { Yield } from "./Yield";
 
 const {
@@ -76,7 +76,7 @@ export const YieldSuiteA = ()=>{
 
         })
 
-        test("Handles error in yield", async()=>{
+        test("Handles Exception in yield", async()=>{
 
             const InterestingFunc = (a : number) : number=>{
                 return Yield({
@@ -88,17 +88,17 @@ export const YieldSuiteA = ()=>{
                 }) as number
             }
 
-            const result = await db.client.query<FloraErrorI>(Flora(
-                InterestingFunc(FloraError() as unknown as number)
+            const result = await db.client.query<FloraExceptionI>(Flora(
+                InterestingFunc(FloraException() as unknown as number)
            ))
 
-           expect(result[isFloraError]).toBe(true);
+           expect(result[isFloraException]).toBe(true);
            expect(result.at?.length).toBe(1);
            expect(result.location).toBe(InterestingFunc.name);
 
         })
 
-        test("Handles error in yield in yield", async ()=>{
+        test("Handles Exception in yield in yield", async ()=>{
 
 
             const InterestingFunc = (a : number) : number=>{
@@ -110,11 +110,11 @@ export const YieldSuiteA = ()=>{
                 }) as number
             }
 
-            const result = await db.client.query<FloraErrorI>(Flora(
-                InterestingFunc(InterestingFunc(FloraError() as unknown as number))
+            const result = await db.client.query<FloraExceptionI>(Flora(
+                InterestingFunc(InterestingFunc(FloraException() as unknown as number))
            ))
 
-           expect(result[isFloraError]).toBe(true);
+           expect(result[isFloraException]).toBe(true);
            expect(result.at?.length).toBe(1);
            expect(result.location).toBe(InterestingFunc.name);
 
