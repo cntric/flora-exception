@@ -188,15 +188,15 @@ interface PredicateI<T> {
  * @param expr 
  * @returns 
  */
-export const mFx = <A extends (PredicateI<any>)[], T>(
+export const mFx = <A extends (PredicateI<any>)[], R extends (obj : any)=>boolean>(
     $ArgTypes : A,
-    $ReturnType : (obj : any)=>boolean,
-    expr : (...args : GuardedsT<A>)=>T
+    $ReturnType : R,
+    expr : (...args : GuardedsT<A>)=>GuardedT<R>
 )=>(...args : GuardedsT<A>)=>{
 
     return Fx(
         reguardArgs(args, $ArgTypes),
         $ReturnType,
-        expr as (...args : any[])=>T
+        expr as (...args : any[])=>GuardedT<R>
     )
 }

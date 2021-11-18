@@ -197,7 +197,7 @@ export const FxSuiteA = ()=>{
             const FloraAdd = mFx(
                 [$Number, $Number], $Number,
                 (a , b)=>{
-                    return Add(a, b)
+                    return Add(a, b) as number
                 }
             )
 
@@ -215,7 +215,7 @@ export const FxSuiteA = ()=>{
             const FloraAdd = mFx(
                 [$Number, $Number], $Number,
                 (a , b)=>{
-                    return Add(a, b)
+                    return Add(a, b) as number
                 }
             )
 
