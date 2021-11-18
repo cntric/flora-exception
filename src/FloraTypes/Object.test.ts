@@ -6,7 +6,8 @@ import {
     And
 } from "faunadb";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
-import { $Object } from "./Object";
+import { $Object, $Optional } from "./Object";
+import { $Number, $String } from "./Primitives";
 
 const {
     Add,
@@ -110,6 +111,43 @@ export const ExceptionSuiteA = ()=>{
                         name : "Liam",
                         amount : "Not number"
                     }
+                })
+            );
+
+            expect(result).toBe(false);
+
+        })
+
+        test("$Optional", async()=>{
+
+            const Test$Object = $Object({
+                name : $Optional($String),
+                amount : $Number
+            })
+
+
+            const result = await db.client.query(
+                Test$Object({
+                    amount : 9
+                })
+            );
+
+            expect(result).toBe(true);
+
+        })
+
+        test("$Optional fails", async()=>{
+
+            const Test$Object = $Object({
+                name : $Optional($String),
+                amount : $Number
+            })
+
+
+            const result = await db.client.query(
+                Test$Object({
+                    name : 9,
+                    amount : 9
                 })
             );
 

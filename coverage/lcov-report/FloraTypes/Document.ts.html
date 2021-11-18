@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for Flora/Key.ts</title>
+    <title>Code coverage report for FloraTypes/Document.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">Flora</a> Key.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">FloraTypes</a> Document.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>2/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">66.67% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -77,41 +77,41 @@
 <a name='L18'></a><a href='#L18'>18</a>
 <a name='L19'></a><a href='#L19'>19</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span></td><td class="text"><pre class="prettyprint lang-js">import {generate} from "shortid";
-import { machineIdSync } from "node-machine-id";
-export const machineId = machineIdSync();
-export const sessionId = generate();
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {values, query, Select} from "faunadb";
+&nbsp;
+const {
+    If,
+    IsDoc
+} = query;
 &nbsp;
 /**
- * Generates keys that will be used to instantiate variables in the Flora Environment.
- * This enables to use access an blight state throughout the Flora environment with a low risk
- * of collisions.
- * @param type an abitrary type name.
- * @returns 
+ * Document type predicate. Chcecks that any object is a document and has matching data.
+ * @param Predicate is the predicate used to check the data.
+ * @returns A Predicate 
  */
- export const generateFloraKey = (type : string) : string=&gt;{
-    return `machine-${machineId}-session-${sessionId}-${generate()}-${generate()}-floraKey-${type}-${generate()}-${generate()}`
-}
-&nbsp;
-export const floraCollectionKey = "Flora-Exception-Collection";
-&nbsp;
-export const floraDocumentKey = generateFloraKey("floraDocument");</pre></td></tr></table></pre>
+export const $Document = <span class="fstat-no" title="function not covered" >(P</span>redicate ? : (obj : any)=&gt;boolean)=&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(o</span>bj : any) : boolean=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >    return Predicate ? If(</span>
+        IsDoc(obj),
+        Predicate(Select("data", obj)),
+        false
+    ) as boolean : IsDoc(obj) as boolean
+}</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

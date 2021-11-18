@@ -1,7 +1,7 @@
-import { And, ContainsPath, IsObject, query, Reduce } from "faunadb";
+import { query } from "faunadb";
 const {
     If,
-    Select, Var, Lambda
+    Select, Var, Lambda, And, ContainsPath, IsObject, Reduce
 } = query;
 
 export interface PredicateI {

@@ -24,6 +24,7 @@ import {Raise, Reraise} from "./Raise";
 import { FloraException, FloraExceptionI, isFloraException } from "./Exception";
 import { Yield } from "./Yield";
 import { extractArgs, Fx, FxArgI } from "./Fx";
+import { $String, $Number } from "../FloraTypes";
 
 const {
     Add,
@@ -53,6 +54,7 @@ export const FxSuiteA = ()=>{
                         [a, IsNumber as ()=>boolean],
                         [b, IsNumber as ()=>boolean]
                     ],
+                    $Number,
                     (a ,b)=>{
                         return Add(a, b)
                     }
@@ -74,6 +76,7 @@ export const FxSuiteA = ()=>{
                     [
                         [a, IsArray as ()=>boolean],
                     ],
+                    $Number,
                     (a)=>{
                         return Sum(a)
                     }
@@ -96,6 +99,7 @@ export const FxSuiteA = ()=>{
                         [a, IsArray as ()=>boolean],
                         [b, IsString as ()=>boolean]
                     ],
+                    $String,
                     (a, b)=>{
                         return Concat([ToString(Sum(a)), b], "")
                     }
@@ -147,6 +151,7 @@ export const FxSuiteA = ()=>{
                     [
                         [a, IsString as ()=>boolean],
                     ],
+                    $String,
                     (a)=>{
                         return Concat([a, " great time."], "")
                     }
@@ -171,6 +176,7 @@ export const FxSuiteA = ()=>{
                         [a, IsArray as ()=>boolean],
                         [b, IsArray as ()=>boolean]
                     ],
+                    $String,
                     (a, b)=>{
                         return Concat([ToString(Sum(a)), b], "")
                     }
@@ -183,12 +189,6 @@ export const FxSuiteA = ()=>{
                     " a thing"
                 )
             ));
-
-            console.log(result);
-            
-            
-            // expect((result as any)[isFloraException]).toBe(true);
-
         })
 
 

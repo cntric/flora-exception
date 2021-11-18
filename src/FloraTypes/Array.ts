@@ -15,7 +15,7 @@ const el = "el";
  * @param Predicate 
  * @returns 
  */
-export const $Array = (Predicate : (obj : any)=>boolean)=>(obj : any)=>{
+export const $Array = (Predicate : (obj : any)=>boolean)=>(obj : any) : boolean=>{
     return If(
         IsArray(obj),
         Reduce(
@@ -30,5 +30,5 @@ export const $Array = (Predicate : (obj : any)=>boolean)=>(obj : any)=>{
             obj
         ),
         false
-    ) 
+    ) as boolean
 }

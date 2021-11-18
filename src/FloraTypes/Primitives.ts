@@ -1,12 +1,7 @@
 import { If, query } from "faunadb"
 const {
     IsNumber,
-    IsBoolean,
     IsString,
-    IsFunction,
-    IsBytes,
-    IsCollection,
-    IsDouble,
     IsInteger,
     GT,
     LT

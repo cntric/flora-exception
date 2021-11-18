@@ -1,6 +1,6 @@
 import { Concat, query } from "faunadb";
-import { FloraException, FloraExceptionI } from "./Exception";
-import { AddExceptionToStack, Raise } from "./Raise";
+import { FloraException, FloraExceptionI, IsException, GetExceptions } from "./Exception";
+import { AddExceptionToStack, Raise, Reraise } from "./Raise";
 import { Yield } from "./Yield";
 import {generate} from "shortid";
 import { generateSlug } from "random-word-slugs";
@@ -119,17 +119,46 @@ export const getLocation = (errorStack : string) : [string, string]=>{
 const xargs = "xargs"
 export const Fx = <A extends FxArgI<any>[], T>(
     args : A,
+    $ReturnType : (obj : any)=>boolean,
     expr : (...args : FxExtractedArgsT<A>)=>T
 )=>{
 
     const errorStack = new Error().stack || "";
     const [mainLocation, yieldLocation] = getLocation(errorStack);
+    const predicateName = $ReturnType ? $ReturnType.name||"$Unspecified" : "$Unspecified";
 
-    return Yield({
-            name : yieldLocation,
-            args : extractArgs(args, mainLocation),
-            expr : expr
-        })
-    
-
+    return Let(
+        {
+            [result] : Yield({
+                name : yieldLocation,
+                args : extractArgs(args, mainLocation),
+                expr : expr
+            })
+        },
+        If(
+            $ReturnType(
+                Var(result)
+            ),
+            Var(result),
+            If(
+                IsException(
+                    Var(result)
+                ),
+                Var(result),
+                Raise(
+                    FloraException({
+                        name : "ReturnTypeExcpetion",
+                        msg :  Concat(
+                            [
+                                `Return does not match type ${predicateName}: Value {`,
+                                Var(result),
+                                `} is not of type ${predicateName}`
+                            ]
+                        ) as string,
+                        location : mainLocation
+                    })
+                )
+            )
+        )
+    )
 }
