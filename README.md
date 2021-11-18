@@ -6,6 +6,13 @@ const FloraAdd = (a : number, b : number) : number =>{
         (a, b)=> Add(a, b) as number
     )
 }
+
+// OR
+
+const FloraAdd = mFx(
+    [$Number, $Number], $Number,
+    (a, b)=>Add(a, b)
+)
 ```
 `flora-exception` is an exception system for [Fauna Query Language](https://docs.fauna.com/fauna/current/api/fql/) built on top of the [faunadb-js](https://github.com/fauna/faunadb-js) driver. It provides methods for:
 - exception raising, 
