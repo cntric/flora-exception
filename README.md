@@ -30,6 +30,21 @@ const FloraAdd = mFx(
 import {Flora, Raise, Fx, $Number} from "flora-exception";
 ```
 
+### Compose
+```typescript
+const FloraAdd = mFx(
+    [$Number, $Number], $Number,
+    (a, b)=>Add(a, b) as number
+)
+```
+
+### Query
+```typescript
+const result = await client.query(Flora(
+    FloraAdd(2, 2)
+));
+```
+
 ## `Flora()`
 Wrap your query logic with `Flora()`:
 - Returns value of query, unless a `FloraException` was raised.
