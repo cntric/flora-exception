@@ -117,11 +117,11 @@ export const getLocation = (errorStack : string) : [string, string]=>{
 }
 
 const xargs = "xargs"
-export const Fx = <A extends FxArgI<any>[], T>(
+export const Fx = <A extends FxArgI<any>[], R extends (obj : any)=>boolean>(
     args : A,
-    $ReturnType : (obj : any)=>boolean,
-    expr : (...args : FxExtractedArgsT<A>)=>T
-)=>{
+    $ReturnType : R,
+    expr : (...args : FxExtractedArgsT<A>)=>GuardedT<R>
+) : GuardedT<R>=>{
 
     const errorStack = new Error().stack || "";
     const [mainLocation, yieldLocation] = getLocation(errorStack);
@@ -160,7 +160,7 @@ export const Fx = <A extends FxArgI<any>[], T>(
                 )
             )
         )
-    )
+    ) as GuardedT<R>
 }
 
 export type GuardedT<T> = T extends (obj: any) => obj is infer G ? G :any;
@@ -192,7 +192,7 @@ export const mFx = <A extends (PredicateI<any>)[], R extends (obj : any)=>boolea
     $ArgTypes : A,
     $ReturnType : R,
     expr : (...args : GuardedsT<A>)=>GuardedT<R>
-)=>(...args : GuardedsT<A>)=>{
+)=>(...args : GuardedsT<A>) : GuardedT<R> =>{
 
     return Fx(
         reguardArgs(args, $ArgTypes),

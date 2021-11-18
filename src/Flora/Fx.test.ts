@@ -56,7 +56,7 @@ export const FxSuiteA = ()=>{
                     ],
                     $Number,
                     (a ,b)=>{
-                        return Add(a, b)
+                        return Add(a, b) as number
                     }
                 )
             }
@@ -78,7 +78,7 @@ export const FxSuiteA = ()=>{
                     ],
                     $Number,
                     (a)=>{
-                        return Sum(a)
+                        return Sum(a) as number
                     }
                 )
             }
@@ -101,7 +101,7 @@ export const FxSuiteA = ()=>{
                     ],
                     $String,
                     (a, b)=>{
-                        return Concat([ToString(Sum(a)), b], "")
+                        return Concat([ToString(Sum(a)), b], "") as string
                     }
                 )
             }
@@ -153,7 +153,7 @@ export const FxSuiteA = ()=>{
                     ],
                     $String,
                     (a)=>{
-                        return Concat([a, " great time."], "")
+                        return Concat([a, " great time."], "") as string
                     }
                 )
             }
@@ -178,7 +178,7 @@ export const FxSuiteA = ()=>{
                     ],
                     $String,
                     (a, b)=>{
-                        return Concat([ToString(Sum(a)), b], "")
+                        return Concat([ToString(Sum(a)), b], "") as string
                     }
                 )
             }
@@ -224,6 +224,24 @@ export const FxSuiteA = ()=>{
             ));
 
             expect(isFloraException(result)).toBe(true);
+
+        })
+
+        test("Return exception", async ()=>{
+
+            const FloraAdd = mFx(
+                [$Number, $Number], $Number,
+                (a , b)=>{
+                    return "hello" as unknown as number
+                }
+            )
+
+            const result = await db.client.query(Flora(
+                FloraAdd(2, 2)
+            ));
+
+            expect(isFloraException(result)).toBe(true);
+
 
         })
 
