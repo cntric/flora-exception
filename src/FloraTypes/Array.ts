@@ -1,4 +1,5 @@
 import {query} from "faunadb";
+import { GuardedT } from "Flora/Fx";
 const {
     IsArray,
     Reduce,
@@ -15,7 +16,7 @@ const el = "el";
  * @param Predicate 
  * @returns 
  */
-export const $Array = (Predicate : (obj : any)=>boolean)=>(obj : any) : boolean=>{
+export const $Array = <P extends (obj : any)=>boolean>(Predicate : P)=>(obj : any) : obj is GuardedT<P>[]=>{
     return If(
         IsArray(obj),
         Reduce(

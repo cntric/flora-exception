@@ -23,7 +23,7 @@ import {
 import {Raise, Reraise} from "./Raise";
 import { FloraException, FloraExceptionI, isFloraException } from "./Exception";
 import { Yield } from "./Yield";
-import { extractArgs, Fx, FxArgI } from "./Fx";
+import { extractArgs, Fx, FxArgI, mFx } from "./Fx";
 import { $String, $Number } from "../FloraTypes";
 
 const {
@@ -164,7 +164,7 @@ export const FxSuiteA = ()=>{
                 )
             ));
             
-            expect((result as any)[isFloraException]).toBe(true);
+            expect(isFloraException(result)).toBe(true);
 
         })
 
@@ -189,6 +189,42 @@ export const FxSuiteA = ()=>{
                     " a thing"
                 )
             ));
+        })
+
+        test("Basic mfx", async()=>{
+
+
+            const FloraAdd = mFx(
+                [$Number, $Number], $Number,
+                (a , b)=>{
+                    return Add(a, b)
+                }
+            )
+
+            const result = await db.client.query(Flora(
+                FloraAdd(2, 2)
+            ));
+
+            expect(result).toBe(4);
+
+        })
+
+        test("Failed mfx", async()=>{
+
+
+            const FloraAdd = mFx(
+                [$Number, $Number], $Number,
+                (a , b)=>{
+                    return Add(a, b)
+                }
+            )
+
+            const result = await db.client.query(Flora(
+                FloraAdd(2, "hello" as unknown as number)
+            ));
+
+            expect(isFloraException(result)).toBe(true);
+
         })
 
 

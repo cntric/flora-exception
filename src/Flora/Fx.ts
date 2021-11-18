@@ -162,3 +162,41 @@ export const Fx = <A extends FxArgI<any>[], T>(
         )
     )
 }
+
+export type GuardedT<T> = T extends (obj: any) => obj is infer G ? G :any;
+export type GuardedsT<T extends ((obj: any) => boolean)[]> = {
+    [key in keyof T] : GuardedT<T[key]>
+}
+
+const reguardArgs = (args :any[], argTypes : ((obj : any)=>boolean)[]) : FxArgI<any>[]=>{
+    return args.map((arg, index)=>{
+        return [
+            arg,
+            argTypes[index] ? argTypes[index] : ()=>true
+        ]
+    })
+}
+
+interface PredicateI<T> {
+    (obj : any) : obj is T 
+}
+
+/**
+ * Factory for a Fx function.
+ * @param args 
+ * @param $ReturnType 
+ * @param expr 
+ * @returns 
+ */
+export const mFx = <A extends (PredicateI<any>)[], T>(
+    $ArgTypes : A,
+    $ReturnType : (obj : any)=>boolean,
+    expr : (...args : GuardedsT<A>)=>T
+)=>(...args : GuardedsT<A>)=>{
+
+    return Fx(
+        reguardArgs(args, $ArgTypes),
+        $ReturnType,
+        expr as (...args : any[])=>T
+    )
+}

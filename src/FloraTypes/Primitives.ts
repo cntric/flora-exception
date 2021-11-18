@@ -1,4 +1,4 @@
-import { If, query } from "faunadb"
+import { If, IsBoolean, query } from "faunadb"
 const {
     IsNumber,
     IsString,
@@ -12,7 +12,7 @@ const {
  * @param obj 
  * @returns 
  */
-export const $Number = (obj : any) : boolean=>{
+export const $Number = (obj : any) : obj is number=>{
     return IsNumber(obj) as boolean
 }
 
@@ -21,7 +21,7 @@ export const $Number = (obj : any) : boolean=>{
  * @param obj 
  * @returns 
  */
-export const $Int = (obj : any) : boolean=>{
+export const $Int = (obj : any) : obj is number=>{
     return IsInteger(obj) as boolean
 }
 
@@ -29,7 +29,7 @@ export const $Int = (obj : any) : boolean=>{
  * Unsigned int predicate.
  * @param obj 
  */
-export const $UInt = (obj : any) : boolean=>{
+export const $UInt = (obj : any) : obj is number=>{
     return If(
         $Int(obj),
         GT(obj, -1),
@@ -42,7 +42,7 @@ export const $UInt = (obj : any) : boolean=>{
  * @param obj 
  * @returns 
  */
-export const $UInt8 = (obj : any) : boolean=>{
+export const $UInt8 = (obj : any) : obj is number=>{
     return If(
         $UInt(obj),
         LT(256),
@@ -55,6 +55,15 @@ export const $UInt8 = (obj : any) : boolean=>{
  * @param obj  
  * @returns 
  */
-export const $String = (obj : any) : boolean=>{
+export const $String = (obj : any) : obj is string=>{
     return IsString(obj) as boolean
+}
+
+/**
+ * Boolean type predicate.
+ * @param obj 
+ * @returns 
+ */
+export const $Boolean = (obj : any) : obj is boolean=>{
+    return IsBoolean(obj) as boolean
 }

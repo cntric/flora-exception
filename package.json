@@ -1,10 +1,10 @@
 {
   "name": "flora-exception",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "An exception system for FQL.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/concentricio/flora-exception"
+    "url": "https://github.com/cntric/flora-exception"
   },
   "keywords": [
     "fauna",
@@ -32,6 +32,7 @@
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
     "@babel/preset-typescript": "^7.15.0",
+    "@size-limit/preset-big-lib": "^7.0.0",
     "@types/jest": "^27.0.1",
     "babel-jest": "^27.1.1",
     "determinismus": "^0.0.1",

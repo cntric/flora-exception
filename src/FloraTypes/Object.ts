@@ -1,4 +1,5 @@
 import { query } from "faunadb";
+import { GuardedT } from "Flora";
 const {
     If,
     Select, Var, Lambda, And, ContainsPath, IsObject, Reduce
@@ -15,15 +16,23 @@ export interface Typed$ObjectArgsI {
     [key : string] : PredicateI | OptionalPredicateI
 }
 
+export type Typed$ObjectT<A extends Typed$ObjectArgsI> = {
+    [key in keyof A] : GuardedT<A[key]>
+} 
+
 /**
  * Forms an optional field predicate.
  * @param predicate Is the type predicate used to verify the field if one is present
  * @returns 
  */
-export const $Optional = (predicate : (obj : any)=>boolean) : OptionalPredicateI=>{
-    (predicate as OptionalPredicateI).optional = true;
-    return predicate as OptionalPredicateI;
+export const $Optional = <P extends (obj : any)=>boolean>(
+    Predicate : P
+) : (obj : any)=> obj is (GuardedT<P> | undefined) =>{
+    (Predicate as unknown as OptionalPredicateI).optional = true;
+    return Predicate as unknown as (obj : any)=> obj is (GuardedT<P> | undefined);
 }
+
+
 
 /**
  * Extracts predicates to check against type fields.
@@ -67,7 +76,7 @@ export const PredicatesSatisfied = (predicates : query.ExprArg)=>{
  * @param args 
  * @returns 
  */
-export const $Object = (args ? : Typed$ObjectArgsI)=>(obj : any) : boolean=>{
+export const $Object = <O extends Typed$ObjectArgsI>(args ? : O)=>(obj : any) : obj is Typed$ObjectT<O>=>{
     return  args ? If(
         IsObject(obj),
         PredicatesSatisfied(extractPredicates(args, obj)),

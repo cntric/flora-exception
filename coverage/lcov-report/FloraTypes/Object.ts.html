@@ -132,31 +132,50 @@
 <a name='L73'></a><a href='#L73'>73</a>
 <a name='L74'></a><a href='#L74'>74</a>
 <a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -207,7 +226,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { query } from "faunadb";
+import { GuardedT } from "Flora";
 const {
     If,
     Select, Var, Lambda, And, ContainsPath, IsObject, Reduce
@@ -224,15 +245,23 @@ export interface Typed$ObjectArgsI {
     [key : string] : PredicateI | OptionalPredicateI
 }
 &nbsp;
+export type Typed$ObjectT&lt;A extends Typed$ObjectArgsI&gt; = {
+    [key in keyof A] : GuardedT&lt;A[key]&gt;
+} 
+&nbsp;
 /**
  * Forms an optional field predicate.
  * @param predicate Is the type predicate used to verify the field if one is present
  * @returns 
  */
-export const $Optional = (predicate : (obj : any)=&gt;boolean) : OptionalPredicateI=&gt;{
-    (predicate as OptionalPredicateI).optional = true;
-    return predicate as OptionalPredicateI;
+export const $Optional = &lt;P extends (obj : any)=&gt;boolean&gt;(
+    Predicate : P
+) : (obj : any)=&gt; obj is (GuardedT&lt;P&gt; | undefined) =&gt;{
+    (Predicate as unknown as OptionalPredicateI).optional = true;
+    return Predicate as unknown as (obj : any)=&gt; obj is (GuardedT&lt;P&gt; | undefined);
 }
+&nbsp;
+&nbsp;
 &nbsp;
 /**
  * Extracts predicates to check against type fields.
@@ -276,20 +305,21 @@ export const PredicatesSatisfied = (predicates : query.ExprArg)=&gt;{
  * @param args 
  * @returns 
  */
-export const $Object = (args ? : Typed$ObjectArgsI)=&gt;(obj : any) : boolean=&gt;{
+export const $Object = &lt;O extends Typed$ObjectArgsI&gt;(args ? : O)=&gt;(obj : any) : obj is Typed$ObjectT&lt;O&gt;=&gt;{
     return  args ? If(
         IsObject(obj),
         PredicatesSatisfied(extractPredicates(args, obj)),
         false
     ) as boolean : <span class="branch-1 cbranch-no" title="branch not covered" >IsObject(obj) as boolean</span>
-}</pre></td></tr></table></pre>
+}
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Nov 18 2021 00:20:41 GMT-0800 (Pacific Standard Time)
+                at Thu Nov 18 2021 10:46:15 GMT-0800 (Pacific Standard Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

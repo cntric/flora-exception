@@ -11,14 +11,14 @@ const {
     And
 } = query;
 
-export const isFloraException = "isFloraException";
+export const isFloraExceptionKey = "isFloraException";
 export interface FloraExceptionI {
     location ? : string,
     name : string,
     msg : string,
     at ? : FloraExceptionI[],
     stack ? : FloraExceptionI[]
-    [isFloraException] : true
+    [isFloraExceptionKey] : true
 }
 
 /**
@@ -39,12 +39,21 @@ export const FloraException = (args ? : {
         at : args && args.at ? args.at : [],
         location : args && args.location ? args.location : "None", 
         stack : args && args.stack ? args.stack : [],
-        [isFloraException] : true
+        [isFloraExceptionKey] : true
     } as FloraExceptionI
 }
 
 /**
- * Checks if object is an Exception on Flora.
+ * Asserts obj is Flora Exception at Client.
+ * @param obj 
+ * @returns 
+ */
+export const isFloraException = (obj : any)=>{
+    return obj instanceof Object && obj[isFloraExceptionKey] === true;
+}
+
+/**
+ * Checks if object is an Exception on Fauna.
  * @param expr 
  * @returns 
  */
@@ -55,9 +64,9 @@ export const IsException = (expr : query.ExprArg) : boolean=>{
             IsObject(expr)
         ),
         If(
-            ContainsPath(isFloraException, expr),
+            ContainsPath(isFloraExceptionKey, expr),
             Equals(
-                Select(isFloraException, expr),
+                Select(isFloraExceptionKey, expr),
                 true
             ),
             false

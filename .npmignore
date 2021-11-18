@@ -3,4 +3,4 @@ node_modules
 docs
 package-lock.json
 yarn.lock
-yarn-error.lock
+yarn-error.log

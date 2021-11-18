@@ -92,7 +92,7 @@ export const YieldSuiteA = ()=>{
                 InterestingFunc(FloraException() as unknown as number)
            ))
 
-           expect(result[isFloraException]).toBe(true);
+           expect(isFloraException(result)).toBe(true);
            expect(result.at?.length).toBe(1);
            expect(result.location).toBe(InterestingFunc.name);
 
@@ -114,7 +114,7 @@ export const YieldSuiteA = ()=>{
                 InterestingFunc(InterestingFunc(FloraException() as unknown as number))
            ))
 
-           expect(result[isFloraException]).toBe(true);
+           expect(isFloraException(result)).toBe(true);
            expect(result.at?.length).toBe(1);
            expect(result.location).toBe(InterestingFunc.name);
 
