@@ -30,7 +30,7 @@ const FloraAdd = mFx(
 import {Flora, Raise, Fx, $Number} from "flora-exception";
 ```
 
-### `Flora()`
+## `Flora()`
 Wrap your query logic with `Flora()`:
 - Returns value of query, unless a `FloraException` was raised.
 ```typescript
@@ -40,7 +40,7 @@ const result = await db.client.query(Flora(
 expect(result).toBe(4);
 ```
 
-### `Raise()`
+## `Raise()`
 `Raise()` a `FloraException`:
 - The exception along with a stack trace will be returned.
 - In the event of an exception, even without `Fx` consumers, the `FloraExceptionStack` will be returned so long as the query is not `Aborted`.
@@ -55,7 +55,7 @@ const result = await db.client.query(Flora(
 expect(isFloraException(result)).toBe(true);
 ```
 
-### `Fx()`
+## `Fx()`
 Use `Fx()` to execute logic with type and exception safety:
 - `Fx` will handle mismatched arg or return types. 
 - In the event that an arg or a return is a `FloraException` it will be reraised.
@@ -83,7 +83,7 @@ const FloraAdd = (a : number, b : number) : number=>{
  expect(result).toBe(4);
 ```
 
-### `mFx()`
+## `mFx()`
 Use `mFx()` to create type and exception safe queries with an abbreviated syntax:
 - `mFx` produces a function that will call `Fx` to compose your query. 
 - `mFx`infers TypeScript types from your type predicates.
