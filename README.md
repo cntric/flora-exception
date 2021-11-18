@@ -27,7 +27,7 @@ const FloraAdd = mFx(
 
 ### Import
 ```typescript
-import {Flora, Raise, Fx, $Number} from "flora-exception";
+import {Flora, mFx, $Number} from "flora-exception";
 ```
 
 ### Compose
