@@ -19,11 +19,17 @@ const FloraAdd = mFx(
 - typing,
 - and exception catching.
 
+
 ## Quick start
+
+### Install
 `yarn add flora-exception`
+
+### Import
 ```typescript
 import {Flora, Raise, Fx, $Number} from "flora-exception";
 ```
+
 ### `Flora()`
 Wrap your query logic with `Flora()`:
 - Returns value of query, unless a `FloraException` was raised.
@@ -75,6 +81,30 @@ const FloraAdd = (a : number, b : number) : number=>{
   ));
 
  expect(result).toBe(4);
+```
+
+### `mFx()`
+Use `mFx()` to create type and exception safe queries with an abbreviated syntax:
+- `mFx` produces a function that will call `Fx` to compose your query. 
+- `mFx`infers TypeScript types from your type predicates.
+```typescript
+/**
+ * Adds two numbers.
+ * @param a 
+ * @param b 
+ * @returns 
+ */
+const FloraAdd = mFx(
+    [$Number, $Number], // arg type predicates
+    $Number,  // return type predicate
+    (a, b)=>Add(a, b) as number
+)
+
+const result = await db.client.query(Flora(
+     FloraAdd(2, 2)
+));
+
+expect(result).toBe(4);
 ```
 
 ## Types
