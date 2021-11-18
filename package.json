@@ -1,6 +1,6 @@
 {
   "name": "flora-exception",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "An exception system for FQL.",
   "repository": {
     "type": "git",

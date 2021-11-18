@@ -28,6 +28,12 @@ export const ExceptionSuiteA = ()=>{
 
         test("Composed Add", async()=>{
 
+            /**
+             * Adds two numbers.
+             * @param a 
+             * @param b 
+             * @returns 
+             */
             const ComposedAdd = (a : number, b : number) : number=>{
                 return Fx(
                     [ [a, $Number], [b, $Number] ],
