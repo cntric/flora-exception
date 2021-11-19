@@ -29,5 +29,20 @@ export declare const ExtractArgs: <A extends FxArgI<any>[]>(args: A, loc: string
 export declare const extractArgs: <A extends FxArgI<any>[]>(args: A, loc: string) => FxExtractedArgsT<A>;
 export declare const getInstance: () => string;
 export declare const getLocation: (errorStack: string) => [string, string];
-export declare const Fx: <A extends FxArgI<any>[], T>(args: A, $ReturnType: (obj: any) => boolean, expr: (...args: FxExtractedArgsT<A>) => T) => import("faunadb").Expr;
+export declare const Fx: <A extends FxArgI<any>[], R extends (obj: any) => boolean>(args: A, $ReturnType: R, expr: (...args: FxExtractedArgsT<A>) => GuardedT<R>) => GuardedT<R>;
+export declare type GuardedT<T> = T extends (obj: any) => obj is infer G ? G : any;
+export declare type GuardedsT<T extends ((obj: any) => boolean)[]> = {
+    [key in keyof T]: GuardedT<T[key]>;
+};
+interface PredicateI<T> {
+    (obj: any): obj is T;
+}
+/**
+ * Factory for a Fx function.
+ * @param args
+ * @param $ReturnType
+ * @param expr
+ * @returns
+ */
+export declare const mFx: <A extends PredicateI<any>[], R extends (obj: any) => boolean>($ArgTypes: A, $ReturnType: R, expr: (...args: GuardedsT<A>) => GuardedT<R>) => (...args: GuardedsT<A>) => GuardedT<R>;
 export {};

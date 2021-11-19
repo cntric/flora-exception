@@ -1,4 +1,4 @@
-import { If, query } from "faunadb";
+import { If, IsBoolean, query } from "faunadb";
 const { IsNumber, IsString, IsInteger, GT, LT } = query;
 /**
  * Number type predicate.
@@ -38,4 +38,12 @@ export const $UInt8 = (obj) => {
  */
 export const $String = (obj) => {
     return IsString(obj);
+};
+/**
+ * Boolean type predicate.
+ * @param obj
+ * @returns
+ */
+export const $Boolean = (obj) => {
+    return IsBoolean(obj);
 };

@@ -3,7 +3,7 @@ import { FaunaTestDb } from "fauna-test-setup";
 import { Flora, } from "./Flora";
 import { isFloraException } from "./Exception";
 import { Yield } from "./Yield";
-import { extractArgs, Fx } from "./Fx";
+import { extractArgs, Fx, mFx } from "./Fx";
 import { $String, $Number } from "../FloraTypes";
 const { Add, IsString, Create, Get, Select, ContainsPath } = query;
 export const FxSuiteA = () => {
@@ -70,7 +70,7 @@ export const FxSuiteA = () => {
                 });
             };
             const result = await db.client.query(Flora(ExceptionFunc([2, 2, 2, 2])));
-            expect(result[isFloraException]).toBe(true);
+            expect(isFloraException(result)).toBe(true);
         });
         test("Complex Exception", async () => {
             const ExceptionFunc = (a, b) => {
@@ -82,6 +82,27 @@ export const FxSuiteA = () => {
                 });
             };
             const result = await db.client.query(Flora(ExceptionFunc([2, 2, 2, 2], " a thing")));
+        });
+        test("Basic mfx", async () => {
+            const FloraAdd = mFx([$Number, $Number], $Number, (a, b) => {
+                return Add(a, b);
+            });
+            const result = await db.client.query(Flora(FloraAdd(2, 2)));
+            expect(result).toBe(4);
+        });
+        test("Failed mfx", async () => {
+            const FloraAdd = mFx([$Number, $Number], $Number, (a, b) => {
+                return Add(a, b);
+            });
+            const result = await db.client.query(Flora(FloraAdd(2, "hello")));
+            expect(isFloraException(result)).toBe(true);
+        });
+        test("Return exception", async () => {
+            const FloraAdd = mFx([$Number, $Number], $Number, (a, b) => {
+                return "hello";
+            });
+            const result = await db.client.query(Flora(FloraAdd(2, 2)));
+            expect(isFloraException(result)).toBe(true);
         });
     });
 };

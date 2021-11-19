@@ -5,9 +5,9 @@ const { If, Select, Var, Lambda, And, ContainsPath, IsObject, Reduce } = query;
  * @param predicate Is the type predicate used to verify the field if one is present
  * @returns
  */
-export const $Optional = (predicate) => {
-    predicate.optional = true;
-    return predicate;
+export const $Optional = (Predicate) => {
+    Predicate.optional = true;
+    return Predicate;
 };
 /**
  * Extracts predicates to check against type fields.

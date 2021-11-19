@@ -1,6 +1,6 @@
 import { Append, IsArray, Not, Or, query, Reduce } from "faunadb";
 const { Var, Select, If, IsObject, ContainsPath, Equals, Filter, Lambda, And } = query;
-export const isFloraException = "isFloraException";
+export const isFloraExceptionKey = "isFloraException";
 /**
  *
  * @param args
@@ -13,16 +13,24 @@ export const FloraException = (args) => {
         at: args && args.at ? args.at : [],
         location: args && args.location ? args.location : "None",
         stack: args && args.stack ? args.stack : [],
-        [isFloraException]: true
+        [isFloraExceptionKey]: true
     };
 };
 /**
- * Checks if object is an Exception on Flora.
+ * Asserts obj is Flora Exception at Client.
+ * @param obj
+ * @returns
+ */
+export const isFloraException = (obj) => {
+    return obj instanceof Object && obj[isFloraExceptionKey] === true;
+};
+/**
+ * Checks if object is an Exception on Fauna.
  * @param expr
  * @returns
  */
 export const IsException = (expr) => {
-    return If(And(Not(IsArray(expr)), IsObject(expr)), If(ContainsPath(isFloraException, expr), Equals(Select(isFloraException, expr), true), false), false);
+    return If(And(Not(IsArray(expr)), IsObject(expr)), If(ContainsPath(isFloraExceptionKey, expr), Equals(Select(isFloraExceptionKey, expr), true), false), false);
 };
 const agg = "agg";
 const el = "el";

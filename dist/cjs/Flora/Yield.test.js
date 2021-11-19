@@ -54,7 +54,7 @@ const YieldSuiteA = () => {
                 });
             };
             const result = yield db.client.query((0, Flora_1.Flora)(InterestingFunc((0, Exception_1.FloraException)())));
-            expect(result[Exception_1.isFloraException]).toBe(true);
+            expect((0, Exception_1.isFloraException)(result)).toBe(true);
             expect((_a = result.at) === null || _a === void 0 ? void 0 : _a.length).toBe(1);
             expect(result.location).toBe(InterestingFunc.name);
         }));
@@ -69,7 +69,7 @@ const YieldSuiteA = () => {
                 });
             };
             const result = yield db.client.query((0, Flora_1.Flora)(InterestingFunc(InterestingFunc((0, Exception_1.FloraException)()))));
-            expect(result[Exception_1.isFloraException]).toBe(true);
+            expect((0, Exception_1.isFloraException)(result)).toBe(true);
             expect((_b = result.at) === null || _b === void 0 ? void 0 : _b.length).toBe(1);
             expect(result.location).toBe(InterestingFunc.name);
         }));

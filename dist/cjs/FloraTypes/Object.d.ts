@@ -1,4 +1,5 @@
 import { query } from "faunadb";
+import { GuardedT } from "Flora";
 export interface PredicateI {
     (obj: any): boolean;
 }
@@ -8,12 +9,15 @@ export interface OptionalPredicateI extends PredicateI {
 export interface Typed$ObjectArgsI {
     [key: string]: PredicateI | OptionalPredicateI;
 }
+export declare type Typed$ObjectT<A extends Typed$ObjectArgsI> = {
+    [key in keyof A]: GuardedT<A[key]>;
+};
 /**
  * Forms an optional field predicate.
  * @param predicate Is the type predicate used to verify the field if one is present
  * @returns
  */
-export declare const $Optional: (predicate: (obj: any) => boolean) => OptionalPredicateI;
+export declare const $Optional: <P extends (obj: any) => boolean>(Predicate: P) => (obj: any) => obj is GuardedT<P> | undefined;
 /**
  * Extracts predicates to check against type fields.
  * @param args are the typed object args.
@@ -34,4 +38,4 @@ export declare const PredicatesSatisfied: (predicates: query.ExprArg) => import(
  * @param args
  * @returns
  */
-export declare const $Object: (args?: Typed$ObjectArgsI | undefined) => (obj: any) => boolean;
+export declare const $Object: <O extends Typed$ObjectArgsI>(args?: O | undefined) => (obj: any) => obj is Typed$ObjectT<O>;

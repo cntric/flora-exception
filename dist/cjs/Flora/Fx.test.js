@@ -82,7 +82,7 @@ const FxSuiteA = () => {
                 });
             };
             const result = yield db.client.query((0, Flora_1.Flora)(ExceptionFunc([2, 2, 2, 2])));
-            expect(result[Exception_1.isFloraException]).toBe(true);
+            expect((0, Exception_1.isFloraException)(result)).toBe(true);
         }));
         test("Complex Exception", () => __awaiter(void 0, void 0, void 0, function* () {
             const ExceptionFunc = (a, b) => {
@@ -94,6 +94,27 @@ const FxSuiteA = () => {
                 });
             };
             const result = yield db.client.query((0, Flora_1.Flora)(ExceptionFunc([2, 2, 2, 2], " a thing")));
+        }));
+        test("Basic mfx", () => __awaiter(void 0, void 0, void 0, function* () {
+            const FloraAdd = (0, Fx_1.mFx)([FloraTypes_1.$Number, FloraTypes_1.$Number], FloraTypes_1.$Number, (a, b) => {
+                return Add(a, b);
+            });
+            const result = yield db.client.query((0, Flora_1.Flora)(FloraAdd(2, 2)));
+            expect(result).toBe(4);
+        }));
+        test("Failed mfx", () => __awaiter(void 0, void 0, void 0, function* () {
+            const FloraAdd = (0, Fx_1.mFx)([FloraTypes_1.$Number, FloraTypes_1.$Number], FloraTypes_1.$Number, (a, b) => {
+                return Add(a, b);
+            });
+            const result = yield db.client.query((0, Flora_1.Flora)(FloraAdd(2, "hello")));
+            expect((0, Exception_1.isFloraException)(result)).toBe(true);
+        }));
+        test("Return exception", () => __awaiter(void 0, void 0, void 0, function* () {
+            const FloraAdd = (0, Fx_1.mFx)([FloraTypes_1.$Number, FloraTypes_1.$Number], FloraTypes_1.$Number, (a, b) => {
+                return "hello";
+            });
+            const result = yield db.client.query((0, Flora_1.Flora)(FloraAdd(2, 2)));
+            expect((0, Exception_1.isFloraException)(result)).toBe(true);
         }));
     });
 };

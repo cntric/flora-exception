@@ -1,12 +1,12 @@
 import { query } from "faunadb";
-export declare const isFloraException = "isFloraException";
+export declare const isFloraExceptionKey = "isFloraException";
 export interface FloraExceptionI {
     location?: string;
     name: string;
     msg: string;
     at?: FloraExceptionI[];
     stack?: FloraExceptionI[];
-    [isFloraException]: true;
+    [isFloraExceptionKey]: true;
 }
 /**
  *
@@ -21,7 +21,13 @@ export declare const FloraException: (args?: {
     stack?: FloraExceptionI[] | undefined;
 } | undefined) => FloraExceptionI;
 /**
- * Checks if object is an Exception on Flora.
+ * Asserts obj is Flora Exception at Client.
+ * @param obj
+ * @returns
+ */
+export declare const isFloraException: (obj: any) => boolean;
+/**
+ * Checks if object is an Exception on Fauna.
  * @param expr
  * @returns
  */

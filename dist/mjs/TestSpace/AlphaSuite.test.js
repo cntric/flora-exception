@@ -10,6 +10,12 @@ export const ExceptionSuiteA = () => {
             db = await FaunaTestDb();
         });
         test("Composed Add", async () => {
+            /**
+             * Adds two numbers.
+             * @param a
+             * @param b
+             * @returns
+             */
             const ComposedAdd = (a, b) => {
                 return Fx([[a, $Number], [b, $Number]], $Number, (a, b) => {
                     return Add(a, b);

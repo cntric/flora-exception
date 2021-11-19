@@ -41,7 +41,7 @@ export const YieldSuiteA = () => {
                 });
             };
             const result = await db.client.query(Flora(InterestingFunc(FloraException())));
-            expect(result[isFloraException]).toBe(true);
+            expect(isFloraException(result)).toBe(true);
             expect(result.at?.length).toBe(1);
             expect(result.location).toBe(InterestingFunc.name);
         });
@@ -55,7 +55,7 @@ export const YieldSuiteA = () => {
                 });
             };
             const result = await db.client.query(Flora(InterestingFunc(InterestingFunc(FloraException()))));
-            expect(result[isFloraException]).toBe(true);
+            expect(isFloraException(result)).toBe(true);
             expect(result.at?.length).toBe(1);
             expect(result.location).toBe(InterestingFunc.name);
         });

@@ -94,3 +94,21 @@ export const Fx = (args, $ReturnType, expr) => {
         location: mainLocation
     })))));
 };
+const reguardArgs = (args, argTypes) => {
+    return args.map((arg, index) => {
+        return [
+            arg,
+            argTypes[index] ? argTypes[index] : () => true
+        ];
+    });
+};
+/**
+ * Factory for a Fx function.
+ * @param args
+ * @param $ReturnType
+ * @param expr
+ * @returns
+ */
+export const mFx = ($ArgTypes, $ReturnType, expr) => (...args) => {
+    return Fx(reguardArgs(args, $ArgTypes), $ReturnType, expr);
+};

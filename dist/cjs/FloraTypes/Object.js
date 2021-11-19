@@ -8,9 +8,9 @@ const { If, Select, Var, Lambda, And, ContainsPath, IsObject, Reduce } = faunadb
  * @param predicate Is the type predicate used to verify the field if one is present
  * @returns
  */
-const $Optional = (predicate) => {
-    predicate.optional = true;
-    return predicate;
+const $Optional = (Predicate) => {
+    Predicate.optional = true;
+    return Predicate;
 };
 exports.$Optional = $Optional;
 /**

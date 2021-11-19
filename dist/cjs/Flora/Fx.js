@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Fx = exports.getLocation = exports.getInstance = exports.extractArgs = exports.ExtractArgs = exports.ExtractArg = void 0;
+exports.mFx = exports.Fx = exports.getLocation = exports.getInstance = exports.extractArgs = exports.ExtractArgs = exports.ExtractArg = void 0;
 const faunadb_1 = require("faunadb");
 const Exception_1 = require("./Exception");
 const Raise_1 = require("./Raise");
@@ -103,3 +103,22 @@ const Fx = (args, $ReturnType, expr) => {
     })))));
 };
 exports.Fx = Fx;
+const reguardArgs = (args, argTypes) => {
+    return args.map((arg, index) => {
+        return [
+            arg,
+            argTypes[index] ? argTypes[index] : () => true
+        ];
+    });
+};
+/**
+ * Factory for a Fx function.
+ * @param args
+ * @param $ReturnType
+ * @param expr
+ * @returns
+ */
+const mFx = ($ArgTypes, $ReturnType, expr) => (...args) => {
+    return (0, exports.Fx)(reguardArgs(args, $ArgTypes), $ReturnType, expr);
+};
+exports.mFx = mFx;

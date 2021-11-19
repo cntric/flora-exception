@@ -22,6 +22,12 @@ const ExceptionSuiteA = () => {
             db = yield (0, fauna_test_setup_1.FaunaTestDb)();
         }));
         test("Composed Add", () => __awaiter(void 0, void 0, void 0, function* () {
+            /**
+             * Adds two numbers.
+             * @param a
+             * @param b
+             * @returns
+             */
             const ComposedAdd = (a, b) => {
                 return (0, Flora_1.Fx)([[a, FloraTypes_1.$Number], [b, FloraTypes_1.$Number]], FloraTypes_1.$Number, (a, b) => {
                     return Add(a, b);

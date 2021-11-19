@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.$String = exports.$UInt8 = exports.$UInt = exports.$Int = exports.$Number = void 0;
+exports.$Boolean = exports.$String = exports.$UInt8 = exports.$UInt = exports.$Int = exports.$Number = void 0;
 const faunadb_1 = require("faunadb");
 const { IsNumber, IsString, IsInteger, GT, LT } = faunadb_1.query;
 /**
@@ -47,3 +47,12 @@ const $String = (obj) => {
     return IsString(obj);
 };
 exports.$String = $String;
+/**
+ * Boolean type predicate.
+ * @param obj
+ * @returns
+ */
+const $Boolean = (obj) => {
+    return (0, faunadb_1.IsBoolean)(obj);
+};
+exports.$Boolean = $Boolean;

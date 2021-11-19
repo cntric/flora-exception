@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetExceptions = exports.ContainsException = exports.IsException = exports.FloraException = exports.isFloraException = void 0;
+exports.GetExceptions = exports.ContainsException = exports.IsException = exports.isFloraException = exports.FloraException = exports.isFloraExceptionKey = void 0;
 const faunadb_1 = require("faunadb");
 const { Var, Select, If, IsObject, ContainsPath, Equals, Filter, Lambda, And } = faunadb_1.query;
-exports.isFloraException = "isFloraException";
+exports.isFloraExceptionKey = "isFloraException";
 /**
  *
  * @param args
@@ -16,17 +16,26 @@ const FloraException = (args) => {
         at: args && args.at ? args.at : [],
         location: args && args.location ? args.location : "None",
         stack: args && args.stack ? args.stack : [],
-        [exports.isFloraException]: true
+        [exports.isFloraExceptionKey]: true
     };
 };
 exports.FloraException = FloraException;
 /**
- * Checks if object is an Exception on Flora.
+ * Asserts obj is Flora Exception at Client.
+ * @param obj
+ * @returns
+ */
+const isFloraException = (obj) => {
+    return obj instanceof Object && obj[exports.isFloraExceptionKey] === true;
+};
+exports.isFloraException = isFloraException;
+/**
+ * Checks if object is an Exception on Fauna.
  * @param expr
  * @returns
  */
 const IsException = (expr) => {
-    return If(And((0, faunadb_1.Not)((0, faunadb_1.IsArray)(expr)), IsObject(expr)), If(ContainsPath(exports.isFloraException, expr), Equals(Select(exports.isFloraException, expr), true), false), false);
+    return If(And((0, faunadb_1.Not)((0, faunadb_1.IsArray)(expr)), IsObject(expr)), If(ContainsPath(exports.isFloraExceptionKey, expr), Equals(Select(exports.isFloraExceptionKey, expr), true), false), false);
 };
 exports.IsException = IsException;
 const agg = "agg";
