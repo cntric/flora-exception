@@ -1,4 +1,4 @@
-# flora-exception
+# flora-exception [<img src="/favicon.svg" height="28px"/>](https://www.concentric.io/)
 ```typescript
 const FloraAdd = mFx(
     [$Number, $Number], $Number,
