@@ -3,4 +3,4 @@
  * @param Predicate is the predicate used to check the data.
  * @returns
  */
-export declare const $Document: (Predicate?: ((obj: any) => boolean) | undefined) => (obj: any) => boolean;
+export declare const $Ref: (Predicate?: ((obj: any) => boolean) | undefined) => (obj: any) => boolean;

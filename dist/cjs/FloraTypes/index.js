@@ -15,3 +15,6 @@ __exportStar(require("./Document"), exports);
 __exportStar(require("./Object"), exports);
 __exportStar(require("./Or"), exports);
 __exportStar(require("./Primitives"), exports);
+__exportStar(require("./Tuple"), exports);
+__exportStar(require("./Ref"), exports);
+__exportStar(require("./Tuple"), exports);

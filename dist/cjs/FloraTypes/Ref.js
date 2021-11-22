@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.$Document = void 0;
+exports.$Ref = void 0;
 const faunadb_1 = require("faunadb");
-const { If, IsDoc } = faunadb_1.query;
+const { If, IsDoc, IsRef, Get } = faunadb_1.query;
 /**
  * Document type predicate. Chcecks that any object is a document and has matching data.
  * @param Predicate is the predicate used to check the data.
  * @returns
  */
-const $Document = (Predicate) => (obj) => {
-    return Predicate ? If(IsDoc(obj), Predicate((0, faunadb_1.Select)("data", obj)), false) : IsDoc(obj);
+const $Ref = (Predicate) => (obj) => {
+    return Predicate ? If(IsRef(obj), Predicate(Get(obj)), false) : IsRef(obj);
 };
-exports.$Document = $Document;
+exports.$Ref = $Ref;
