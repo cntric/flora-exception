@@ -1,14 +1,5 @@
 import {
     ContainsPath,
-    query
-} from "faunadb"
-import {
-    generate
-} from "shortid";
-import { ContainsException, FloraException, GetExceptions } from "./Exception";
-import { Reraise } from "./Raise";
-
-const {
     If,
     IsObject,
     Select,
@@ -17,11 +8,18 @@ const {
     Append,
     Merge,
     Var,
-    Let
-} = query;
+    Let,
+    ExprArg
+} from "faunadb/query"
+import {
+    generate
+} from "shortid";
+import { ContainsException, FloraException, GetExceptions } from "./Exception";
+import { Reraise } from "./Raise";
 
 
-export const expressArgs = <A extends any[]>(args : A, evaluatedArgs : query.ExprArg, loc : string) : A=>{
+
+export const expressArgs = <A extends any[]>(args : A, evaluatedArgs : ExprArg, loc : string) : A=>{
     return args.map((arg, index)=>{
         return If(
             ContainsPath(index, evaluatedArgs),
@@ -55,16 +53,16 @@ const result = "result";
             [bargs] : args.args, // need to evaluate the args so that we do not have any stateful nonesense
             [result] : If(
                 ContainsException(Var(bargs)),
-                Reraise(GetExceptions(Var(bargs) as any[]), FloraException({
+                Reraise(GetExceptions(Var(bargs) as unknown as any[]), FloraException({
                     name : "ReraisedException",
                     msg : "This exception was reraised in a yield expression.",
                     location : args.name
                 })),
                 args.expr(...expressArgs(args.args, Var(bargs), args.name))
-            ) as T
+            )
         },
         Var(result)
-    ) as T
+    ) as unknown as T
 }
 
 export interface YieldArgsI<A extends any[], T>{

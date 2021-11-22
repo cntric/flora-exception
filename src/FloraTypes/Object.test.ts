@@ -1,23 +1,12 @@
 import {
-    query,
     Var,
-    IsNumber,
     Do,
     And
-} from "faunadb";
+} from "faunadb/query";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import { $Object, $Optional } from "./Object";
 import { $Number, $String } from "./Primitives";
 
-const {
-    Add,
-    IsString,
-    Create,
-    Get,
-    Select,
-    ContainsPath,
-    IsArray
-} = query;
 
 export const ExceptionSuiteA = ()=>{
 
@@ -33,8 +22,8 @@ export const ExceptionSuiteA = ()=>{
         test("Simple $Object", async()=>{
 
             const Test$Object = $Object({
-                name : IsString as ()=>boolean,
-                amount : IsNumber as ()=>boolean
+                name : $String,
+                amount : $Number as unknown as ()=>boolean
             })
 
             const result = await db.client.query(
@@ -51,8 +40,8 @@ export const ExceptionSuiteA = ()=>{
         test("Simple $Object fail", async()=>{
 
             const Test$Object = $Object({
-                name : IsString as ()=>boolean,
-                amount : IsNumber as ()=>boolean
+                name : $String,
+                amount : $Number
             })
 
             const result = await db.client.query(
@@ -69,12 +58,12 @@ export const ExceptionSuiteA = ()=>{
         test("Nested $Object", async()=>{
 
             const Test$Object = $Object({
-                name : IsString as ()=>boolean,
-                amount : IsNumber as ()=>boolean
+                name : $String,
+                amount : $Number
             })
 
             const Wrapper$Object = $Object({
-                type : IsString as ()=>boolean,
+                type : $String,
                 obj : Test$Object
             })
 
@@ -95,12 +84,12 @@ export const ExceptionSuiteA = ()=>{
         test("Nested $Object fails", async()=>{
 
             const Test$Object = $Object({
-                name : IsString as ()=>boolean,
-                amount : IsNumber as ()=>boolean
+                name : $String,
+                amount : $Number
             })
 
             const Wrapper$Object = $Object({
-                type : IsString as ()=>boolean,
+                type : $String,
                 obj : Test$Object
             })
 

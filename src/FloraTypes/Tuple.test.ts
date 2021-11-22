@@ -1,29 +1,9 @@
-import {
-    query,
-    Var,
-    IsNumber,
-    Do,
-    And,
-    CreateCollection,
-    Collection,
-    Let
-} from "faunadb";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import { $Object, $Optional } from "./Object";
 import { $Number, $String } from "./Primitives";
 import { $Document } from "./Document";
 import { $Tuple } from "./Tuple";
 import { $Or } from "./Or";
-
-const {
-    Add,
-    IsString,
-    Create,
-    Get,
-    Select,
-    ContainsPath,
-    IsArray
-} = query;
 
 export const ExceptionSuiteA = ()=>{
 

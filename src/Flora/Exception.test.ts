@@ -1,10 +1,10 @@
 import {
-    query,
+    IsArray,
     Var,
     IsNumber,
     Do,
     And
-} from "faunadb";
+} from "faunadb/query";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import {
     blight,
@@ -19,16 +19,6 @@ import {
 import {FloraException, ContainsException, IsException, GetExceptions, FloraExceptionI} from "./Exception";
 import { Yield } from "./Yield";
 import { extractArgs, FxArgI } from "./Fx";
-
-const {
-    Add,
-    IsString,
-    Create,
-    Get,
-    Select,
-    ContainsPath,
-    IsArray
-} = query;
 
 export const ExceptionSuiteA = ()=>{
 
@@ -73,7 +63,7 @@ export const ExceptionSuiteA = ()=>{
         test("Gets complex Exceptions", async()=>{
 
             const args : FxArgI<any>[] = [
-                [[2, 2, 2, 2], IsArray as ()=>boolean],
+                [[2, 2, 2, 2], IsArray as unknown as ()=>boolean],
                 // ["dsfhks", IsArray as ()=>boolean]
             ]
 

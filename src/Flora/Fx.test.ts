@@ -1,14 +1,12 @@
 import {
-    query,
-    Var,
     IsNumber,
-    Do,
-    And,
     IsArray,
     Sum,
     Concat,
-    ToString
-} from "faunadb";
+    ToString,
+    Add,
+    IsString
+} from "faunadb/query";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import {
     blight,
@@ -26,15 +24,6 @@ import { Yield } from "./Yield";
 import { extractArgs, Fx, FxArgI, mFx } from "./Fx";
 import { $String, $Number } from "../FloraTypes";
 
-const {
-    Add,
-    IsString,
-    Create,
-    Get,
-    Select,
-    ContainsPath
-} = query;
-
 export const FxSuiteA = ()=>{
 
 
@@ -51,12 +40,12 @@ export const FxSuiteA = ()=>{
             const CoolFunc = (a : number, b : number)=>{
                 return Fx(
                     [
-                        [a, IsNumber as ()=>boolean],
-                        [b, IsNumber as ()=>boolean]
+                        [a, IsNumber as unknown as ()=>boolean],
+                        [b, IsNumber as unknown as ()=>boolean]
                     ],
                     $Number,
                     (a ,b)=>{
-                        return Add(a, b) as number
+                        return Add(a, b) as unknown as number
                     }
                 )
             }
@@ -74,11 +63,11 @@ export const FxSuiteA = ()=>{
             const CoolFunc = (a : number[])=>{
                 return Fx(
                     [
-                        [a, IsArray as ()=>boolean],
+                        [a, IsArray as unknown as  ()=>boolean],
                     ],
                     $Number,
                     (a)=>{
-                        return Sum(a) as number
+                        return Sum(a) as unknown as number
                     }
                 )
             }
@@ -96,12 +85,12 @@ export const FxSuiteA = ()=>{
             const CoolFunc = (a : number[], b : string)=>{
                 return Fx(
                     [
-                        [a, IsArray as ()=>boolean],
-                        [b, IsString as ()=>boolean]
+                        [a, IsArray as unknown as ()=>boolean],
+                        [b, IsString as unknown as ()=>boolean]
                     ],
                     $String,
                     (a, b)=>{
-                        return Concat([ToString(Sum(a)), b], "") as string
+                        return Concat([ToString(Sum(a)), b], "") as unknown as string
                     }
                 )
             }
@@ -120,9 +109,9 @@ export const FxSuiteA = ()=>{
         test("Can get extracted Exceptions", async()=>{
 
             const args : FxArgI<any>[] = [
-                [2, IsNumber as ()=>boolean],
-                ["3", IsString as ()=>boolean],
-                [[4, 5, 6], IsString as ()=>boolean]
+                [2, IsNumber as unknown as ()=>boolean],
+                ["3", IsString as unknown as ()=>boolean],
+                [[4, 5, 6], IsString as unknown as ()=>boolean]
             ]
 
             const result = await db.client.query<FloraExceptionI[]>(Flora(
@@ -149,11 +138,11 @@ export const FxSuiteA = ()=>{
             const ExceptionFunc = (a : number[])=>{
                 return Fx(
                     [
-                        [a, IsString as ()=>boolean],
+                        [a, IsString as unknown as ()=>boolean],
                     ],
                     $String,
                     (a)=>{
-                        return Concat([a, " great time."], "") as string
+                        return Concat([a, " great time."], "") as unknown as string
                     }
                 )
             }
@@ -173,12 +162,12 @@ export const FxSuiteA = ()=>{
             const ExceptionFunc = (a : number[], b : string)=>{
                 return Fx(
                     [
-                        [a, IsArray as ()=>boolean],
-                        [b, IsArray as ()=>boolean]
+                        [a, IsArray as unknown as ()=>boolean],
+                        [b, IsArray as unknown as ()=>boolean]
                     ],
                     $String,
                     (a, b)=>{
-                        return Concat([ToString(Sum(a)), b], "") as string
+                        return Concat([ToString(Sum(a)), b], "") as unknown as string
                     }
                 )
             }
@@ -197,7 +186,7 @@ export const FxSuiteA = ()=>{
             const FloraAdd = mFx(
                 [$Number, $Number], $Number,
                 (a , b)=>{
-                    return Add(a, b) as number
+                    return Add(a, b) as unknown as number
                 }
             )
 
@@ -215,7 +204,7 @@ export const FxSuiteA = ()=>{
             const FloraAdd = mFx(
                 [$Number, $Number], $Number,
                 (a , b)=>{
-                    return Add(a, b) as number
+                    return Add(a, b) as unknown as number
                 }
             )
 

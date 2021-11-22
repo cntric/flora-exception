@@ -1,10 +1,3 @@
-import {
-    query,
-    Var,
-    IsNumber,
-    Do,
-    And
-} from "faunadb";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import {
     blight,
@@ -20,14 +13,6 @@ import {Raise, Reraise} from "./Raise";
 import { FloraException, FloraExceptionI } from "./Exception";
 import { Yield } from "./Yield";
 
-const {
-    Add,
-    IsString,
-    Create,
-    Get,
-    Select,
-    ContainsPath
-} = query;
 
 export const RaiseSuiteA = ()=>{
 

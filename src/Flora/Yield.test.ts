@@ -1,10 +1,6 @@
 import {
-    query,
-    Var,
-    IsNumber,
-    Do,
-    And
-} from "faunadb";
+    Add
+} from "faunadb/query";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import {
     blight,
@@ -20,14 +16,6 @@ import {Raise} from "./Raise";
 import { FloraException, FloraExceptionI, isFloraException } from "./Exception";
 import { Yield } from "./Yield";
 
-const {
-    Add,
-    IsString,
-    Create,
-    Get,
-    Select,
-    ContainsPath
-} = query;
 
 export const YieldSuiteA = ()=>{
 
@@ -65,7 +53,7 @@ export const YieldSuiteA = ()=>{
                     expr : (a)=>{
                         return Add(a, 2)
                     }
-                }) as number
+                }) as unknown as number
             }
 
             const result = await db.client.query(Flora(
@@ -85,7 +73,7 @@ export const YieldSuiteA = ()=>{
                         
                         return Add(a, 2)
                     }
-                }) as number
+                }) as unknown as  number
             }
 
             const result = await db.client.query<FloraExceptionI>(Flora(
@@ -107,7 +95,7 @@ export const YieldSuiteA = ()=>{
                     expr : (a)=>{
                         return Add(a, 2)
                     }
-                }) as number
+                }) as unknown as number
             }
 
             const result = await db.client.query<FloraExceptionI>(Flora(

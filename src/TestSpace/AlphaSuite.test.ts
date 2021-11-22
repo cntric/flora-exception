@@ -1,19 +1,10 @@
 import {
-    query,
-} from "faunadb";
+    Add
+} from "faunadb/query";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import { Fx, Flora } from "../Flora";
 import { $Number } from "../FloraTypes";
 
-const {
-    Add,
-    IsString,
-    Create,
-    Get,
-    Select,
-    ContainsPath,
-    IsArray
-} = query;
 
 export const ExceptionSuiteA = ()=>{
 
@@ -39,7 +30,7 @@ export const ExceptionSuiteA = ()=>{
                     [ [a, $Number], [b, $Number] ],
                     $Number,
                     (a, b)=>{
-                        return Add(a, b) as number
+                        return Add(a, b) as unknown as number
                     }
                 ) as number
             }

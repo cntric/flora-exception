@@ -7,18 +7,8 @@ import {
     GT, 
     Length, 
     Not, 
-    query,
     Tokens,
     Update,
-    values 
-} from "faunadb";
-import { FloraExceptionI, IsException } from "./Exception";
-import { ExceptionStackT } from "./ExceptionStack";
-import {
-    floraDocumentKey,
-    floraCollectionKey, generateFloraKey
-} from "./Key";
-const {
     Let,
     If,
     IsObject,
@@ -36,8 +26,21 @@ const {
     CreateCollection,
     Login,
     Or,
-    Count
-} = query;
+    Count,
+    And,
+    CurrentIdentity,
+    Query,
+    Lambda,
+    ExprArg,
+} from "faunadb/query";
+import { values } from "faunadb";
+import { FloraExceptionI, IsException } from "./Exception";
+import { ExceptionStackT } from "./ExceptionStack";
+import {
+    floraDocumentKey,
+    floraCollectionKey, generateFloraKey
+} from "./Key";
+
 
 
 const templateDoc = "templateDoc";
@@ -47,12 +50,6 @@ export const usedFloraIdentity = "usedFloraIdentity";
 export const withIdentity = "withIdentity";
 export const blight = "blight";
 
-const {
-    And,
-    CurrentIdentity,
-    Query,
-    Lambda
-} = query;
 
 /**
  * 
@@ -66,7 +63,7 @@ export const _DefaultCheckPermission = (
     floraDocument : FloraDocumentT,
 ) : boolean=>{
 
-    return Equals(Select(["data", withIdentity], floraDocument), CurrentIdentity()) as boolean; 
+    return Equals(Select(["data", withIdentity], floraDocument), CurrentIdentity()) as unknown as boolean; 
 
 }
 
@@ -84,13 +81,13 @@ export const DefaultCheckPermission = (
             true
         ),
         false
-    ) as boolean
+    ) as unknown as boolean
 }
 
 export interface PermissionsI {
-    create : query.ExprArg,
-    read : query.ExprArg
-    write : query.ExprArg
+    create : ExprArg,
+    read : ExprArg
+    write : ExprArg
 }
 
 export const DefaultPermissions : PermissionsI = {
@@ -98,13 +95,13 @@ export const DefaultPermissions : PermissionsI = {
     read : Query(
         Lambda(
             floraDoc,
-            DefaultCheckPermission(Var(floraDoc) as FloraDocumentT)
+            DefaultCheckPermission(Var(floraDoc) as unknown as FloraDocumentT)
         )
     ),
     write : Query(
         Lambda(
             floraDoc,
-            DefaultCheckPermission(Var(floraDoc) as FloraDocumentT)
+            DefaultCheckPermission(Var(floraDoc) as unknown as FloraDocumentT)
         )
     )
 }
@@ -212,8 +209,8 @@ export const FloraDocument = (
             ),
             [identifyStep] : If(
                 IsIdentityDefined(),
-                ExternalIdentifyFloraDocument(Var(templateDoc) as FloraDocumentT),
-                SelfIdentifyFloraDocument(Var(templateDoc) as FloraDocumentT)
+                ExternalIdentifyFloraDocument(Var(templateDoc) as unknown as FloraDocumentT),
+                SelfIdentifyFloraDocument(Var(templateDoc) as unknown as  FloraDocumentT)
             ),
             [floraDoc] : Get(Select("ref", Var(templateDoc)))
         },
@@ -242,7 +239,7 @@ export const StackError = (exception : FloraExceptionI) : FloraExceptionI=>{
             )
         ),
         exception
-    ) as FloraExceptionI
+    ) as unknown as FloraExceptionI
 }
 
 /**
@@ -294,9 +291,9 @@ export const Flora = <T>(expr :T) :  T | FloraExceptionI =>{
                 IsException(Var(fruit)),
                 GT(Count(GetStack()), 0)
             ),
-            StackError(Var(fruit) as FloraExceptionI),
+            StackError(Var(fruit) as unknown as  FloraExceptionI),
             Var(fruit)
         )
-    ) as T | FloraExceptionI
+    ) as unknown as  T | FloraExceptionI
 
 }

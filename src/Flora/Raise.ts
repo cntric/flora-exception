@@ -1,12 +1,16 @@
 import {FloraExceptionI} from "./Exception";
 import {GetFloraDocument, GetFloraDocumentRef, GetStack} from "./Flora";
-import { Let, Merge, query, ToObject } from "faunadb";
-const {
+import { 
+    Let, 
+    Merge, 
+    ToObject,
     Do,
     Update,
     Append,
-    Select, Var
-} = query;
+    Select, 
+    Var
+} from "faunadb/query";
+
 
 /**
  * 
@@ -38,7 +42,7 @@ export const _Raise = (floraException : FloraExceptionI) : FloraExceptionI=>{
     return Do(
         AddExceptionToStack(floraException),
         floraException
-    ) as FloraExceptionI
+    ) as unknown as FloraExceptionI
 }
 
 const raise = "raise";
@@ -48,7 +52,7 @@ export const Raise = (floraException : FloraExceptionI) : FloraExceptionI=>{
             [raise] : _Raise(floraException)
         },
         Var(raise)
-    ) as FloraExceptionI
+    ) as unknown as FloraExceptionI
 }
 
 /**
@@ -69,9 +73,9 @@ export const Reraise = (prevExceptions : FloraExceptionI[], newException : Flora
                 )
         },
         Do(
-            AddExceptionToStack(Var(raise) as FloraExceptionI),
+            AddExceptionToStack(Var(raise) as unknown as FloraExceptionI),
             Var(raise)
         )
-    ) as FloraExceptionI
+    ) as unknown as FloraExceptionI
 
 }

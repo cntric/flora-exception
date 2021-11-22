@@ -1,9 +1,9 @@
-import { query } from "faunadb";
+
 import {GuardedT, GuardedsT} from "../Flora";
-const {
+import {
     If,
     Select, Var, Lambda, And, ContainsPath, IsObject, Reduce, Or
-} = query;
+} from  "faunadb/query";
 
 export const $Or = <A extends ((obj : any)=>boolean)[]>(
     ...args : A
@@ -16,7 +16,7 @@ export const $Or = <A extends ((obj : any)=>boolean)[]>(
 
     return Or(
         ...predicates
-    ) as boolean
+    ) as unknown as  boolean
 
 }
 

@@ -1,5 +1,9 @@
-import { Append, IsArray, Not, Or, query, Reduce} from "faunadb";
-const {
+import { 
+    Append, 
+    IsArray, 
+    Not, 
+    Or, 
+    Reduce,
     Var,
     Select,
     If, 
@@ -8,8 +12,10 @@ const {
     Equals, 
     Filter,
     Lambda,
-    And
-} = query;
+    And,
+    ExprArg
+} from "faunadb/query";
+
 
 export const isFloraExceptionKey = "isFloraException";
 export interface FloraExceptionI {
@@ -57,7 +63,7 @@ export const isFloraException = (obj : any)=>{
  * @param expr 
  * @returns 
  */
-export const IsException = (expr : query.ExprArg) : boolean=>{
+export const IsException = (expr : ExprArg) : boolean=>{
     return If(
         And(
             Not(IsArray(expr)),
@@ -72,12 +78,12 @@ export const IsException = (expr : query.ExprArg) : boolean=>{
             false
         ),
         false
-    ) as boolean
+    ) as unknown as boolean
 }
 
 const agg = "agg";
 const el = "el";
-export const ContainsException = (exprs : query.ExprArg) : boolean=>{
+export const ContainsException = (exprs : ExprArg) : boolean=>{
     return Reduce(
         Lambda(
             [agg, el],
@@ -88,7 +94,7 @@ export const ContainsException = (exprs : query.ExprArg) : boolean=>{
         ),
         false,
         exprs
-    ) as boolean
+    ) as unknown as boolean
 }
 
 export const GetExceptions = (exprs : any[]) : FloraExceptionI[]=>{
@@ -104,5 +110,5 @@ export const GetExceptions = (exprs : any[]) : FloraExceptionI[]=>{
         ),
         [],
         exprs
-    ) as FloraExceptionI[]
+    ) as unknown as FloraExceptionI[]
 }

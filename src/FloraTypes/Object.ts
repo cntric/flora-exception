@@ -1,9 +1,9 @@
-import { query } from "faunadb";
-import { GuardedT } from "Flora";
-const {
+import {
     If,
-    Select, Var, Lambda, And, ContainsPath, IsObject, Reduce
-} = query;
+    Select, Var, Lambda, And, ContainsPath, IsObject, Reduce,
+    ExprArg
+} from "faunadb/query";
+import { GuardedT } from "Flora";
 
 export interface PredicateI {
     (obj : any) : boolean
@@ -57,7 +57,7 @@ export const el = "el";
  * @param predicates 
  * @returns 
  */
-export const PredicatesSatisfied = (predicates : query.ExprArg)=>{
+export const PredicatesSatisfied = (predicates : ExprArg)=>{
     return Reduce(
         Lambda(
             [agg, el],
@@ -81,5 +81,5 @@ export const $Object = <O extends Typed$ObjectArgsI>(args ? : O)=>(obj : any) : 
         IsObject(obj),
         PredicatesSatisfied(extractPredicates(args, obj)),
         false
-    ) as boolean : IsObject(obj) as boolean
+    ) as unknown as boolean : IsObject(obj) as unknown as boolean
 }

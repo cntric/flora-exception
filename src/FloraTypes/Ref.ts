@@ -1,11 +1,9 @@
-import {values, query, Select} from "faunadb";
-
-const {
+import {
     If,
     IsDoc,
     IsRef,
     Get
-} = query;
+} from "faunadb/query";
 
 /**
  * Document type predicate. Chcecks that any object is a document and has matching data.
@@ -17,5 +15,5 @@ export const $Ref = (Predicate ? : (obj : any)=>boolean)=>(obj : any) : boolean=
         IsRef(obj),
         Predicate(Get(obj)),
         false
-    ) as boolean : IsRef(obj) as boolean
+    ) as unknown as boolean : IsRef(obj) as unknown as boolean
 }

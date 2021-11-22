@@ -1,17 +1,17 @@
-import { Concat, query } from "faunadb";
-import { FloraException, FloraExceptionI, IsException, GetExceptions } from "./Exception";
-import { AddExceptionToStack, Raise, Reraise } from "./Raise";
-import { Yield } from "./Yield";
-import {generate} from "shortid";
-import { generateSlug } from "random-word-slugs";
-const {
+import {
+    Concat,
     Map ,
     If,
     Var,
     Lambda,
     ToString,
     Let
-} = query;
+} from "faunadb/query";
+import { FloraException, FloraExceptionI, IsException, GetExceptions } from "./Exception";
+import { AddExceptionToStack, Raise, Reraise } from "./Raise";
+import { Yield } from "./Yield";
+import {generate} from "shortid";
+import { generateSlug } from "random-word-slugs";
 
 export interface FxArgI<T> {
     0 : T,
@@ -51,7 +51,7 @@ export const ExtractArg = <A extends FxArgI<any>>(arg : A, loc : string) : FxArg
                             ToString(JSON.stringify(arg[0])),
                             `} is not of type ${predicateName}`
                         ]
-                    ) as string,
+                    ) as unknown as string,
                     location : loc
                 }))
             )
@@ -72,9 +72,9 @@ export const ExtractArgs = <A extends FxArgI<any>[]>(args : A, loc : string) : F
         args,
         Lambda(
             arg,
-            ExtractArg(Var(arg) as FxArgI<any>, loc)
+            ExtractArg(Var(arg) as unknown as FxArgI<any>, loc)
         )
-    ) as FxExtractedArgsT<A>
+    ) as unknown as FxExtractedArgsT<A>
 
 }
 
@@ -154,7 +154,7 @@ export const Fx = <A extends FxArgI<any>[], R extends (obj : any)=>boolean>(
                                 Var(result),
                                 `} is not of type ${predicateName}`
                             ]
-                        ) as string,
+                        ) as unknown as string,
                         location : mainLocation
                     })
                 )

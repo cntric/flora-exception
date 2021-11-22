@@ -1,13 +1,13 @@
-import {query} from "faunadb";
-import { GuardedT } from "Flora/Fx";
-const {
+import {
     IsArray,
     Reduce,
     If,
     Lambda,
     Var,
     And
-} = query;
+} from "faunadb/query";
+import { GuardedT } from "Flora/Fx";
+
 
 const agg = "agg";
 const el = "el";
@@ -31,5 +31,5 @@ export const $Array = <P extends (obj : any)=>boolean>(Predicate : P)=>(obj : an
             obj
         ),
         false
-    ) as boolean
+    ) as unknown as boolean
 }

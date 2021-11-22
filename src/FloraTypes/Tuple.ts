@@ -1,7 +1,4 @@
-import {query} from "faunadb";
-import { GuardedT } from "Flora/Fx";
-import { OptionalPredicateI } from "FloraTypes";
-const {
+import {
     IsArray,
     Reduce,
     If,
@@ -10,7 +7,10 @@ const {
     And,
     Select,
     ContainsPath
-} = query;
+} from "faunadb/query";
+import { GuardedT } from "Flora/Fx";
+import { OptionalPredicateI } from "FloraTypes";
+
 
 /**
  * 
@@ -42,5 +42,5 @@ export const $Tuple = <P extends ((obj : any)=>boolean)[]>(...predicates : P)=>(
         IsArray(obj),
         And(mappedPredicates),
         false
-    ) as boolean
+    ) as unknown as boolean
 }

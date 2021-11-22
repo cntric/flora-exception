@@ -1,20 +1,11 @@
 import {
-    query, Sum,
-} from "faunadb";
+    Sum,
+} from "faunadb/query";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import { Fx, Flora } from "../Flora";
 import { $Array, $Number } from "../FloraTypes";
 import { performance } from "perf_hooks";
 
-const {
-    Add,
-    IsString,
-    Create,
-    Get,
-    Select,
-    ContainsPath,
-    IsArray
-} = query;
 
 export const ExceptionSuiteA = ()=>{
 
@@ -34,7 +25,7 @@ export const ExceptionSuiteA = ()=>{
                     [ [a, $Array($Number)] ],
                     $Number,
                     (a)=>{
-                        return Sum(a) as number
+                        return Sum(a) as unknown as number
                     }
                 ) as number
             }
