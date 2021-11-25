@@ -11,3 +11,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./FaunaMethods"), exports);
+__exportStar(require("./Creation"), exports);
+__exportStar(require("./Select"), exports);
+__exportStar(require("./Traversal"), exports);
