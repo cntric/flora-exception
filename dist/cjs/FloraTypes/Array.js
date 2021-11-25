@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.$Array = void 0;
-const faunadb_1 = require("faunadb");
-const { IsArray, Reduce, If, Lambda, Var, And } = faunadb_1.query;
+const query_1 = require("faunadb/query");
 const agg = "agg";
 const el = "el";
 /**
@@ -11,6 +10,6 @@ const el = "el";
  * @returns
  */
 const $Array = (Predicate) => (obj) => {
-    return If(IsArray(obj), Reduce(Lambda([agg, el], And(Var(agg), Predicate(Var(el)))), true, obj), false);
+    return (0, query_1.If)((0, query_1.IsArray)(obj), (0, query_1.Reduce)((0, query_1.Lambda)([agg, el], (0, query_1.And)((0, query_1.Var)(agg), Predicate((0, query_1.Var)(el)))), true, obj), false);
 };
 exports.$Array = $Array;

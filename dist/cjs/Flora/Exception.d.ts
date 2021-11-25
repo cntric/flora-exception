@@ -1,4 +1,4 @@
-import { query } from "faunadb";
+import { ExprArg } from "faunadb/query";
 export declare const isFloraExceptionKey = "isFloraException";
 export interface FloraExceptionI {
     location?: string;
@@ -31,6 +31,6 @@ export declare const isFloraException: (obj: any) => boolean;
  * @param expr
  * @returns
  */
-export declare const IsException: (expr: query.ExprArg) => boolean;
-export declare const ContainsException: (exprs: query.ExprArg) => boolean;
+export declare const IsException: (expr: ExprArg) => boolean;
+export declare const ContainsException: (exprs: ExprArg) => boolean;
 export declare const GetExceptions: (exprs: any[]) => FloraExceptionI[];

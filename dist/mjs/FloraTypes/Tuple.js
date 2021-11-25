@@ -1,5 +1,4 @@
-import { query } from "faunadb";
-const { IsArray, Reduce, If, Lambda, Var, And, Select, ContainsPath } = query;
+import { IsArray, If, And, Select, ContainsPath } from "faunadb/query";
 /**
  *
  * @param obj

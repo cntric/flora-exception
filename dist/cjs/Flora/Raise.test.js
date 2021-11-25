@@ -10,12 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RaiseSuiteA = void 0;
-const faunadb_1 = require("faunadb");
 const fauna_test_setup_1 = require("fauna-test-setup");
 const Flora_1 = require("./Flora");
 const Raise_1 = require("./Raise");
 const Exception_1 = require("./Exception");
-const { Add, IsString, Create, Get, Select, ContainsPath } = faunadb_1.query;
 const RaiseSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;

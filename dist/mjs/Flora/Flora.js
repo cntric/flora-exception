@@ -1,14 +1,12 @@
-import { ContainsPath, Create, Do, Exists, Get, GT, Not, query, Tokens, Update } from "faunadb";
+import { ContainsPath, Create, Do, Exists, Get, GT, Not, Tokens, Update, Let, If, ToObject, Select, Equals, Merge, Var, Collection, Login, Or, Count, And, CurrentIdentity, Query, Lambda, } from "faunadb/query";
 import { IsException } from "./Exception";
 import { floraDocumentKey, floraCollectionKey, generateFloraKey } from "./Key";
-const { Let, If, IsObject, ToObject, Select, Contains, Equals, Append, Merge, Var, Collection, Database, Delete, Ref, CreateCollection, Login, Or, Count } = query;
 const templateDoc = "templateDoc";
 const identifyStep = "identify";
 const floraDoc = "floraDoc";
 export const usedFloraIdentity = "usedFloraIdentity";
 export const withIdentity = "withIdentity";
 export const blight = "blight";
-const { And, CurrentIdentity, Query, Lambda } = query;
 /**
  *
  * @returns
@@ -33,10 +31,7 @@ export const DefaultPermissions = {
  * @returns
  */
 export const FloraCollection = (name = floraCollectionKey) => {
-    return If(Exists(Collection(name)), Collection(name), CreateCollection({
-        name: name,
-        //  permissions : DefaultPermissions
-    }));
+    return Collection(name);
 };
 export const stack = "stack";
 export const stackPath = ["data", stack];

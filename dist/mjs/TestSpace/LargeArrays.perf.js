@@ -1,9 +1,8 @@
-import { query, Sum, } from "faunadb";
+import { Sum, } from "faunadb/query";
 import { FaunaTestDb } from "fauna-test-setup";
 import { Fx, Flora } from "../Flora";
 import { $Array, $Number } from "../FloraTypes";
 import { performance } from "perf_hooks";
-const { Add, IsString, Create, Get, Select, ContainsPath, IsArray } = query;
 export const ExceptionSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;
@@ -30,7 +29,6 @@ export const ExceptionSuiteA = () => {
                 return agg + val;
             }, 0);
             const c1 = performance.now();
-            console.log(m1 - m0, b1 - b0, c1 - c0);
             expect(result).toBe(thirdResult);
         }, 200000);
     });

@@ -1,9 +1,7 @@
-import { query } from "faunadb";
 import { FaunaTestDb } from "fauna-test-setup";
 import { $Number, $String } from "./Primitives";
 import { $Tuple } from "./Tuple";
 import { $Or } from "./Or";
-const { Add, IsString, Create, Get, Select, ContainsPath, IsArray } = query;
 export const ExceptionSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;

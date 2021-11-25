@@ -112,16 +112,8 @@ export const DefaultPermissions : PermissionsI = {
  * @returns 
  */
 export const FloraCollection = (name : string = floraCollectionKey)=>{
-    return If(
-        Exists(Collection(name)),
-        Collection(name),
-        CreateCollection(
-            {
-                name : name,
-               //  permissions : DefaultPermissions
-            }
-        )
-    )
+    return Collection(name);
+        
 }
 
 export const stack = "stack";

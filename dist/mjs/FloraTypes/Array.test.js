@@ -1,8 +1,6 @@
-import { query } from "faunadb";
 import { FaunaTestDb } from "fauna-test-setup";
 import { $Array } from "./Array";
 import { $String, $Number } from "./Primitives";
-const { Add, IsString, Create, Get, Select, ContainsPath, IsArray } = query;
 export const ExceptionSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;

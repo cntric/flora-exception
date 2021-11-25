@@ -1,37 +1,35 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Flora = exports.ReadyFloraDocument = exports.LoginFloraDocument = exports.StackError = exports.GetStack = exports.FloraDocument = exports.ExternalIdentifyFloraDocument = exports.SelfIdentifyFloraDocument = exports.GetFloraDocument = exports.GetFloraDocumentRef = exports.stackPath = exports.stack = exports.FloraCollection = exports.DefaultPermissions = exports.DefaultCheckPermission = exports._DefaultCheckPermission = exports.IsIdentityDefined = exports.blight = exports.withIdentity = exports.usedFloraIdentity = void 0;
-const faunadb_1 = require("faunadb");
+const query_1 = require("faunadb/query");
 const Exception_1 = require("./Exception");
 const Key_1 = require("./Key");
-const { Let, If, IsObject, ToObject, Select, Contains, Equals, Append, Merge, Var, Collection, Database, Delete, Ref, CreateCollection, Login, Or, Count } = faunadb_1.query;
 const templateDoc = "templateDoc";
 const identifyStep = "identify";
 const floraDoc = "floraDoc";
 exports.usedFloraIdentity = "usedFloraIdentity";
 exports.withIdentity = "withIdentity";
 exports.blight = "blight";
-const { And, CurrentIdentity, Query, Lambda } = faunadb_1.query;
 /**
  *
  * @returns
  */
 const IsIdentityDefined = () => {
-    return (0, faunadb_1.Exists)((0, faunadb_1.Tokens)());
+    return (0, query_1.Exists)((0, query_1.Tokens)());
 };
 exports.IsIdentityDefined = IsIdentityDefined;
 const _DefaultCheckPermission = (floraDocument) => {
-    return Equals(Select(["data", exports.withIdentity], floraDocument), CurrentIdentity());
+    return (0, query_1.Equals)((0, query_1.Select)(["data", exports.withIdentity], floraDocument), (0, query_1.CurrentIdentity)());
 };
 exports._DefaultCheckPermission = _DefaultCheckPermission;
 const DefaultCheckPermission = (floraDocument) => {
-    return If(And((0, faunadb_1.ContainsPath)(["data", exports.withIdentity], floraDocument), (0, exports.IsIdentityDefined)()), If((0, faunadb_1.Not)(Equals(false, Select(["data", exports.withIdentity], floraDocument))), (0, exports._DefaultCheckPermission)(floraDocument), true), false);
+    return (0, query_1.If)((0, query_1.And)((0, query_1.ContainsPath)(["data", exports.withIdentity], floraDocument), (0, exports.IsIdentityDefined)()), (0, query_1.If)((0, query_1.Not)((0, query_1.Equals)(false, (0, query_1.Select)(["data", exports.withIdentity], floraDocument))), (0, exports._DefaultCheckPermission)(floraDocument), true), false);
 };
 exports.DefaultCheckPermission = DefaultCheckPermission;
 exports.DefaultPermissions = {
     create: true,
-    read: Query(Lambda(floraDoc, (0, exports.DefaultCheckPermission)(Var(floraDoc)))),
-    write: Query(Lambda(floraDoc, (0, exports.DefaultCheckPermission)(Var(floraDoc))))
+    read: (0, query_1.Query)((0, query_1.Lambda)(floraDoc, (0, exports.DefaultCheckPermission)((0, query_1.Var)(floraDoc)))),
+    write: (0, query_1.Query)((0, query_1.Lambda)(floraDoc, (0, exports.DefaultCheckPermission)((0, query_1.Var)(floraDoc))))
 };
 /**
  *
@@ -39,16 +37,13 @@ exports.DefaultPermissions = {
  * @returns
  */
 const FloraCollection = (name = Key_1.floraCollectionKey) => {
-    return If((0, faunadb_1.Exists)(Collection(name)), Collection(name), CreateCollection({
-        name: name,
-        //  permissions : DefaultPermissions
-    }));
+    return (0, query_1.Collection)(name);
 };
 exports.FloraCollection = FloraCollection;
 exports.stack = "stack";
 exports.stackPath = ["data", exports.stack];
 const GetFloraDocumentRef = () => {
-    return Select("ref", Var(Key_1.floraDocumentKey));
+    return (0, query_1.Select)("ref", (0, query_1.Var)(Key_1.floraDocumentKey));
 };
 exports.GetFloraDocumentRef = GetFloraDocumentRef;
 /**
@@ -56,7 +51,7 @@ exports.GetFloraDocumentRef = GetFloraDocumentRef;
  * @returns
  */
 const GetFloraDocument = () => {
-    return (0, faunadb_1.Get)((0, exports.GetFloraDocumentRef)());
+    return (0, query_1.Get)((0, exports.GetFloraDocumentRef)());
 };
 exports.GetFloraDocument = GetFloraDocument;
 /**
@@ -64,9 +59,9 @@ exports.GetFloraDocument = GetFloraDocument;
  * @param floraDocument
  */
 const SelfIdentifyFloraDocument = (floraDocument) => {
-    return (0, faunadb_1.Update)(Select("ref", floraDocument), {
+    return (0, query_1.Update)((0, query_1.Select)("ref", floraDocument), {
         data: {
-            [exports.withIdentity]: Select("ref", floraDocument),
+            [exports.withIdentity]: (0, query_1.Select)("ref", floraDocument),
             [exports.usedFloraIdentity]: true,
             [exports.stack]: []
         }
@@ -79,9 +74,9 @@ exports.SelfIdentifyFloraDocument = SelfIdentifyFloraDocument;
  * @returns
  */
 const ExternalIdentifyFloraDocument = (floraDocument) => {
-    return (0, faunadb_1.Update)(Select("ref", floraDocument), {
+    return (0, query_1.Update)((0, query_1.Select)("ref", floraDocument), {
         data: {
-            [exports.withIdentity]: CurrentIdentity(),
+            [exports.withIdentity]: (0, query_1.CurrentIdentity)(),
             [exports.usedFloraIdentity]: true,
             [exports.stack]: []
         }
@@ -93,8 +88,8 @@ exports.ExternalIdentifyFloraDocument = ExternalIdentifyFloraDocument;
  * @param name
  */
 const FloraDocument = (password, collectionName = Key_1.floraCollectionKey) => {
-    return Let({
-        [templateDoc]: (0, faunadb_1.Create)((0, exports.FloraCollection)(collectionName), {
+    return (0, query_1.Let)({
+        [templateDoc]: (0, query_1.Create)((0, exports.FloraCollection)(collectionName), {
             data: {
                 [exports.usedFloraIdentity]: false,
                 [exports.withIdentity]: false
@@ -103,9 +98,9 @@ const FloraDocument = (password, collectionName = Key_1.floraCollectionKey) => {
                 password: password
             }
         }),
-        [identifyStep]: If((0, exports.IsIdentityDefined)(), (0, exports.ExternalIdentifyFloraDocument)(Var(templateDoc)), (0, exports.SelfIdentifyFloraDocument)(Var(templateDoc))),
-        [floraDoc]: (0, faunadb_1.Get)(Select("ref", Var(templateDoc)))
-    }, Var(identifyStep));
+        [identifyStep]: (0, query_1.If)((0, exports.IsIdentityDefined)(), (0, exports.ExternalIdentifyFloraDocument)((0, query_1.Var)(templateDoc)), (0, exports.SelfIdentifyFloraDocument)((0, query_1.Var)(templateDoc))),
+        [floraDoc]: (0, query_1.Get)((0, query_1.Select)("ref", (0, query_1.Var)(templateDoc)))
+    }, (0, query_1.Var)(identifyStep));
 };
 exports.FloraDocument = FloraDocument;
 /**
@@ -113,11 +108,11 @@ exports.FloraDocument = FloraDocument;
  * @returns
  */
 const GetStack = () => {
-    return Select(exports.stackPath, (0, exports.GetFloraDocument)());
+    return (0, query_1.Select)(exports.stackPath, (0, exports.GetFloraDocument)());
 };
 exports.GetStack = GetStack;
 const StackError = (exception) => {
-    return If((0, faunadb_1.GT)(Count((0, exports.GetStack)()), 0), Merge(Select(0, (0, exports.GetStack)()), ToObject([
+    return (0, query_1.If)((0, query_1.GT)((0, query_1.Count)((0, exports.GetStack)()), 0), (0, query_1.Merge)((0, query_1.Select)(0, (0, exports.GetStack)()), (0, query_1.ToObject)([
         ["stack", (0, exports.GetStack)()]
     ])), exception);
 };
@@ -126,15 +121,15 @@ exports.StackError = StackError;
  *
  */
 const LoginFloraDocument = (FloraDocument, password) => {
-    return (0, faunadb_1.Do)(If(Equals(true, Select(["data", exports.usedFloraIdentity], FloraDocument)), Login(Select("ref", FloraDocument), password), false), (0, faunadb_1.Get)(Select("ref", FloraDocument)));
+    return (0, query_1.Do)((0, query_1.If)((0, query_1.Equals)(true, (0, query_1.Select)(["data", exports.usedFloraIdentity], FloraDocument)), (0, query_1.Login)((0, query_1.Select)("ref", FloraDocument), password), false), (0, query_1.Get)((0, query_1.Select)("ref", FloraDocument)));
 };
 exports.LoginFloraDocument = LoginFloraDocument;
 const login = "login";
 const ReadyFloraDocument = (password) => {
-    return Let({
+    return (0, query_1.Let)({
         [floraDoc]: (0, exports.FloraDocument)(password),
         // [login] : LoginFloraDocument(Var(floraDoc) as FloraDocumentT, password)
-    }, (0, faunadb_1.Get)(Select("ref", Var(floraDoc))));
+    }, (0, query_1.Get)((0, query_1.Select)("ref", (0, query_1.Var)(floraDoc))));
 };
 exports.ReadyFloraDocument = ReadyFloraDocument;
 const fruit = "fruit";
@@ -145,9 +140,9 @@ const fruit = "fruit";
  */
 const Flora = (expr) => {
     const password = (0, Key_1.generateFloraKey)("password");
-    return Let({
+    return (0, query_1.Let)({
         [Key_1.floraDocumentKey]: (0, exports.ReadyFloraDocument)(password),
         [fruit]: expr,
-    }, If(Or((0, Exception_1.IsException)(Var(fruit)), (0, faunadb_1.GT)(Count((0, exports.GetStack)()), 0)), (0, exports.StackError)(Var(fruit)), Var(fruit)));
+    }, (0, query_1.If)((0, query_1.Or)((0, Exception_1.IsException)((0, query_1.Var)(fruit)), (0, query_1.GT)((0, query_1.Count)((0, exports.GetStack)()), 0)), (0, exports.StackError)((0, query_1.Var)(fruit)), (0, query_1.Var)(fruit)));
 };
 exports.Flora = Flora;

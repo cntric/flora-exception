@@ -1,9 +1,8 @@
-import { query } from "faunadb";
+import { Add } from "faunadb/query";
 import { FaunaTestDb } from "fauna-test-setup";
 import { Flora, } from "./Flora";
 import { FloraException, isFloraException } from "./Exception";
 import { Yield } from "./Yield";
-const { Add, IsString, Create, Get, Select, ContainsPath } = query;
 export const YieldSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;

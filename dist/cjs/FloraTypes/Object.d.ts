@@ -1,4 +1,4 @@
-import { query } from "faunadb";
+import { ExprArg } from "faunadb/query";
 import { GuardedT } from "Flora";
 export interface PredicateI {
     (obj: any): boolean;
@@ -32,7 +32,7 @@ export declare const el = "el";
  * @param predicates
  * @returns
  */
-export declare const PredicatesSatisfied: (predicates: query.ExprArg) => import("faunadb").Expr;
+export declare const PredicatesSatisfied: (predicates: ExprArg) => import("faunadb").Expr;
 /**
  * Forms the predicate for a type object.
  * @param args

@@ -1,1 +1,1 @@
-export const $Any = ()=>true
+export const $Any = (obj : any) : obj is any=>true

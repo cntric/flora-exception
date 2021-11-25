@@ -1,5 +1,4 @@
-import { query } from "faunadb";
-const { If, Select, Var, Lambda, And, ContainsPath, IsObject, Reduce, Or } = query;
+import { Or } from "faunadb/query";
 export const $Or = (...args) => (obj) => {
     const predicates = args.map((arg) => {
         return arg(obj);

@@ -10,11 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExceptionSuiteA = void 0;
-const faunadb_1 = require("faunadb");
 const fauna_test_setup_1 = require("fauna-test-setup");
 const Object_1 = require("./Object");
 const Primitives_1 = require("./Primitives");
-const { Add, IsString, Create, Get, Select, ContainsPath, IsArray } = faunadb_1.query;
 const ExceptionSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;
@@ -23,8 +21,8 @@ const ExceptionSuiteA = () => {
         }));
         test("Simple $Object", () => __awaiter(void 0, void 0, void 0, function* () {
             const Test$Object = (0, Object_1.$Object)({
-                name: IsString,
-                amount: faunadb_1.IsNumber
+                name: Primitives_1.$String,
+                amount: Primitives_1.$Number
             });
             const result = yield db.client.query(Test$Object({
                 name: "Liam",
@@ -34,8 +32,8 @@ const ExceptionSuiteA = () => {
         }));
         test("Simple $Object fail", () => __awaiter(void 0, void 0, void 0, function* () {
             const Test$Object = (0, Object_1.$Object)({
-                name: IsString,
-                amount: faunadb_1.IsNumber
+                name: Primitives_1.$String,
+                amount: Primitives_1.$Number
             });
             const result = yield db.client.query(Test$Object({
                 name: "Liam",
@@ -45,11 +43,11 @@ const ExceptionSuiteA = () => {
         }));
         test("Nested $Object", () => __awaiter(void 0, void 0, void 0, function* () {
             const Test$Object = (0, Object_1.$Object)({
-                name: IsString,
-                amount: faunadb_1.IsNumber
+                name: Primitives_1.$String,
+                amount: Primitives_1.$Number
             });
             const Wrapper$Object = (0, Object_1.$Object)({
-                type: IsString,
+                type: Primitives_1.$String,
                 obj: Test$Object
             });
             const result = yield db.client.query(Wrapper$Object({
@@ -63,11 +61,11 @@ const ExceptionSuiteA = () => {
         }));
         test("Nested $Object fails", () => __awaiter(void 0, void 0, void 0, function* () {
             const Test$Object = (0, Object_1.$Object)({
-                name: IsString,
-                amount: faunadb_1.IsNumber
+                name: Primitives_1.$String,
+                amount: Primitives_1.$Number
             });
             const Wrapper$Object = (0, Object_1.$Object)({
-                type: IsString,
+                type: Primitives_1.$String,
                 obj: Test$Object
             });
             const result = yield db.client.query(Wrapper$Object({

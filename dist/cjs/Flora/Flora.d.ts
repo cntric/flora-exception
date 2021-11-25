@@ -1,4 +1,5 @@
-import { query, values } from "faunadb";
+import { ExprArg } from "faunadb/query";
+import { values } from "faunadb";
 import { FloraExceptionI } from "./Exception";
 import { ExceptionStackT } from "./ExceptionStack";
 export declare const usedFloraIdentity = "usedFloraIdentity";
@@ -12,9 +13,9 @@ export declare const IsIdentityDefined: () => import("faunadb").Expr;
 export declare const _DefaultCheckPermission: (floraDocument: FloraDocumentT) => boolean;
 export declare const DefaultCheckPermission: (floraDocument: FloraDocumentT) => boolean;
 export interface PermissionsI {
-    create: query.ExprArg;
-    read: query.ExprArg;
-    write: query.ExprArg;
+    create: ExprArg;
+    read: ExprArg;
+    write: ExprArg;
 }
 export declare const DefaultPermissions: PermissionsI;
 /**

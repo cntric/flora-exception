@@ -37,6 +37,13 @@ export const ExtractArg = <A extends FxArgI<any>>(arg : A, loc : string) : FxArg
     const predicateName = arg[1] ? arg[1].name||"$Unspecified" : "$Unspecified";
     const Predicate = arg[1] ? arg[1] : ()=>true
 
+    let arg0 = "";
+    try {
+        arg0 = JSON.stringify(arg[0]);
+    } catch {
+        arg0 = "Too deep";
+    }
+
     return Let(
         {
             [xarg] : arg[0],
@@ -48,7 +55,7 @@ export const ExtractArg = <A extends FxArgI<any>>(arg : A, loc : string) : FxArg
                     msg : Concat(
                         [
                             `Argument does not match type ${predicateName}: Value {`,
-                            ToString(JSON.stringify(arg[0])),
+                            arg0,
                             `} is not of type ${predicateName}`
                         ]
                     ) as unknown as string,

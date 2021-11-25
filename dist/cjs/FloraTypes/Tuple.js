@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.$Tuple = exports.mapPredicates = void 0;
-const faunadb_1 = require("faunadb");
-const { IsArray, Reduce, If, Lambda, Var, And, Select, ContainsPath } = faunadb_1.query;
+const query_1 = require("faunadb/query");
 /**
  *
  * @param obj
@@ -10,7 +9,7 @@ const { IsArray, Reduce, If, Lambda, Var, And, Select, ContainsPath } = faunadb_
  */
 const mapPredicates = (obj, predicates) => {
     return predicates.map((Predicate, index) => {
-        return If(ContainsPath(index, obj), Predicate(Select(index, obj)), Predicate.optional ? true : false);
+        return (0, query_1.If)((0, query_1.ContainsPath)(index, obj), Predicate((0, query_1.Select)(index, obj)), Predicate.optional ? true : false);
     });
 };
 exports.mapPredicates = mapPredicates;
@@ -23,6 +22,6 @@ const el = "el";
  */
 const $Tuple = (...predicates) => (obj) => {
     const mappedPredicates = (0, exports.mapPredicates)(obj, predicates);
-    return If(IsArray(obj), And(mappedPredicates), false);
+    return (0, query_1.If)((0, query_1.IsArray)(obj), (0, query_1.And)(mappedPredicates), false);
 };
 exports.$Tuple = $Tuple;

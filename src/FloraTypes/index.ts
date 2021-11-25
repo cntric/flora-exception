@@ -7,3 +7,4 @@ export * from "./Tuple";
 export * from "./Ref";
 export * from "./Tuple";
 export * from "./Any";
+export * from "./Collection";

@@ -52,7 +52,7 @@ export const ExceptionSuiteA = ()=>{
             }, 0)
             const c1 = performance.now();
 
-            console.log(m1-m0, b1-b0, c1-c0);
+            
             expect(result).toBe(thirdResult);
 
         }, 200000)

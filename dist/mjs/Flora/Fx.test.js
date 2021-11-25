@@ -1,11 +1,10 @@
-import { query, IsNumber, IsArray, Sum, Concat, ToString } from "faunadb";
+import { IsNumber, IsArray, Sum, Concat, ToString, Add, IsString } from "faunadb/query";
 import { FaunaTestDb } from "fauna-test-setup";
 import { Flora, } from "./Flora";
 import { isFloraException } from "./Exception";
 import { Yield } from "./Yield";
 import { extractArgs, Fx, mFx } from "./Fx";
 import { $String, $Number } from "../FloraTypes";
-const { Add, IsString, Create, Get, Select, ContainsPath } = query;
 export const FxSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;

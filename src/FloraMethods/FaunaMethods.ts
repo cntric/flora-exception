@@ -1,6 +1,6 @@
 import * as q from "faunadb/query";
 import { Fx } from "../Flora";
-import { $Any, $Number, $Array } from "../FloraTypes";
+import { $Any, $Number, $Array, FloraRef, $Ref } from "../FloraTypes";
 import { mFx } from "../Flora";
 
 
@@ -60,6 +60,24 @@ export const Append = <T extends any>(
     return Fx(
         [ [elems, $Array(_$Predicate)] ,[ base, $Array(_$Predicate)] ], $Array(_$Predicate),  
         (elems, base)=>q.Append(elems, base) as unknown as T[]
+    )
+
+}
+
+/**
+ * Type safe get method.
+ * @param Ref is the ref to get.
+ * @param $Predicate is an optional predicate specifying what kind of object should be returned from the get.
+ * @returns 
+ */
+export const Get = <T extends any>(
+    Ref : FloraRef<T>,
+    $Predicate : (obj : any)=>obj is T = $Any as unknown as  (obj : any)=>obj is T
+) : T =>{
+
+    return Fx(
+        [ [Ref, $Ref($Predicate)] ], $Predicate,
+        (Ref)=>q.Get(Ref) as unknown as T
     )
 
 }

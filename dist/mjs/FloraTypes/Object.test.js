@@ -1,8 +1,6 @@
-import { query, IsNumber } from "faunadb";
 import { FaunaTestDb } from "fauna-test-setup";
 import { $Object, $Optional } from "./Object";
 import { $Number, $String } from "./Primitives";
-const { Add, IsString, Create, Get, Select, ContainsPath, IsArray } = query;
 export const ExceptionSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;
@@ -11,8 +9,8 @@ export const ExceptionSuiteA = () => {
         });
         test("Simple $Object", async () => {
             const Test$Object = $Object({
-                name: IsString,
-                amount: IsNumber
+                name: $String,
+                amount: $Number
             });
             const result = await db.client.query(Test$Object({
                 name: "Liam",
@@ -22,8 +20,8 @@ export const ExceptionSuiteA = () => {
         });
         test("Simple $Object fail", async () => {
             const Test$Object = $Object({
-                name: IsString,
-                amount: IsNumber
+                name: $String,
+                amount: $Number
             });
             const result = await db.client.query(Test$Object({
                 name: "Liam",
@@ -33,11 +31,11 @@ export const ExceptionSuiteA = () => {
         });
         test("Nested $Object", async () => {
             const Test$Object = $Object({
-                name: IsString,
-                amount: IsNumber
+                name: $String,
+                amount: $Number
             });
             const Wrapper$Object = $Object({
-                type: IsString,
+                type: $String,
                 obj: Test$Object
             });
             const result = await db.client.query(Wrapper$Object({
@@ -51,11 +49,11 @@ export const ExceptionSuiteA = () => {
         });
         test("Nested $Object fails", async () => {
             const Test$Object = $Object({
-                name: IsString,
-                amount: IsNumber
+                name: $String,
+                amount: $Number
             });
             const Wrapper$Object = $Object({
-                type: IsString,
+                type: $String,
                 obj: Test$Object
             });
             const result = await db.client.query(Wrapper$Object({

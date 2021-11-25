@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetExceptions = exports.ContainsException = exports.IsException = exports.isFloraException = exports.FloraException = exports.isFloraExceptionKey = void 0;
-const faunadb_1 = require("faunadb");
-const { Var, Select, If, IsObject, ContainsPath, Equals, Filter, Lambda, And } = faunadb_1.query;
+const query_1 = require("faunadb/query");
 exports.isFloraExceptionKey = "isFloraException";
 /**
  *
@@ -35,16 +34,16 @@ exports.isFloraException = isFloraException;
  * @returns
  */
 const IsException = (expr) => {
-    return If(And((0, faunadb_1.Not)((0, faunadb_1.IsArray)(expr)), IsObject(expr)), If(ContainsPath(exports.isFloraExceptionKey, expr), Equals(Select(exports.isFloraExceptionKey, expr), true), false), false);
+    return (0, query_1.If)((0, query_1.And)((0, query_1.Not)((0, query_1.IsArray)(expr)), (0, query_1.IsObject)(expr)), (0, query_1.If)((0, query_1.ContainsPath)(exports.isFloraExceptionKey, expr), (0, query_1.Equals)((0, query_1.Select)(exports.isFloraExceptionKey, expr), true), false), false);
 };
 exports.IsException = IsException;
 const agg = "agg";
 const el = "el";
 const ContainsException = (exprs) => {
-    return (0, faunadb_1.Reduce)(Lambda([agg, el], (0, faunadb_1.Or)(Var(agg), (0, exports.IsException)(Var(el)))), false, exprs);
+    return (0, query_1.Reduce)((0, query_1.Lambda)([agg, el], (0, query_1.Or)((0, query_1.Var)(agg), (0, exports.IsException)((0, query_1.Var)(el)))), false, exprs);
 };
 exports.ContainsException = ContainsException;
 const GetExceptions = (exprs) => {
-    return (0, faunadb_1.Reduce)(Lambda([agg, el], If((0, exports.IsException)(Var(el)), (0, faunadb_1.Append)([Var(el)], Var(agg)), Var(agg))), [], exprs);
+    return (0, query_1.Reduce)((0, query_1.Lambda)([agg, el], (0, query_1.If)((0, exports.IsException)((0, query_1.Var)(el)), (0, query_1.Append)([(0, query_1.Var)(el)], (0, query_1.Var)(agg)), (0, query_1.Var)(agg))), [], exprs);
 };
 exports.GetExceptions = GetExceptions;

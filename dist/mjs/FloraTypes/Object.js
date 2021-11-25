@@ -1,5 +1,4 @@
-import { query } from "faunadb";
-const { If, Select, Var, Lambda, And, ContainsPath, IsObject, Reduce } = query;
+import { If, Select, Var, Lambda, And, ContainsPath, IsObject, Reduce } from "faunadb/query";
 /**
  * Forms an optional field predicate.
  * @param predicate Is the type predicate used to verify the field if one is present

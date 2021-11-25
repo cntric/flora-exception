@@ -1,10 +1,9 @@
-import { Concat, query } from "faunadb";
+import { Concat, Map, If, Var, Lambda, Let } from "faunadb/query";
 import { FloraException, IsException } from "./Exception";
 import { Raise } from "./Raise";
 import { Yield } from "./Yield";
 import { generate } from "shortid";
 import { generateSlug } from "random-word-slugs";
-const { Map, If, Var, Lambda, ToString, Let } = query;
 const result = "result";
 const arg = "arg";
 const xarg = "xarg";
@@ -17,13 +16,20 @@ const xarg = "xarg";
 export const ExtractArg = (arg, loc) => {
     const predicateName = arg[1] ? arg[1].name || "$Unspecified" : "$Unspecified";
     const Predicate = arg[1] ? arg[1] : () => true;
+    let arg0 = "";
+    try {
+        arg0 = JSON.stringify(arg[0]);
+    }
+    catch {
+        arg0 = "Too deep";
+    }
     return Let({
         [xarg]: arg[0],
         [result]: If(Predicate(Var(xarg)), Var(xarg), Raise(FloraException({
             name: "TypeException",
             msg: Concat([
                 `Argument does not match type ${predicateName}: Value {`,
-                ToString(JSON.stringify(arg[0])),
+                arg0,
                 `} is not of type ${predicateName}`
             ]),
             location: loc

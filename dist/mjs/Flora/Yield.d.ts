@@ -1,5 +1,5 @@
-import { query } from "faunadb";
-export declare const expressArgs: <A extends any[]>(args: A, evaluatedArgs: query.ExprArg, loc: string) => A;
+import { ExprArg } from "faunadb/query";
+export declare const expressArgs: <A extends any[]>(args: A, evaluatedArgs: ExprArg, loc: string) => A;
 export interface _YieldArgsI<A extends any[], T> {
     name: string;
     args: A;

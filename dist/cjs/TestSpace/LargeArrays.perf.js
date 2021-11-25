@@ -10,12 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExceptionSuiteA = void 0;
-const faunadb_1 = require("faunadb");
+const query_1 = require("faunadb/query");
 const fauna_test_setup_1 = require("fauna-test-setup");
 const Flora_1 = require("../Flora");
 const FloraTypes_1 = require("../FloraTypes");
 const perf_hooks_1 = require("perf_hooks");
-const { Add, IsString, Create, Get, Select, ContainsPath, IsArray } = faunadb_1.query;
 const ExceptionSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;
@@ -25,7 +24,7 @@ const ExceptionSuiteA = () => {
         test("Composed sum", () => __awaiter(void 0, void 0, void 0, function* () {
             const ComposedSum = (a) => {
                 return (0, Flora_1.Fx)([[a, (0, FloraTypes_1.$Array)(FloraTypes_1.$Number)]], FloraTypes_1.$Number, (a) => {
-                    return (0, faunadb_1.Sum)(a);
+                    return (0, query_1.Sum)(a);
                 });
             };
             const longArray = Array(100000).fill(0).map(() => {
@@ -35,14 +34,13 @@ const ExceptionSuiteA = () => {
             const result = yield db.client.query((0, Flora_1.Flora)(ComposedSum(longArray)));
             const m1 = perf_hooks_1.performance.now();
             const b0 = perf_hooks_1.performance.now();
-            const secondResult = yield db.client.query((0, Flora_1.Flora)((0, faunadb_1.Sum)(longArray)));
+            const secondResult = yield db.client.query((0, Flora_1.Flora)((0, query_1.Sum)(longArray)));
             const b1 = perf_hooks_1.performance.now();
             const c0 = perf_hooks_1.performance.now();
             const thirdResult = longArray.reduce((agg, val) => {
                 return agg + val;
             }, 0);
             const c1 = perf_hooks_1.performance.now();
-            console.log(m1 - m0, b1 - b0, c1 - c0);
             expect(result).toBe(thirdResult);
         }), 200000);
     });
