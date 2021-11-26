@@ -72,11 +72,10 @@ export const getInstance = () => {
     })}/${generate()}`;
 };
 export const getLocation = (errorStack) => {
-    const abbrev = errorStack.split("\n").slice(1).join("\n");
     const caller = errorStack.split("\n")[2].trim().split(" ")[1];
     const _location = `${getInstance()}/${errorStack.split("\n").length}`;
-    const mainLoaction = `${caller} $(${_location}/MAIN)\n${abbrev}`;
-    const yieldLocation = `${caller} $(${_location}/YIELD)\n${abbrev}`;
+    const mainLoaction = `${caller} $(${_location}/MAIN)`;
+    const yieldLocation = `${caller} $(${_location}/YIELD(`;
     return [mainLoaction, yieldLocation];
 };
 const xargs = "xargs";
