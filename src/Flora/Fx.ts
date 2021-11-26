@@ -39,9 +39,9 @@ export const ExtractArg = <A extends FxArgI<any>>(arg : A, loc : string) : FxArg
 
     let arg0 = "";
     try {
-        arg0 = JSON.stringify(arg[0]);
+        arg0 = `${arg[0].toString().slice(0, 20)}...`;
     } catch {
-        arg0 = "Too deep";
+        arg0 = "[failedToString]";
     }
 
     return Let(
@@ -55,7 +55,7 @@ export const ExtractArg = <A extends FxArgI<any>>(arg : A, loc : string) : FxArg
                     msg : Concat(
                         [
                             `Argument does not match type ${predicateName}: Value {`,
-                            arg0.toString(),
+                            arg0,
                             `} is not of type ${predicateName}`
                         ]
                     ) as unknown as string,
