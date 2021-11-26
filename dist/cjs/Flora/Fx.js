@@ -32,7 +32,7 @@ const ExtractArg = (arg, loc) => {
             name: "TypeException",
             msg: (0, query_1.Concat)([
                 `Argument does not match type ${predicateName}: Value {`,
-                arg0,
+                arg0.toString(),
                 `} is not of type ${predicateName}`
             ]),
             location: loc

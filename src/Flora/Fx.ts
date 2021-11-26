@@ -55,7 +55,7 @@ export const ExtractArg = <A extends FxArgI<any>>(arg : A, loc : string) : FxArg
                     msg : Concat(
                         [
                             `Argument does not match type ${predicateName}: Value {`,
-                            arg0,
+                            arg0.toString(),
                             `} is not of type ${predicateName}`
                         ]
                     ) as unknown as string,
