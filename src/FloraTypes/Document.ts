@@ -1,6 +1,7 @@
 import { values } from "faunadb";
 import {If,
-    IsDoc, Select} from "faunadb/query";
+    And,
+    IsDoc, Select, Contains, ContainsPath} from "faunadb/query";
 
 
 /**
@@ -10,7 +11,7 @@ import {If,
  */
 export const $Document = <T>(Predicate ? : (obj : any)=>obj is T)=>(obj : any) : obj is values.Document<T>=>{
     return Predicate ? If(
-        IsDoc(obj),
+        And(IsDoc(obj), ContainsPath("data", obj)),
         Predicate(Select("data", obj)),
         false
     ) as unknown as boolean : IsDoc(obj) as unknown as boolean

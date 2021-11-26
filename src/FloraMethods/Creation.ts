@@ -66,8 +66,10 @@ export const Document = <
 ) : values.Document<GuardedT<P>> =>{
 
     return Fx(
-        [ [Collection, $Collection($Predicate)], [obj, $Predicate] ], $Document($Predicate),
-        (Collection, obj)=>q.Create(Collection, obj) as unknown as values.Document<GuardedT<P>>
+        [ [Collection, $Collection()], [obj, $Predicate] ], $Document($Predicate),
+        (Collection, obj)=>q.Create(Collection, {
+            data : obj
+        }) as unknown as values.Document<GuardedT<P>>
     )
 
 }

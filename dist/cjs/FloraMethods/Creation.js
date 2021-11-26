@@ -56,6 +56,8 @@ exports.Collection = Collection;
  * @returns
  */
 const Document = (Collection, obj, $Predicate = FloraTypes_1.$Any) => {
-    return (0, Fx_1.Fx)([[Collection, (0, FloraTypes_1.$Collection)($Predicate)], [obj, $Predicate]], (0, FloraTypes_1.$Document)($Predicate), (Collection, obj) => q.Create(Collection, obj));
+    return (0, Fx_1.Fx)([[Collection, (0, FloraTypes_1.$Collection)()], [obj, $Predicate]], (0, FloraTypes_1.$Document)($Predicate), (Collection, obj) => q.Create(Collection, {
+        data: obj
+    }));
 };
 exports.Document = Document;

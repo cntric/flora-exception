@@ -32,5 +32,7 @@ export const Collection = (name, $Predicate = $Any) => {
  * @returns
  */
 export const Document = (Collection, obj, $Predicate = $Any) => {
-    return Fx([[Collection, $Collection($Predicate)], [obj, $Predicate]], $Document($Predicate), (Collection, obj) => q.Create(Collection, obj));
+    return Fx([[Collection, $Collection()], [obj, $Predicate]], $Document($Predicate), (Collection, obj) => q.Create(Collection, {
+        data: obj
+    }));
 };

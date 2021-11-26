@@ -8,6 +8,6 @@ const query_1 = require("faunadb/query");
  * @returns
  */
 const $Document = (Predicate) => (obj) => {
-    return Predicate ? (0, query_1.If)((0, query_1.IsDoc)(obj), Predicate((0, query_1.Select)("data", obj)), false) : (0, query_1.IsDoc)(obj);
+    return Predicate ? (0, query_1.If)((0, query_1.And)((0, query_1.IsDoc)(obj), (0, query_1.ContainsPath)("data", obj)), Predicate((0, query_1.Select)("data", obj)), false) : (0, query_1.IsDoc)(obj);
 };
 exports.$Document = $Document;
