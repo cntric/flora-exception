@@ -12,3 +12,4 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./Flora"), exports);
 __exportStar(require("./FloraTypes"), exports);
+__exportStar(require("./FloraMethods"), exports);
