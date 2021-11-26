@@ -2,7 +2,7 @@ import * as q from "faunadb/query";
 import { $Any } from "./Any";
 import { $Tuple } from "./Tuple";
 
-export const $Map = <K, V extends (string | number)>(
+export const $Map = <K extends (string | number), V>(
     $KeyPred : (obj : any)=>obj is K = $Any,
     $ValPred : (obj : any)=>obj is V = $Any
 )=>(obj : any) : obj is {[key : string] : V}=>{
