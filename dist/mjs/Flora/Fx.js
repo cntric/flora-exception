@@ -18,10 +18,10 @@ export const ExtractArg = (arg, loc) => {
     const Predicate = arg[1] ? arg[1] : () => true;
     let arg0 = "";
     try {
-        arg0 = JSON.stringify(arg[0]);
+        arg0 = `${arg[0].toString().slice(0, 20)}...`;
     }
     catch {
-        arg0 = "Too deep";
+        arg0 = "[failedToString]";
     }
     return Let({
         [xarg]: arg[0],
@@ -29,7 +29,7 @@ export const ExtractArg = (arg, loc) => {
             name: "TypeException",
             msg: Concat([
                 `Argument does not match type ${predicateName}: Value {`,
-                arg0.toString(),
+                arg0,
                 `} is not of type ${predicateName}`
             ]),
             location: loc
