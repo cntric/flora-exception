@@ -1,13 +1,18 @@
-import { Var, Create, Collection, Let } from "faunadb/query";
+import { Var, Create, Collection, Let, } from "faunadb/query";
 import { FaunaTestDb } from "fauna-test-setup";
 import { $Object, $Optional } from "./Object";
 import { $Number, $String } from "./Primitives";
 import { $Document } from "./Document";
+import { CreateCollection } from "../FloraMethods";
+export const documentTestCollectionName = "Document-Test";
 export const ExceptionSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;
         beforeAll(async () => {
             db = await FaunaTestDb();
+            await db.client.query(CreateCollection({
+                name: documentTestCollectionName
+            }));
         });
         test("Simple $Document", async () => {
             const Test$Document = $Document($Object({
@@ -16,7 +21,7 @@ export const ExceptionSuiteA = () => {
             }));
             const testCollection = "test";
             const result = await db.client.query(Let({
-                [testCollection]: Create(Collection("test"), {
+                [testCollection]: Create(Collection(documentTestCollectionName), {
                     data: {
                         name: "Liam",
                         amount: 2
@@ -32,7 +37,7 @@ export const ExceptionSuiteA = () => {
             }));
             const testCollection = "test";
             const result = await db.client.query(Let({
-                [testCollection]: Create(Collection("test"), {
+                [testCollection]: Create(Collection(documentTestCollectionName), {
                     data: {
                         name: "Liam",
                         amount: "cat"

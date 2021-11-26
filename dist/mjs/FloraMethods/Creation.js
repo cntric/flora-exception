@@ -10,7 +10,7 @@ import { FloraException } from "../Flora/Exception";
  * @returns
  */
 export const CreateCollection = (params, $Predicate = $Any) => {
-    return q.CreateCollection(params);
+    return q.If(q.Exists(q.Collection(q.Select("name", params))), q.Collection(q.Select("name", params)), q.CreateCollection(params));
 };
 /**
  * Gets a collection

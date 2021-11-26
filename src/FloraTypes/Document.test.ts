@@ -8,13 +8,15 @@ import {
     ContainsPath,
     IsArray,
     Collection,
-    Let
+    Let,
 } from "faunadb/query";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import { $Object, $Optional } from "./Object";
 import { $Number, $String } from "./Primitives";
 import { $Document } from "./Document";
+import { CreateCollection} from "../FloraMethods";
 
+export const documentTestCollectionName = "Document-Test";
 
 export const ExceptionSuiteA = ()=>{
 
@@ -25,6 +27,9 @@ export const ExceptionSuiteA = ()=>{
 
         beforeAll(async()=>{
             db = await FaunaTestDb();
+            await db.client.query(CreateCollection({
+                name : documentTestCollectionName
+            }))
         })
 
         test("Simple $Document", async()=>{
@@ -39,7 +44,7 @@ export const ExceptionSuiteA = ()=>{
             const result = await db.client.query<any[]>(Let(
                 {
                     [testCollection] : Create(
-                        Collection("test"),
+                        Collection(documentTestCollectionName),
                         {
                             data : {
                                 name : "Liam",
@@ -67,7 +72,7 @@ export const ExceptionSuiteA = ()=>{
             const result = await db.client.query<any[]>(Let(
                 {
                     [testCollection] : Create(
-                        Collection("test"),
+                        Collection(documentTestCollectionName),
                         {
                             data : {
                                 name : "Liam",

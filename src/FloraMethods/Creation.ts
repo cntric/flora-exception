@@ -17,7 +17,11 @@ export const CreateCollection = <P extends (obj : any)=>obj is any>(
     $Predicate : P = $Any as P
 ) : FreshCollectionI<GuardedT<P>> =>{
 
-    return q.CreateCollection(params) as unknown as FreshCollectionI<GuardedT<P>>
+    return q.If(
+        q.Exists(q.Collection(q.Select("name", params))),
+        q.Collection(q.Select("name", params)),
+        q.CreateCollection(params)
+    ) as unknown as FreshCollectionI<GuardedT<P>>
 
 }
 

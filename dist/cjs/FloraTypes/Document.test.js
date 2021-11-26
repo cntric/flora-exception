@@ -9,17 +9,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExceptionSuiteA = void 0;
+exports.ExceptionSuiteA = exports.documentTestCollectionName = void 0;
 const query_1 = require("faunadb/query");
 const fauna_test_setup_1 = require("fauna-test-setup");
 const Object_1 = require("./Object");
 const Primitives_1 = require("./Primitives");
 const Document_1 = require("./Document");
+const FloraMethods_1 = require("../FloraMethods");
+exports.documentTestCollectionName = "Document-Test";
 const ExceptionSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;
         beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
             db = yield (0, fauna_test_setup_1.FaunaTestDb)();
+            yield db.client.query((0, FloraMethods_1.CreateCollection)({
+                name: exports.documentTestCollectionName
+            }));
         }));
         test("Simple $Document", () => __awaiter(void 0, void 0, void 0, function* () {
             const Test$Document = (0, Document_1.$Document)((0, Object_1.$Object)({
@@ -28,7 +33,7 @@ const ExceptionSuiteA = () => {
             }));
             const testCollection = "test";
             const result = yield db.client.query((0, query_1.Let)({
-                [testCollection]: (0, query_1.Create)((0, query_1.Collection)("test"), {
+                [testCollection]: (0, query_1.Create)((0, query_1.Collection)(exports.documentTestCollectionName), {
                     data: {
                         name: "Liam",
                         amount: 2
@@ -44,7 +49,7 @@ const ExceptionSuiteA = () => {
             }));
             const testCollection = "test";
             const result = yield db.client.query((0, query_1.Let)({
-                [testCollection]: (0, query_1.Create)((0, query_1.Collection)("test"), {
+                [testCollection]: (0, query_1.Create)((0, query_1.Collection)(exports.documentTestCollectionName), {
                     data: {
                         name: "Liam",
                         amount: "cat"

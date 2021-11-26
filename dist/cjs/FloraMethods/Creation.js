@@ -32,7 +32,7 @@ const Exception_1 = require("../Flora/Exception");
  * @returns
  */
 const CreateCollection = (params, $Predicate = FloraTypes_1.$Any) => {
-    return q.CreateCollection(params);
+    return q.If(q.Exists(q.Collection(q.Select("name", params))), q.Collection(q.Select("name", params)), q.CreateCollection(params));
 };
 exports.CreateCollection = CreateCollection;
 /**
