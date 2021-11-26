@@ -1,3 +1,4 @@
+import { values } from "faunadb";
 import {If,
     IsDoc, Select} from "faunadb/query";
 
@@ -7,7 +8,7 @@ import {If,
  * @param Predicate is the predicate used to check the data.
  * @returns
  */
-export const $Document = (Predicate ? : (obj : any)=>boolean)=>(obj : any) : boolean=>{
+export const $Document = <T>(Predicate ? : (obj : any)=>obj is T)=>(obj : any) : obj is values.Document<T>=>{
     return Predicate ? If(
         IsDoc(obj),
         Predicate(Select("data", obj)),
