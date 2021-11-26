@@ -9,3 +9,4 @@ export * from "./Tuple";
 export * from "./Any";
 export * from "./Collection";
 export * from "./And";
+export * from "./Map";

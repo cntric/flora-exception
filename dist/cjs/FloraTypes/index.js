@@ -21,3 +21,4 @@ __exportStar(require("./Tuple"), exports);
 __exportStar(require("./Any"), exports);
 __exportStar(require("./Collection"), exports);
 __exportStar(require("./And"), exports);
+__exportStar(require("./Map"), exports);
