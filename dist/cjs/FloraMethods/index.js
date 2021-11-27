@@ -14,3 +14,6 @@ __exportStar(require("./FaunaMethods"), exports);
 __exportStar(require("./Creation"), exports);
 __exportStar(require("./Select"), exports);
 __exportStar(require("./Traversal"), exports);
+__exportStar(require("./Delete"), exports);
+__exportStar(require("./Update"), exports);
+__exportStar(require("./Read"), exports);

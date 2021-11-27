@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1637996375739" clover="3.2.0">
-  <project timestamp="1637996375739" name="All files">
+<coverage generated="1637997092303" clover="3.2.0">
+  <project timestamp="1637997092303" name="All files">
     <metrics statements="253" coveredstatements="222" conditionals="71" coveredconditionals="48" methods="108" coveredmethods="84" elements="432" coveredelements="354" complexity="0" loc="253" ncloc="253" packages="3" files="28" classes="28"/>
     <package name="Flora">
       <metrics statements="116" coveredstatements="112" conditionals="40" coveredconditionals="31" methods="41" coveredmethods="37"/>
@@ -157,7 +157,7 @@
       </file>
       <file name="Delete.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraMethods/Delete.ts">
         <metrics statements="2" coveredstatements="2" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="6" count="1" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
       </file>
       <file name="FaunaMethods.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraMethods/FaunaMethods.ts">
@@ -179,7 +179,7 @@
       </file>
       <file name="Read.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraMethods/Read.ts">
         <metrics statements="3" coveredstatements="3" conditionals="1" coveredconditionals="1" methods="2" coveredmethods="2"/>
-        <line num="7" count="1" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
         <line num="11" count="3" type="stmt"/>
         <line num="13" count="3" type="stmt"/>
       </file>
@@ -229,8 +229,8 @@
       </file>
       <file name="Update.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraMethods/Update.ts">
         <metrics statements="4" coveredstatements="4" conditionals="1" coveredconditionals="1" methods="2" coveredmethods="2"/>
-        <line num="29" count="1" type="stmt"/>
-        <line num="37" count="1" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
         <line num="45" count="4" type="stmt"/>
         <line num="47" count="4" type="stmt"/>
       </file>
