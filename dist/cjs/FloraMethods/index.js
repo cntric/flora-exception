@@ -17,3 +17,4 @@ __exportStar(require("./Traversal"), exports);
 __exportStar(require("./Delete"), exports);
 __exportStar(require("./Update"), exports);
 __exportStar(require("./Read"), exports);
+__exportStar(require("./RefOf"), exports);
