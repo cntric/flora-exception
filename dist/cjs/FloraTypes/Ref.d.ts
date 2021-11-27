@@ -8,3 +8,7 @@ export interface FloraRef<T> extends values.Ref {
  * @returns
  */
 export declare const $Ref: <T extends unknown>(Predicate?: (obj: any) => obj is T) => (obj: any) => obj is FloraRef<T>;
+export interface RefObjectI {
+    id: string;
+    collection?: RefObjectI;
+}

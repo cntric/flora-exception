@@ -19,3 +19,7 @@ export interface FreshCollectionI<T> extends values.Document {
  * @returns
  */
 export declare const $Collection: <T extends unknown>($Predicate?: (obj: any) => obj is T) => (obj: any) => obj is CollectionI<T>;
+export interface CollectionObjectI {
+    id: string;
+}
+export declare const $CollectionObject: (obj: any) => obj is CollectionObjectI;

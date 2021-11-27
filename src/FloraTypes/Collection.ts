@@ -1,6 +1,8 @@
 import { values } from "faunadb"
 import * as q from "faunadb/query";
 import { $Any } from "./Any";
+import { $Object } from "./Object";
+import { $String } from "./Primitives";
 
 export interface CreateCollectionParamsI {
     name : string,
@@ -25,6 +27,23 @@ export interface FreshCollectionI<T> extends values.Document {
  */
 export const $Collection = <T extends any>(
     $Predicate : (obj : any)=> obj is T = $Any
-) => (obj : any): obj is CollectionI<T> =>{
-    return q.IsCollection(obj) as unknown as boolean
+) => {
+
+    const name = `${$Predicate.name}Collection`;
+
+    const map = {
+        [name] : (obj : any): obj is CollectionI<T> =>{
+            return q.IsCollection(obj) as unknown as boolean
+        }
+    }
+
+    return map[name];
+
 }
+
+export interface CollectionObjectI {
+    id : string
+}
+export const $CollectionObject : (obj : any)=>obj is CollectionObjectI= $Object({
+    id : $String
+});
