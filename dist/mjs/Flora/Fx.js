@@ -1,4 +1,4 @@
-import { Concat, Map, If, Var, Lambda, Let } from "faunadb/query";
+import { Concat, Map, If, Var, Lambda, Format, Let } from "faunadb/query";
 import { FloraException, IsException } from "./Exception";
 import { Raise } from "./Raise";
 import { Yield } from "./Yield";
@@ -29,7 +29,7 @@ export const ExtractArg = (arg, loc) => {
             name: "TypeException",
             msg: Concat([
                 `Argument does not match type ${predicateName}: Value {`,
-                arg0,
+                Format('%@', Var(xarg)),
                 `} is not of type ${predicateName}`
             ]),
             location: loc
@@ -93,7 +93,7 @@ export const Fx = (args, $ReturnType, expr) => {
         name: "ReturnTypeExcpetion",
         msg: Concat([
             `Return does not match type ${predicateName}: Value {`,
-            Var(result),
+            Format('%@', Var(result)),
             `} is not of type ${predicateName}`
         ]),
         location: mainLocation

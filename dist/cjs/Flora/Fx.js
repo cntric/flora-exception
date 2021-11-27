@@ -32,7 +32,7 @@ const ExtractArg = (arg, loc) => {
             name: "TypeException",
             msg: (0, query_1.Concat)([
                 `Argument does not match type ${predicateName}: Value {`,
-                arg0,
+                (0, query_1.Format)('%@', (0, query_1.Var)(xarg)),
                 `} is not of type ${predicateName}`
             ]),
             location: loc
@@ -101,7 +101,7 @@ const Fx = (args, $ReturnType, expr) => {
         name: "ReturnTypeExcpetion",
         msg: (0, query_1.Concat)([
             `Return does not match type ${predicateName}: Value {`,
-            (0, query_1.Var)(result),
+            (0, query_1.Format)('%@', (0, query_1.Var)(result)),
             `} is not of type ${predicateName}`
         ]),
         location: mainLocation

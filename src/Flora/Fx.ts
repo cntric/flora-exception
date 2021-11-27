@@ -4,6 +4,7 @@ import {
     If,
     Var,
     Lambda,
+    Format,
     ToString,
     Let
 } from "faunadb/query";
@@ -55,7 +56,7 @@ export const ExtractArg = <A extends FxArgI<any>>(arg : A, loc : string) : FxArg
                     msg : Concat(
                         [
                             `Argument does not match type ${predicateName}: Value {`,
-                            arg0,
+                            Format('%@', Var(xarg)),
                             `} is not of type ${predicateName}`
                         ]
                     ) as unknown as string,
@@ -157,7 +158,7 @@ export const Fx = <A extends FxArgI<any>[], R extends (obj : any)=>boolean>(
                         msg :  Concat(
                             [
                                 `Return does not match type ${predicateName}: Value {`,
-                                Var(result),
+                                Format('%@', Var(result)),
                                 `} is not of type ${predicateName}`
                             ]
                         ) as unknown as string,
