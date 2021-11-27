@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1637997092303" clover="3.2.0">
-  <project timestamp="1637997092303" name="All files">
-    <metrics statements="253" coveredstatements="222" conditionals="71" coveredconditionals="48" methods="108" coveredmethods="84" elements="432" coveredelements="354" complexity="0" loc="253" ncloc="253" packages="3" files="28" classes="28"/>
+<coverage generated="1637999361136" clover="3.2.0">
+  <project timestamp="1637999361137" name="All files">
+    <metrics statements="254" coveredstatements="223" conditionals="71" coveredconditionals="48" methods="109" coveredmethods="85" elements="434" coveredelements="356" complexity="0" loc="254" ncloc="254" packages="3" files="28" classes="28"/>
     <package name="Flora">
       <metrics statements="116" coveredstatements="112" conditionals="40" coveredconditionals="31" methods="41" coveredmethods="37"/>
       <file name="Exception.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/Flora/Exception.ts">
         <metrics statements="13" coveredstatements="13" conditionals="22" coveredconditionals="20" methods="5" coveredmethods="5"/>
         <line num="20" count="12" type="stmt"/>
         <line num="35" count="12" type="stmt"/>
-        <line num="42" count="199" type="stmt"/>
+        <line num="42" count="203" type="stmt"/>
         <line num="57" count="12" type="stmt"/>
         <line num="58" count="8" type="cond" truecount="2" falsecount="0"/>
         <line num="66" count="12" type="stmt"/>
-        <line num="67" count="152" type="stmt"/>
+        <line num="67" count="155" type="stmt"/>
         <line num="84" count="12" type="stmt"/>
         <line num="85" count="12" type="stmt"/>
         <line num="86" count="12" type="stmt"/>
-        <line num="87" count="38" type="stmt"/>
+        <line num="87" count="39" type="stmt"/>
         <line num="100" count="12" type="stmt"/>
-        <line num="102" count="37" type="stmt"/>
+        <line num="102" count="38" type="stmt"/>
       </file>
       <file name="Flora.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/Flora/Flora.ts">
         <metrics statements="40" coveredstatements="39" conditionals="2" coveredconditionals="2" methods="14" coveredmethods="13"/>
@@ -40,9 +40,9 @@
         <line num="119" count="12" type="stmt"/>
         <line num="120" count="12" type="stmt"/>
         <line num="128" count="12" type="stmt"/>
-        <line num="129" count="584" type="stmt"/>
+        <line num="129" count="593" type="stmt"/>
         <line num="136" count="12" type="stmt"/>
-        <line num="137" count="452" type="stmt"/>
+        <line num="137" count="458" type="stmt"/>
         <line num="145" count="12" type="stmt"/>
         <line num="147" count="47" type="stmt"/>
         <line num="166" count="12" type="stmt"/>
@@ -50,7 +50,7 @@
         <line num="183" count="12" type="stmt"/>
         <line num="188" count="47" type="stmt"/>
         <line num="218" count="12" type="stmt"/>
-        <line num="219" count="452" type="stmt"/>
+        <line num="219" count="458" type="stmt"/>
         <line num="222" count="12" type="stmt"/>
         <line num="223" count="47" type="stmt"/>
         <line num="240" count="12" type="stmt"/>
@@ -69,32 +69,32 @@
         <line num="27" count="9" type="stmt"/>
         <line num="28" count="9" type="stmt"/>
         <line num="35" count="9" type="stmt"/>
-        <line num="37" count="54" type="cond" truecount="3" falsecount="1"/>
-        <line num="38" count="54" type="cond" truecount="1" falsecount="1"/>
-        <line num="40" count="54" type="stmt"/>
-        <line num="41" count="54" type="stmt"/>
-        <line num="42" count="54" type="stmt"/>
+        <line num="37" count="55" type="cond" truecount="3" falsecount="1"/>
+        <line num="38" count="55" type="cond" truecount="1" falsecount="1"/>
+        <line num="40" count="55" type="stmt"/>
+        <line num="41" count="55" type="stmt"/>
+        <line num="42" count="55" type="stmt"/>
         <line num="44" count="0" type="stmt"/>
-        <line num="47" count="54" type="stmt"/>
+        <line num="47" count="55" type="stmt"/>
         <line num="76" count="9" type="stmt"/>
         <line num="78" count="0" type="stmt"/>
         <line num="94" count="9" type="stmt"/>
-        <line num="95" count="33" type="stmt"/>
-        <line num="96" count="54" type="stmt"/>
+        <line num="95" count="34" type="stmt"/>
+        <line num="96" count="55" type="stmt"/>
         <line num="101" count="9" type="stmt"/>
-        <line num="102" count="29" type="stmt"/>
+        <line num="102" count="30" type="stmt"/>
         <line num="117" count="9" type="stmt"/>
-        <line num="118" count="29" type="stmt"/>
-        <line num="119" count="29" type="stmt"/>
-        <line num="120" count="29" type="stmt"/>
-        <line num="121" count="29" type="stmt"/>
-        <line num="122" count="29" type="stmt"/>
+        <line num="118" count="30" type="stmt"/>
+        <line num="119" count="30" type="stmt"/>
+        <line num="120" count="30" type="stmt"/>
+        <line num="121" count="30" type="stmt"/>
+        <line num="122" count="30" type="stmt"/>
         <line num="125" count="9" type="stmt"/>
         <line num="126" count="9" type="stmt"/>
-        <line num="132" count="29" type="cond" truecount="1" falsecount="1"/>
-        <line num="133" count="29" type="stmt"/>
-        <line num="134" count="29" type="cond" truecount="2" falsecount="2"/>
-        <line num="136" count="29" type="stmt"/>
+        <line num="132" count="30" type="cond" truecount="1" falsecount="1"/>
+        <line num="133" count="30" type="stmt"/>
+        <line num="134" count="30" type="cond" truecount="2" falsecount="2"/>
+        <line num="136" count="30" type="stmt"/>
         <line num="177" count="9" type="stmt"/>
         <line num="178" count="3" type="stmt"/>
         <line num="179" count="6" type="stmt"/>
@@ -115,35 +115,35 @@
       <file name="Raise.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/Flora/Raise.ts">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
         <line num="18" count="12" type="stmt"/>
-        <line num="22" count="132" type="stmt"/>
+        <line num="22" count="135" type="stmt"/>
         <line num="41" count="12" type="stmt"/>
-        <line num="42" count="93" type="stmt"/>
+        <line num="42" count="95" type="stmt"/>
         <line num="48" count="12" type="stmt"/>
         <line num="49" count="12" type="stmt"/>
-        <line num="50" count="93" type="stmt"/>
+        <line num="50" count="95" type="stmt"/>
         <line num="64" count="12" type="stmt"/>
-        <line num="66" count="39" type="stmt"/>
+        <line num="66" count="40" type="stmt"/>
       </file>
       <file name="Yield.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/Flora/Yield.ts">
         <metrics statements="11" coveredstatements="11" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="4"/>
         <line num="22" count="10" type="stmt"/>
-        <line num="23" count="36" type="stmt"/>
-        <line num="24" count="56" type="stmt"/>
+        <line num="23" count="37" type="stmt"/>
+        <line num="24" count="57" type="stmt"/>
         <line num="43" count="10" type="stmt"/>
         <line num="44" count="10" type="stmt"/>
         <line num="50" count="10" type="stmt"/>
-        <line num="51" count="36" type="stmt"/>
+        <line num="51" count="37" type="stmt"/>
         <line num="74" count="10" type="stmt"/>
-        <line num="76" count="36" type="stmt"/>
-        <line num="78" count="36" type="stmt"/>
-        <line num="83" count="36" type="stmt"/>
+        <line num="76" count="37" type="stmt"/>
+        <line num="78" count="37" type="stmt"/>
+        <line num="83" count="37" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/Flora/index.ts">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
     </package>
     <package name="FloraMethods">
-      <metrics statements="69" coveredstatements="45" conditionals="15" coveredconditionals="8" methods="32" coveredmethods="17"/>
+      <metrics statements="70" coveredstatements="46" conditionals="15" coveredconditionals="8" methods="33" coveredmethods="18"/>
       <file name="Creation.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraMethods/Creation.ts">
         <metrics statements="8" coveredstatements="8" conditionals="3" coveredconditionals="3" methods="5" coveredmethods="5"/>
         <line num="15" count="3" type="stmt"/>
@@ -156,9 +156,10 @@
         <line num="70" count="4" type="stmt"/>
       </file>
       <file name="Delete.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraMethods/Delete.ts">
-        <metrics statements="2" coveredstatements="2" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <metrics statements="3" coveredstatements="3" conditionals="1" coveredconditionals="1" methods="2" coveredmethods="2"/>
         <line num="6" count="2" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
       </file>
       <file name="FaunaMethods.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraMethods/FaunaMethods.ts">
         <metrics statements="14" coveredstatements="7" conditionals="3" coveredconditionals="0" methods="8" coveredmethods="2"/>
@@ -251,7 +252,7 @@
       </file>
       <file name="Any.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraTypes/Any.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="26" type="stmt"/>
+        <line num="1" count="28" type="stmt"/>
       </file>
       <file name="Array.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraTypes/Array.ts">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
@@ -272,10 +273,10 @@
       <file name="Document.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraTypes/Document.ts">
         <metrics statements="5" coveredstatements="5" conditionals="4" coveredconditionals="2" methods="2" coveredmethods="2"/>
         <line num="16" count="8" type="stmt"/>
-        <line num="18" count="13" type="cond" truecount="1" falsecount="1"/>
-        <line num="20" count="13" type="stmt"/>
-        <line num="22" count="13" type="cond" truecount="1" falsecount="1"/>
-        <line num="30" count="13" type="stmt"/>
+        <line num="18" count="15" type="cond" truecount="1" falsecount="1"/>
+        <line num="20" count="15" type="stmt"/>
+        <line num="22" count="15" type="cond" truecount="1" falsecount="1"/>
+        <line num="30" count="15" type="stmt"/>
       </file>
       <file name="Map.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraTypes/Map.ts">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="2"/>
@@ -328,10 +329,10 @@
       <file name="Ref.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraTypes/Ref.ts">
         <metrics statements="5" coveredstatements="5" conditionals="3" coveredconditionals="2" methods="2" coveredmethods="2"/>
         <line num="26" count="8" type="stmt"/>
-        <line num="29" count="7" type="stmt"/>
-        <line num="30" count="7" type="stmt"/>
-        <line num="32" count="7" type="cond" truecount="1" falsecount="1"/>
-        <line num="43" count="7" type="stmt"/>
+        <line num="29" count="8" type="stmt"/>
+        <line num="30" count="8" type="stmt"/>
+        <line num="32" count="8" type="cond" truecount="1" falsecount="1"/>
+        <line num="43" count="8" type="stmt"/>
       </file>
       <file name="Tuple.ts" path="/Users/lmonninger/Desktop/dev/cogint/packages/Fauna/flora/src/FloraTypes/Tuple.ts">
         <metrics statements="8" coveredstatements="8" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="4"/>

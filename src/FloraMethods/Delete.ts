@@ -6,9 +6,11 @@ import * as q from "faunadb/query";
 export const Delete = <T extends any>(
     ref : values.Ref,
     $Predicate : (obj : any)=>obj is T = $Any 
- ) : values.Ref=>{
+ ) : values.Document<T>=>{
 
-    return q.If(
+    return Fx(
+        [[ref, $Ref($Document($Predicate))]], $Document($Predicate),
+        (ref)=>q.If(
             q.Exists(ref),
             q.Delete(ref),
             FloraException({
@@ -19,6 +21,7 @@ export const Delete = <T extends any>(
                     ]
                 ) as unknown as string
             })
-        ) as unknown as values.Ref 
+        ) as unknown as values.Document<T>
+    )
 
 }
