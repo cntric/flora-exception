@@ -23,3 +23,4 @@ __exportStar(require("./Collection"), exports);
 __exportStar(require("./And"), exports);
 __exportStar(require("./Map"), exports);
 __exportStar(require("./Perf"), exports);
+__exportStar(require("./Indexes"), exports);

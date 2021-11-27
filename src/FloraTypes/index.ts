@@ -11,3 +11,4 @@ export * from "./Collection";
 export * from "./And";
 export * from "./Map";
 export * from "./Perf";
+export * from "./Indexes";
