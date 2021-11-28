@@ -221,6 +221,10 @@ export const mFx = <A extends (PredicateI<any>)[], R extends (obj : any)=>boolea
     expr : (...args : GuardedsT<A>)=>GuardedT<R>
 )=>(...args : GuardedsT<A>) : GuardedT<R> =>{
 
+    if(FloraLocalState.performance){
+        return expr(...args);
+    }
+
     return Fx(
         reguardArgs(args, $ArgTypes),
         $ReturnType,

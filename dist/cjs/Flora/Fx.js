@@ -140,6 +140,9 @@ const reguardArgs = (args, argTypes) => {
  * @returns
  */
 const mFx = ($ArgTypes, $ReturnType, expr) => (...args) => {
+    if (exports.FloraLocalState.performance) {
+        return expr(...args);
+    }
     return (0, exports.Fx)(reguardArgs(args, $ArgTypes), $ReturnType, expr);
 };
 exports.mFx = mFx;
