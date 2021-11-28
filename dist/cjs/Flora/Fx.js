@@ -1,17 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mFx = exports.Fx = exports.getLocation = exports.getInstance = exports.stableExtractArgs = exports.extractArgs = exports.ExtractArgs = exports.ExtractArg = exports.togglePerformance = void 0;
+exports.mFx = exports.Fx = exports.getLocation = exports.getInstance = exports.stableExtractArgs = exports.extractArgs = exports.ExtractArgs = exports.ExtractArg = exports.togglePerformance = exports.FloraLocalState = void 0;
 const query_1 = require("faunadb/query");
 const Exception_1 = require("./Exception");
 const Raise_1 = require("./Raise");
 const Yield_1 = require("./Yield");
 const shortid_1 = require("shortid");
 const random_word_slugs_1 = require("random-word-slugs");
-const FloraLocalState = {
+exports.FloraLocalState = {
     performance: false
 };
 const togglePerformance = (b) => {
-    FloraLocalState.performance = b;
+    exports.FloraLocalState.performance = b;
 };
 exports.togglePerformance = togglePerformance;
 const result = "result";
@@ -101,7 +101,7 @@ const getLocation = (errorStack) => {
 exports.getLocation = getLocation;
 const xargs = "xargs";
 const Fx = (args, $ReturnType, expr) => {
-    if (FloraLocalState.performance) {
+    if (exports.FloraLocalState.performance) {
         return expr(...(0, exports.stableExtractArgs)(args));
     }
     const errorStack = new Error().stack || "";

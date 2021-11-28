@@ -15,7 +15,7 @@ import {generate} from "shortid";
 import { generateSlug } from "random-word-slugs";
 import { $Number, $String } from "FloraTypes";
 
-const FloraLocalState = {
+export const FloraLocalState = {
     performance : false
 };
 

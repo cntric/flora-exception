@@ -4,7 +4,7 @@ import { Raise } from "./Raise";
 import { Yield } from "./Yield";
 import { generate } from "shortid";
 import { generateSlug } from "random-word-slugs";
-const FloraLocalState = {
+export const FloraLocalState = {
     performance: false
 };
 export const togglePerformance = (b) => {

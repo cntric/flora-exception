@@ -1,3 +1,6 @@
+export declare const FloraLocalState: {
+    performance: boolean;
+};
 export declare const togglePerformance: (b: boolean) => void;
 export interface FxArgI<T = any> {
     0: T;
