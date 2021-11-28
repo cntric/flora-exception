@@ -4,6 +4,12 @@ import { Raise } from "./Raise";
 import { Yield } from "./Yield";
 import { generate } from "shortid";
 import { generateSlug } from "random-word-slugs";
+const FloraLocalState = {
+    performance: false
+};
+export const togglePerformance = (b) => {
+    FloraLocalState.performance = b;
+};
 const result = "result";
 const arg = "arg";
 const xarg = "xarg";
@@ -56,6 +62,11 @@ export const extractArgs = (args, loc) => {
         return ExtractArg(arg, loc);
     });
 };
+export const stableExtractArgs = (args) => {
+    return args.map((arg) => {
+        return arg[0];
+    });
+};
 export const getInstance = () => {
     return `${generateSlug(1, {
         format: "title",
@@ -80,6 +91,9 @@ export const getLocation = (errorStack) => {
 };
 const xargs = "xargs";
 export const Fx = (args, $ReturnType, expr) => {
+    if (FloraLocalState.performance) {
+        return expr(...stableExtractArgs(args));
+    }
     const errorStack = new Error().stack || "";
     const [mainLocation, yieldLocation] = getLocation(errorStack);
     const predicateName = $ReturnType ? $ReturnType.name || "$Unspecified" : "$Unspecified";

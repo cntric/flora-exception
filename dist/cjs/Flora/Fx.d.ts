@@ -1,9 +1,10 @@
-export interface FxArgI<T> {
+export declare const togglePerformance: (b: boolean) => void;
+export interface FxArgI<T = any> {
     0: T;
     1?: (obj: any) => boolean;
 }
 declare type FxArgExtractedT<T> = T extends FxArgI<infer X> ? X : never;
-declare type FxExtractedArgsT<T extends FxArgI<any>[]> = {
+declare type FxExtractedArgsT<T extends any[]> = {
     [key in keyof T]: FxArgExtractedT<T[key]>;
 };
 /**
@@ -27,11 +28,12 @@ export declare const ExtractArgs: <A extends FxArgI<any>[]>(args: A, loc: string
  * @returns
  */
 export declare const extractArgs: <A extends FxArgI<any>[]>(args: A, loc: string) => FxExtractedArgsT<A>;
+export declare const stableExtractArgs: <A extends FxArgI<any>[]>(args: A) => FxExtractedArgsT<A>;
 export declare const getInstance: () => string;
 export declare const getLocation: (errorStack: string) => [string, string];
 export declare const Fx: <A extends FxArgI<any>[], R extends (obj: any) => boolean>(args: A, $ReturnType: R, expr: (...args: FxExtractedArgsT<A>) => GuardedT<R>) => GuardedT<R>;
 export declare type GuardedT<T> = T extends (obj: any) => obj is infer G ? G : any;
-export declare type GuardedsT<T extends ((obj: any) => boolean)[]> = {
+export declare type GuardedsT<T extends ((obj: any) => obj is any)[]> = {
     [key in keyof T]: GuardedT<T[key]>;
 };
 interface PredicateI<T> {

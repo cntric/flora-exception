@@ -38,7 +38,7 @@ export const Collection = <P extends (obj : any)=>obj is any>(
 
     return Fx(
         [[name , $String]], $Collection(),
-        (name)=>q.If(
+        (name : string)=>q.If(
             q.Exists(q.Collection(name)),
             q.Collection(name),
             Raise(FloraException({

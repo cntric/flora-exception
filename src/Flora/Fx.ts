@@ -13,14 +13,23 @@ import { AddExceptionToStack, Raise, Reraise } from "./Raise";
 import { Yield } from "./Yield";
 import {generate} from "shortid";
 import { generateSlug } from "random-word-slugs";
+import { $Number, $String } from "FloraTypes";
 
-export interface FxArgI<T> {
+const FloraLocalState = {
+    performance : false
+};
+
+export const togglePerformance = (b : boolean)=>{
+    FloraLocalState.performance = b;
+}
+
+export interface FxArgI<T=any> {
     0 : T,
     1 ? : (obj : any)=>boolean
 }
 
 type FxArgExtractedT<T> = T extends FxArgI<infer X> ? X : never;
-type FxExtractedArgsT<T extends FxArgI<any>[]> = {
+type FxExtractedArgsT<T extends any[]> = {
     [key in keyof T] : FxArgExtractedT<T[key]>
 }
 
@@ -74,7 +83,7 @@ export const ExtractArg = <A extends FxArgI<any>>(arg : A, loc : string) : FxArg
  * @param loc 
  * @returns 
  */
-export const ExtractArgs = <A extends FxArgI<any>[]>(args : A, loc : string) : FxExtractedArgsT<A>=>{
+export const ExtractArgs = <A extends FxArgI[]>(args : A, loc : string) : FxExtractedArgsT<A>=>{
 
     return Map(
         args,
@@ -92,12 +101,18 @@ export const ExtractArgs = <A extends FxArgI<any>[]>(args : A, loc : string) : F
  * @param loc 
  * @returns 
  */
-export const extractArgs = <A extends FxArgI<any>[]>(args : A, loc : string) : FxExtractedArgsT<A>=>{
+export const extractArgs = <A extends FxArgI[]>(args : A, loc : string) : FxExtractedArgsT<A>=>{
     return args.map((arg)=>{
         return ExtractArg(arg, loc)
     }) as FxExtractedArgsT<A>
 }
 
+
+export const stableExtractArgs =  <A extends FxArgI[]>(args : A) : FxExtractedArgsT<A>=>{
+    return args.map((arg)=>{
+        return arg[0]
+    }) as FxExtractedArgsT<A>
+}
 
 export const getInstance = ()=>{
     return `${generateSlug(1, {
@@ -124,11 +139,15 @@ export const getLocation = (errorStack : string) : [string, string]=>{
 }
 
 const xargs = "xargs"
-export const Fx = <A extends FxArgI<any>[], R extends (obj : any)=>boolean>(
+export const Fx = <A extends FxArgI[], R extends (obj : any)=>boolean>(
     args : A,
     $ReturnType : R,
     expr : (...args : FxExtractedArgsT<A>)=>GuardedT<R>
 ) : GuardedT<R>=>{
+
+    if(FloraLocalState.performance){
+        return expr(...stableExtractArgs(args))
+    }
 
     const errorStack = new Error().stack || "";
     const [mainLocation, yieldLocation] = getLocation(errorStack);
@@ -170,18 +189,19 @@ export const Fx = <A extends FxArgI<any>[], R extends (obj : any)=>boolean>(
     ) as GuardedT<R>
 }
 
+
 export type GuardedT<T> = T extends (obj: any) => obj is infer G ? G :any;
-export type GuardedsT<T extends ((obj: any) => boolean)[]> = {
+export type GuardedsT<T extends ((obj : any)=>obj is any)[]> = {
     [key in keyof T] : GuardedT<T[key]>
 }
 
-const reguardArgs = (args :any[], argTypes : ((obj : any)=>boolean)[]) : FxArgI<any>[]=>{
+const reguardArgs = (args :any[], argTypes : ((obj : any)=>obj is any)[]) : FxArgI[]=>{
     return args.map((arg, index)=>{
         return [
             arg,
             argTypes[index] ? argTypes[index] : ()=>true
         ]
-    })
+    }) as FxArgI[]
 }
 
 interface PredicateI<T> {

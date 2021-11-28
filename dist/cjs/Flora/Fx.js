@@ -1,12 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mFx = exports.Fx = exports.getLocation = exports.getInstance = exports.extractArgs = exports.ExtractArgs = exports.ExtractArg = void 0;
+exports.mFx = exports.Fx = exports.getLocation = exports.getInstance = exports.stableExtractArgs = exports.extractArgs = exports.ExtractArgs = exports.ExtractArg = exports.togglePerformance = void 0;
 const query_1 = require("faunadb/query");
 const Exception_1 = require("./Exception");
 const Raise_1 = require("./Raise");
 const Yield_1 = require("./Yield");
 const shortid_1 = require("shortid");
 const random_word_slugs_1 = require("random-word-slugs");
+const FloraLocalState = {
+    performance: false
+};
+const togglePerformance = (b) => {
+    FloraLocalState.performance = b;
+};
+exports.togglePerformance = togglePerformance;
 const result = "result";
 const arg = "arg";
 const xarg = "xarg";
@@ -62,6 +69,12 @@ const extractArgs = (args, loc) => {
     });
 };
 exports.extractArgs = extractArgs;
+const stableExtractArgs = (args) => {
+    return args.map((arg) => {
+        return arg[0];
+    });
+};
+exports.stableExtractArgs = stableExtractArgs;
 const getInstance = () => {
     return `${(0, random_word_slugs_1.generateSlug)(1, {
         format: "title",
@@ -88,6 +101,9 @@ const getLocation = (errorStack) => {
 exports.getLocation = getLocation;
 const xargs = "xargs";
 const Fx = (args, $ReturnType, expr) => {
+    if (FloraLocalState.performance) {
+        return expr(...(0, exports.stableExtractArgs)(args));
+    }
     const errorStack = new Error().stack || "";
     const [mainLocation, yieldLocation] = (0, exports.getLocation)(errorStack);
     const predicateName = $ReturnType ? $ReturnType.name || "$Unspecified" : "$Unspecified";
