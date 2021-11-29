@@ -1,5 +1,6 @@
 import { ContainsPath, If, Select, Var, Let } from "faunadb/query";
 import { ContainsException, FloraException, GetExceptions } from "./Exception";
+import { FloraLocalState } from "./Fx";
 import { Reraise } from "./Raise";
 export const expressArgs = (args, evaluatedArgs, loc) => {
     return args.map((arg, index) => {
@@ -28,6 +29,9 @@ export const _Yield = (args) => {
     }, Var(result));
 };
 export const Yield = (args) => {
+    if (FloraLocalState.performance) {
+        return args.expr(...args.args);
+    }
     const caller = (new Error()).stack?.split("\n")[2].trim().split(" ")[1];
     const _args = {
         name: caller || "undefined",

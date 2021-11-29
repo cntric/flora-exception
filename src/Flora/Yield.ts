@@ -15,6 +15,7 @@ import {
     generate
 } from "shortid";
 import { ContainsException, FloraException, GetExceptions } from "./Exception";
+import { FloraLocalState } from "./Fx";
 import { Reraise } from "./Raise";
 
 
@@ -72,6 +73,10 @@ export interface YieldArgsI<A extends any[], T>{
 }
 
 export const Yield =  <A extends any[], T>(args : YieldArgsI<A, T>) : T=>{
+
+    if(FloraLocalState.performance){
+        return args.expr(...args.args);
+    }
 
     const caller = (new Error()).stack?.split("\n")[2].trim().split(" ")[1];
 

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Yield = exports._Yield = exports.expressArgs = void 0;
 const query_1 = require("faunadb/query");
 const Exception_1 = require("./Exception");
+const Fx_1 = require("./Fx");
 const Raise_1 = require("./Raise");
 const expressArgs = (args, evaluatedArgs, loc) => {
     return args.map((arg, index) => {
@@ -34,6 +35,9 @@ const _Yield = (args) => {
 exports._Yield = _Yield;
 const Yield = (args) => {
     var _a;
+    if (Fx_1.FloraLocalState.performance) {
+        return args.expr(...args.args);
+    }
     const caller = (_a = (new Error()).stack) === null || _a === void 0 ? void 0 : _a.split("\n")[2].trim().split(" ")[1];
     const _args = Object.assign({ name: caller || "undefined" }, args);
     return (0, exports._Yield)(_args);
