@@ -1,9 +1,10 @@
-import { Concat, Map, If, Var, Lambda, Format, Let } from "faunadb/query";
+import { query } from "faunadb";
 import { FloraException, IsException } from "./Exception";
 import { Raise } from "./Raise";
 import { Yield } from "./Yield";
 import { generate } from "shortid";
 import { generateSlug } from "random-word-slugs";
+const { Concat, Map, If, Var, Lambda, Format, ToString, Let } = query;
 export const FloraLocalState = {
     performance: false
 };

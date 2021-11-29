@@ -1,4 +1,5 @@
-import { 
+import { query, ExprArg } from "faunadb";
+const { 
     Append, 
     IsArray, 
     Not, 
@@ -13,8 +14,7 @@ import {
     Filter,
     Lambda,
     And,
-    ExprArg
-} from "faunadb/query";
+} = query;
 
 
 export const isFloraExceptionKey = "isFloraException";

@@ -5,7 +5,7 @@ import {
     Lambda,
     Var,
     And
-} from "faunadb/query";
+} from "faunadb";
 import { GuardedT } from "Flora/Fx";
 
 

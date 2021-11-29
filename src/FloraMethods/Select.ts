@@ -1,8 +1,6 @@
-import * as q from "faunadb/query"
+import {query as q} from "faunadb"
 import { Fx, GuardedT } from "../Flora"
 import { $Any, $String, $Object, $Tuple, $Array} from "../FloraTypes"
-import {generate} from "shortid";
-import { query } from "fauna-test-setup/node_modules/faunadb";
 
 export const Select = <
     P extends (obj : any)=>obj is any,

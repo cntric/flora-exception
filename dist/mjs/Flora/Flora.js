@@ -1,6 +1,7 @@
-import { ContainsPath, Create, Do, Exists, Get, GT, Not, Tokens, Update, Let, If, ToObject, Select, Equals, Merge, Var, Collection, Login, Or, Count, And, CurrentIdentity, Query, Lambda, } from "faunadb/query";
+import { query } from "faunadb";
 import { IsException } from "./Exception";
 import { floraDocumentKey, floraCollectionKey, generateFloraKey } from "./Key";
+const { ContainsPath, Create, Do, Exists, Get, GT, Length, Not, Tokens, Update, Let, If, IsObject, ToObject, Select, Contains, Equals, Append, Merge, Var, Collection, Database, Delete, Ref, CreateCollection, Login, Or, Count, And, CurrentIdentity, Query, Lambda, } = query;
 const templateDoc = "templateDoc";
 const identifyStep = "identify";
 const floraDoc = "floraDoc";

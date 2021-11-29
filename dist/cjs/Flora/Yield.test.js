@@ -10,11 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.YieldSuiteA = void 0;
-const query_1 = require("faunadb/query");
 const fauna_test_setup_1 = require("fauna-test-setup");
 const Flora_1 = require("./Flora");
 const Exception_1 = require("./Exception");
 const Yield_1 = require("./Yield");
+const faunadb_1 = require("faunadb");
+const { Add } = faunadb_1.query;
 const YieldSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;
@@ -25,7 +26,7 @@ const YieldSuiteA = () => {
             const result = yield db.client.query((0, Flora_1.Flora)((0, Yield_1.Yield)({
                 args: [2, 2],
                 expr: (a, b) => {
-                    return (0, query_1.Add)(2, 2);
+                    return Add(2, 2);
                 }
             })));
             expect(result).toBe(4);
@@ -35,7 +36,7 @@ const YieldSuiteA = () => {
                 return (0, Yield_1.Yield)({
                     args: [a],
                     expr: (a) => {
-                        return (0, query_1.Add)(a, 2);
+                        return Add(a, 2);
                     }
                 });
             };
@@ -48,7 +49,7 @@ const YieldSuiteA = () => {
                 return (0, Yield_1.Yield)({
                     args: [a],
                     expr: (a) => {
-                        return (0, query_1.Add)(a, 2);
+                        return Add(a, 2);
                     }
                 });
             };
@@ -63,7 +64,7 @@ const YieldSuiteA = () => {
                 return (0, Yield_1.Yield)({
                     args: [a],
                     expr: (a) => {
-                        return (0, query_1.Add)(a, 2);
+                        return Add(a, 2);
                     }
                 });
             };

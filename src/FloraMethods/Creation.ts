@@ -1,4 +1,4 @@
-import * as q from "faunadb/query";
+import {query as q} from "faunadb";
 import {values} from "faunadb";
 import { $Any, $Collection, $Document, CreateCollectionParamsI, FreshCollectionI, CollectionI, $String } from "../FloraTypes";
 import { Fx, GuardedT } from "../Flora/Fx";

@@ -3,7 +3,7 @@ import { $Any, $String, $Document, $Ref, FloraRef } from "../FloraTypes";
 import { values } from "faunadb";
 import {Dot, Select} from "./Select";
 import {Get} from "./FaunaMethods";
-import * as q from "faunadb/query";
+import {query as q} from "faunadb";
 import { NestedSelect } from "./Select";
 
 /**

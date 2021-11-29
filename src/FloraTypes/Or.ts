@@ -2,7 +2,7 @@
 import {GuardedT, GuardedsT} from "../Flora";
 import {
     Or
-} from  "faunadb/query";
+} from  "faunadb";
 
 export const $Or = <A extends ((obj : any)=>boolean)[]>(
     ...args : A

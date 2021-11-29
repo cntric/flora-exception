@@ -1,4 +1,4 @@
-import { If, And, IsDoc, Select, ContainsPath } from "faunadb/query";
+import { If, And, IsDoc, Select, ContainsPath } from "faunadb";
 /**
  * Document type predicate. Chcecks that any object is a document and has matching data.
  * @param Predicate is the predicate used to check the data.

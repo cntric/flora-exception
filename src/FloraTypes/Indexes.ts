@@ -1,5 +1,5 @@
 import {values} from "faunadb";
-import * as q from "faunadb/query";
+import {query as q} from "faunadb";
 
 export interface IndexI extends values.Document {
     active : boolean,

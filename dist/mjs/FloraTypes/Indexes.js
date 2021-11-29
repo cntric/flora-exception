@@ -1,4 +1,4 @@
-import * as q from "faunadb/query";
+import { query as q } from "faunadb";
 export const $Index = (obj) => {
     return q.IsIndex(obj);
 };

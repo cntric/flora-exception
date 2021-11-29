@@ -1,6 +1,7 @@
 import {FloraExceptionI} from "./Exception";
 import {GetFloraDocument, GetFloraDocumentRef, GetStack} from "./Flora";
-import { 
+import {query} from "faunadb";
+const {
     Let, 
     Merge, 
     ToObject,
@@ -9,7 +10,7 @@ import {
     Append,
     Select, 
     Var
-} from "faunadb/query";
+} = query;
 
 
 /**

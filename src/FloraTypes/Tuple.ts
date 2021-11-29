@@ -7,7 +7,7 @@ import {
     And,
     Select,
     ContainsPath
-} from "faunadb/query";
+} from "faunadb";
 import { GuardedT } from "Flora/Fx";
 import { OptionalPredicateI } from "FloraTypes";
 

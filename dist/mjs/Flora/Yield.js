@@ -1,7 +1,8 @@
-import { ContainsPath, If, Select, Var, Let } from "faunadb/query";
+import { query } from "faunadb";
 import { ContainsException, FloraException, GetExceptions } from "./Exception";
 import { FloraLocalState } from "./Fx";
 import { Reraise } from "./Raise";
+const { ContainsPath, If, Select, Var, Let, } = query;
 export const expressArgs = (args, evaluatedArgs, loc) => {
     return args.map((arg, index) => {
         return If(ContainsPath(index, evaluatedArgs), Select(index, evaluatedArgs), FloraException({

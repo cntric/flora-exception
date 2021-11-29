@@ -1,4 +1,12 @@
-import { 
+import {query, ExprArg} from "faunadb";
+import { values } from "faunadb";
+import { FloraExceptionI, IsException } from "./Exception";
+import { ExceptionStackT } from "./ExceptionStack";
+import {
+    floraDocumentKey,
+    floraCollectionKey, generateFloraKey
+} from "./Key";
+const {
     ContainsPath,
     Create, 
     Do,
@@ -31,16 +39,8 @@ import {
     CurrentIdentity,
     Query,
     Lambda,
-    ExprArg,
-} from "faunadb/query";
-import { values } from "faunadb";
-import { FloraExceptionI, IsException } from "./Exception";
-import { ExceptionStackT } from "./ExceptionStack";
-import {
-    floraDocumentKey,
-    floraCollectionKey, generateFloraKey
-} from "./Key";
 
+} = query;
 
 
 const templateDoc = "templateDoc";

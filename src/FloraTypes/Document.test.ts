@@ -9,7 +9,7 @@ import {
     IsArray,
     Collection,
     Let,
-} from "faunadb/query";
+} from "faunadb";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import { $Object, $Optional } from "./Object";
 import { $Number, $String } from "./Primitives";

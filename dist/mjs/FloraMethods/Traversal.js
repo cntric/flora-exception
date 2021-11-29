@@ -2,7 +2,7 @@ import { Fx } from "../Flora";
 import { $Any, $Ref } from "../FloraTypes";
 import { Dot } from "./Select";
 import { Get } from "./FaunaMethods";
-import * as q from "faunadb/query";
+import { query as q } from "faunadb";
 import { NestedSelect } from "./Select";
 /**
  * Gets the item if it is a ref.

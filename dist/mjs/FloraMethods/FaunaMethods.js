@@ -1,4 +1,4 @@
-import * as q from "faunadb/query";
+import { query as q } from "faunadb";
 import { Fx } from "../Flora";
 import { $Any, $Number, $Array, $Ref } from "../FloraTypes";
 import { mFx } from "../Flora";

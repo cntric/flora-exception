@@ -1,4 +1,4 @@
-import { ExprArg } from "faunadb/query";
+import { ExprArg } from "faunadb";
 import { values } from "faunadb";
 import { FloraExceptionI } from "./Exception";
 import { ExceptionStackT } from "./ExceptionStack";

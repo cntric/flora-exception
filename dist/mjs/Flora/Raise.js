@@ -1,5 +1,6 @@
 import { GetFloraDocumentRef, GetStack } from "./Flora";
-import { Let, Merge, ToObject, Do, Update, Append, Var } from "faunadb/query";
+import { query } from "faunadb";
+const { Let, Merge, ToObject, Do, Update, Append, Select, Var } = query;
 /**
  *
  */

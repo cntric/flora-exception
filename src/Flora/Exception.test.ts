@@ -1,10 +1,6 @@
 import {
-    IsArray,
-    Var,
-    IsNumber,
-    Do,
-    And
-} from "faunadb/query";
+    query
+} from "faunadb";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import {
     blight,
@@ -19,6 +15,13 @@ import {
 import {FloraException, ContainsException, IsException, GetExceptions, FloraExceptionI} from "./Exception";
 import { Yield } from "./Yield";
 import { extractArgs, FxArgI } from "./Fx";
+const {
+    IsArray,
+    Var,
+    IsNumber,
+    Do,
+    And
+} = query;
 
 export const ExceptionSuiteA = ()=>{
 

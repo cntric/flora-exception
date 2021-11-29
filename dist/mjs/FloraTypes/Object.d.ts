@@ -1,4 +1,4 @@
-import { ExprArg } from "faunadb/query";
+import { ExprArg } from "faunadb";
 import { GuardedT } from "Flora";
 export interface PredicateI {
     (obj: any): boolean;

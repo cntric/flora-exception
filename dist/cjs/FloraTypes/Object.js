@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.$Object = exports.PredicatesSatisfied = exports.el = exports.agg = exports.extractPredicates = exports.$Optional = void 0;
-const query_1 = require("faunadb/query");
+const faunadb_1 = require("faunadb");
 /**
  * Forms an optional field predicate.
  * @param predicate Is the type predicate used to verify the field if one is present
@@ -20,7 +20,7 @@ exports.$Optional = $Optional;
  */
 const extractPredicates = (args, obj) => {
     return Object.keys(args).map((key) => {
-        return (0, query_1.If)((0, query_1.ContainsPath)(key, obj), args[key]((0, query_1.Select)(key, obj)), args[key].optional ? true : false);
+        return (0, faunadb_1.If)((0, faunadb_1.ContainsPath)(key, obj), args[key]((0, faunadb_1.Select)(key, obj)), args[key].optional ? true : false);
     });
 };
 exports.extractPredicates = extractPredicates;
@@ -32,7 +32,7 @@ exports.el = "el";
  * @returns
  */
 const PredicatesSatisfied = (predicates) => {
-    return (0, query_1.Reduce)((0, query_1.Lambda)([exports.agg, exports.el], (0, query_1.And)((0, query_1.Var)(exports.agg), (0, query_1.Var)(exports.el))), true, predicates);
+    return (0, faunadb_1.Reduce)((0, faunadb_1.Lambda)([exports.agg, exports.el], (0, faunadb_1.And)((0, faunadb_1.Var)(exports.agg), (0, faunadb_1.Var)(exports.el))), true, predicates);
 };
 exports.PredicatesSatisfied = PredicatesSatisfied;
 /**
@@ -41,6 +41,6 @@ exports.PredicatesSatisfied = PredicatesSatisfied;
  * @returns
  */
 const $Object = (args) => (obj) => {
-    return args ? (0, query_1.If)((0, query_1.IsObject)(obj), (0, exports.PredicatesSatisfied)((0, exports.extractPredicates)(args, obj)), false) : (0, query_1.IsObject)(obj);
+    return args ? (0, faunadb_1.If)((0, faunadb_1.IsObject)(obj), (0, exports.PredicatesSatisfied)((0, exports.extractPredicates)(args, obj)), false) : (0, faunadb_1.IsObject)(obj);
 };
 exports.$Object = $Object;

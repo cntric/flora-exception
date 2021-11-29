@@ -1,30 +1,11 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Traverse = exports.mkTraverseProxyHandler = exports.NestedTraversalSelect = exports.TraversalSelect = exports.Deref = void 0;
 const Flora_1 = require("../Flora");
 const FloraTypes_1 = require("../FloraTypes");
 const Select_1 = require("./Select");
 const FaunaMethods_1 = require("./FaunaMethods");
-const q = __importStar(require("faunadb/query"));
+const faunadb_1 = require("faunadb");
 const Select_2 = require("./Select");
 /**
  * Gets the item if it is a ref.
@@ -32,7 +13,7 @@ const Select_2 = require("./Select");
  * @returns
  */
 const Deref = (obj) => {
-    return (0, Flora_1.Fx)([[obj, FloraTypes_1.$Any]], FloraTypes_1.$Any, (obj) => q.If((0, FloraTypes_1.$Ref)()(obj), (0, FaunaMethods_1.Get)(obj), obj));
+    return (0, Flora_1.Fx)([[obj, FloraTypes_1.$Any]], FloraTypes_1.$Any, (obj) => faunadb_1.query.If((0, FloraTypes_1.$Ref)()(obj), (0, FaunaMethods_1.Get)(obj), obj));
 };
 exports.Deref = Deref;
 const TraversalSelect = (path, obj) => {
@@ -40,7 +21,7 @@ const TraversalSelect = (path, obj) => {
 };
 exports.TraversalSelect = TraversalSelect;
 const NestedTraversalSelect = (path, expr) => {
-    return q.Reduce(q.Lambda(["agg", "el"], (0, exports.TraversalSelect)(q.Var("el"), q.Var("agg"))), expr, path);
+    return faunadb_1.query.Reduce(faunadb_1.query.Lambda(["agg", "el"], (0, exports.TraversalSelect)(faunadb_1.query.Var("el"), faunadb_1.query.Var("agg"))), expr, path);
 };
 exports.NestedTraversalSelect = NestedTraversalSelect;
 const mkTraverseProxyHandler = (expr, path) => {
@@ -65,9 +46,9 @@ const exprName = "expr";
 const Traverse = (Doc, $Predicate = FloraTypes_1.$Any) => {
     const _expr = Object.assign({}, Doc);
     const handler = (0, exports.mkTraverseProxyHandler)(_expr, []);
-    const __expr = q.Let({
+    const __expr = faunadb_1.query.Let({
         [exprName]: _expr
-    }, q.Var(exprName));
+    }, faunadb_1.query.Var(exprName));
     return new Proxy(__expr, handler);
 };
 exports.Traverse = Traverse;

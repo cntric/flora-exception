@@ -1,4 +1,4 @@
-import { If, IsRef, Get, Exists } from "faunadb/query";
+import { If, IsRef, Get, Exists } from "faunadb";
 import { $Any } from "./Any";
 /**
  * Document type predicate. Chcecks that any object is a document and has matching data.

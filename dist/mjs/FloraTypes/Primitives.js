@@ -1,4 +1,4 @@
-import { IsNumber, IsBoolean, If, IsString, IsInteger, GT, LT } from "faunadb/query";
+import { IsNumber, IsBoolean, If, IsString, IsInteger, GT, LT } from "faunadb";
 /**
  * Number type predicate.
  * @param obj

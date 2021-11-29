@@ -1,7 +1,7 @@
 import { values } from "faunadb";
 import { Fx, mFx, Raise } from "../Flora";
 import { $Any, $Document, $Ref } from "../FloraTypes";
-import * as q from "faunadb/query";
+import {query as q} from "faunadb";
 import { FloraException } from "../Flora";
 
 export const Read = <T extends any>(

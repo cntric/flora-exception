@@ -1,7 +1,7 @@
 import { values } from "faunadb";
 import {If,
     And,
-    IsDoc, Select, Contains, ContainsPath} from "faunadb/query";
+    IsDoc, Select, Contains, ContainsPath} from "faunadb";
 import { $Any } from "./Any";
 import { $Object } from "./Object";
 import { $Or } from "./Or";

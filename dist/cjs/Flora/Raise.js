@@ -2,14 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Reraise = exports.Raise = exports._Raise = exports.AddExceptionToStack = void 0;
 const Flora_1 = require("./Flora");
-const query_1 = require("faunadb/query");
+const faunadb_1 = require("faunadb");
+const { Let, Merge, ToObject, Do, Update, Append, Select, Var } = faunadb_1.query;
 /**
  *
  */
 const AddExceptionToStack = (Exception) => {
-    return (0, query_1.Do)((0, query_1.Update)((0, Flora_1.GetFloraDocumentRef)(), {
+    return Do(Update((0, Flora_1.GetFloraDocumentRef)(), {
         data: {
-            stack: (0, query_1.Append)([Exception], (0, Flora_1.GetStack)())
+            stack: Append([Exception], (0, Flora_1.GetStack)())
         }
     }), (0, Flora_1.GetStack)());
 };
@@ -20,14 +21,14 @@ exports.AddExceptionToStack = AddExceptionToStack;
  * @returns
  */
 const _Raise = (floraException) => {
-    return (0, query_1.Do)((0, exports.AddExceptionToStack)(floraException), floraException);
+    return Do((0, exports.AddExceptionToStack)(floraException), floraException);
 };
 exports._Raise = _Raise;
 const raise = "raise";
 const Raise = (floraException) => {
-    return (0, query_1.Let)({
+    return Let({
         [raise]: (0, exports._Raise)(floraException)
-    }, (0, query_1.Var)(raise));
+    }, Var(raise));
 };
 exports.Raise = Raise;
 /**
@@ -37,10 +38,10 @@ exports.Raise = Raise;
  * @returns
  */
 const Reraise = (prevExceptions, newException) => {
-    return (0, query_1.Let)({
-        [raise]: (0, query_1.Merge)(newException, (0, query_1.ToObject)([
+    return Let({
+        [raise]: Merge(newException, ToObject([
             ["at", prevExceptions]
         ]))
-    }, (0, query_1.Do)((0, exports.AddExceptionToStack)((0, query_1.Var)(raise)), (0, query_1.Var)(raise)));
+    }, Do((0, exports.AddExceptionToStack)(Var(raise)), Var(raise)));
 };
 exports.Reraise = Reraise;

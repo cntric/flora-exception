@@ -1,4 +1,12 @@
-import {
+import {query} from "faunadb"
+import { FloraException, FloraExceptionI, IsException, GetExceptions } from "./Exception";
+import { AddExceptionToStack, Raise, Reraise } from "./Raise";
+import { Yield } from "./Yield";
+import {generate} from "shortid";
+import { generateSlug } from "random-word-slugs";
+import { $Number, $String } from "FloraTypes";
+
+const {
     Concat,
     Map ,
     If,
@@ -7,13 +15,7 @@ import {
     Format,
     ToString,
     Let
-} from "faunadb/query";
-import { FloraException, FloraExceptionI, IsException, GetExceptions } from "./Exception";
-import { AddExceptionToStack, Raise, Reraise } from "./Raise";
-import { Yield } from "./Yield";
-import {generate} from "shortid";
-import { generateSlug } from "random-word-slugs";
-import { $Number, $String } from "FloraTypes";
+} = query;
 
 export const FloraLocalState = {
     performance : false

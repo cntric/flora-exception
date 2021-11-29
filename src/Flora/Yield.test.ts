@@ -1,6 +1,4 @@
-import {
-    Add
-} from "faunadb/query";
+
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import {
     blight,
@@ -15,6 +13,13 @@ import {
 import {Raise} from "./Raise";
 import { FloraException, FloraExceptionI, isFloraException } from "./Exception";
 import { Yield } from "./Yield";
+import {
+    query
+} from "faunadb";
+
+const {
+    Add
+} = query;
 
 
 export const YieldSuiteA = ()=>{

@@ -1,4 +1,4 @@
-import { ExprArg } from "faunadb/query";
+import { ExprArg } from "faunadb";
 export declare const isFloraExceptionKey = "isFloraException";
 export interface FloraExceptionI {
     location?: string;

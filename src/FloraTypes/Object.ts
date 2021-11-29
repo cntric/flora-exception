@@ -2,7 +2,7 @@ import {
     If,
     Select, Var, Lambda, And, ContainsPath, IsObject, Reduce,
     ExprArg
-} from "faunadb/query";
+} from "faunadb";
 import { GuardedT } from "Flora";
 
 export interface PredicateI {

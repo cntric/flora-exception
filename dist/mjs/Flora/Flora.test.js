@@ -1,8 +1,9 @@
-import { Add } from "faunadb/query";
+import { query } from "faunadb";
 import { FaunaTestDb } from "fauna-test-setup";
 import { blight, DefaultCheckPermission, Flora, FloraCollection, usedFloraIdentity, withIdentity, } from "./Flora";
 import { Raise } from "./Raise";
 import { FloraException } from "./Exception";
+const { Add, Var, IsNumber, Do, And } = query;
 export const FloraSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;

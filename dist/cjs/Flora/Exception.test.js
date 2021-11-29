@@ -10,11 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExceptionSuiteA = void 0;
-const query_1 = require("faunadb/query");
+const faunadb_1 = require("faunadb");
 const fauna_test_setup_1 = require("fauna-test-setup");
 const Flora_1 = require("./Flora");
 const Exception_1 = require("./Exception");
 const Fx_1 = require("./Fx");
+const { IsArray, Var, IsNumber, Do, And } = faunadb_1.query;
 const ExceptionSuiteA = () => {
     describe("Flora exceptions basic functionality", () => {
         let db;
@@ -35,7 +36,7 @@ const ExceptionSuiteA = () => {
         }));
         test("Gets complex Exceptions", () => __awaiter(void 0, void 0, void 0, function* () {
             const args = [
-                [[2, 2, 2, 2], query_1.IsArray],
+                [[2, 2, 2, 2], IsArray],
                 // ["dsfhks", IsArray as ()=>boolean]
             ];
             const result = yield db.client.query((0, Flora_1.Flora)((0, Fx_1.extractArgs)(args, "here")));

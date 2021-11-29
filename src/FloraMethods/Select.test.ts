@@ -2,7 +2,7 @@ import { Flora, isFloraException } from "../Flora";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import { $Number, $Object, $String } from "../FloraTypes";
 import { Dot, NestedSelect, Select } from "./Select";
-import * as q from "faunadb/query";
+import {query as q} from "faunadb";
 
 
 

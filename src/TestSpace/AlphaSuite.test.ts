@@ -1,6 +1,6 @@
 import {
     Add
-} from "faunadb/query";
+} from "faunadb";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import { Fx, Flora } from "../Flora";
 import { $Number } from "../FloraTypes";

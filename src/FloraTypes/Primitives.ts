@@ -6,7 +6,7 @@ import {
     IsInteger,
     GT,
     LT
-} from "faunadb/query";
+} from "faunadb";
 
 /**
  * Number type predicate.

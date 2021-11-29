@@ -1,4 +1,4 @@
-import { IsArray, If, And, Select, ContainsPath } from "faunadb/query";
+import { IsArray, If, And, Select, ContainsPath } from "faunadb";
 /**
  *
  * @param obj

@@ -1,23 +1,20 @@
 import {
-    ContainsPath,
-    If,
-    IsObject,
-    Select,
-    Contains,
-    Equals,
-    Append,
-    Merge,
-    Var,
-    Let,
+    query,
     ExprArg
-} from "faunadb/query"
+} from "faunadb";
 import {
     generate
 } from "shortid";
 import { ContainsException, FloraException, GetExceptions } from "./Exception";
 import { FloraLocalState } from "./Fx";
 import { Reraise } from "./Raise";
-
+const {
+    ContainsPath,
+    If,
+    Select,
+    Var,
+    Let,
+} = query;
 
 
 export const expressArgs = <A extends any[]>(args : A, evaluatedArgs : ExprArg, loc : string) : A=>{

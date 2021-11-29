@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mFx = exports.Fx = exports.getLocation = exports.getInstance = exports.stableExtractArgs = exports.extractArgs = exports.ExtractArgs = exports.ExtractArg = exports.togglePerformance = exports.FloraLocalState = void 0;
-const query_1 = require("faunadb/query");
+const faunadb_1 = require("faunadb");
 const Exception_1 = require("./Exception");
 const Raise_1 = require("./Raise");
 const Yield_1 = require("./Yield");
 const shortid_1 = require("shortid");
 const random_word_slugs_1 = require("random-word-slugs");
+const { Concat, Map, If, Var, Lambda, Format, ToString, Let } = faunadb_1.query;
 exports.FloraLocalState = {
     performance: false
 };
@@ -33,18 +34,18 @@ const ExtractArg = (arg, loc) => {
     catch (_a) {
         arg0 = "[failedToString]";
     }
-    return (0, query_1.Let)({
+    return Let({
         [xarg]: arg[0],
-        [result]: (0, query_1.If)(Predicate((0, query_1.Var)(xarg)), (0, query_1.Var)(xarg), (0, Raise_1.Raise)((0, Exception_1.FloraException)({
+        [result]: If(Predicate(Var(xarg)), Var(xarg), (0, Raise_1.Raise)((0, Exception_1.FloraException)({
             name: "TypeException",
-            msg: (0, query_1.Concat)([
+            msg: Concat([
                 `Argument does not match type ${predicateName}: Value {`,
-                (0, query_1.Format)('%@', (0, query_1.Var)(xarg)),
+                Format('%@', Var(xarg)),
                 `} is not of type ${predicateName}`
             ]),
             location: loc
         })))
-    }, (0, query_1.Var)(result));
+    }, Var(result));
 };
 exports.ExtractArg = ExtractArg;
 /**
@@ -54,7 +55,7 @@ exports.ExtractArg = ExtractArg;
  * @returns
  */
 const ExtractArgs = (args, loc) => {
-    return (0, query_1.Map)(args, (0, query_1.Lambda)(arg, (0, exports.ExtractArg)((0, query_1.Var)(arg), loc)));
+    return Map(args, Lambda(arg, (0, exports.ExtractArg)(Var(arg), loc)));
 };
 exports.ExtractArgs = ExtractArgs;
 /**
@@ -107,17 +108,17 @@ const Fx = (args, $ReturnType, expr) => {
     const errorStack = new Error().stack || "";
     const [mainLocation, yieldLocation] = (0, exports.getLocation)(errorStack);
     const predicateName = $ReturnType ? $ReturnType.name || "$Unspecified" : "$Unspecified";
-    return (0, query_1.Let)({
+    return Let({
         [result]: (0, Yield_1.Yield)({
             name: yieldLocation,
             args: (0, exports.extractArgs)(args, mainLocation),
             expr: expr
         })
-    }, (0, query_1.If)($ReturnType((0, query_1.Var)(result)), (0, query_1.Var)(result), (0, query_1.If)((0, Exception_1.IsException)((0, query_1.Var)(result)), (0, query_1.Var)(result), (0, Raise_1.Raise)((0, Exception_1.FloraException)({
+    }, If($ReturnType(Var(result)), Var(result), If((0, Exception_1.IsException)(Var(result)), Var(result), (0, Raise_1.Raise)((0, Exception_1.FloraException)({
         name: "ReturnTypeExcpetion",
-        msg: (0, query_1.Concat)([
+        msg: Concat([
             `Return does not match type ${predicateName}: Value {`,
-            (0, query_1.Format)('%@', (0, query_1.Var)(result)),
+            Format('%@', Var(result)),
             `} is not of type ${predicateName}`
         ]),
         location: mainLocation

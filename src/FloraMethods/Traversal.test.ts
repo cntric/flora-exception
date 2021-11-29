@@ -3,9 +3,6 @@ import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import { $Number, $Object, $String } from "../FloraTypes";
 import { Dot, Select } from "./Select";
 import { Deref, Traverse } from "./Traversal";
-import {generate} from "shortid";
-import {Do, CreateCollection, Create, Collection, Get, Let, Var} from "faunadb/query";
-import { values } from "faunadb";
 
 
 

@@ -1,4 +1,4 @@
-import { Or } from "faunadb/query";
+import { Or } from "faunadb";
 export const $Or = (...args) => (obj) => {
     const predicates = args.map((arg) => {
         return arg(obj);

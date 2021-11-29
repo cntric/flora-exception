@@ -1,4 +1,4 @@
-import { And } from "faunadb/query";
+import { And } from "faunadb";
 export const $And = (...args) => (obj) => {
     const predicates = args.map((arg) => {
         return arg(obj);

@@ -1,4 +1,4 @@
-import { IsArray, Reduce, If, Lambda, Var, And } from "faunadb/query";
+import { IsArray, Reduce, If, Lambda, Var, And } from "faunadb";
 const agg = "agg";
 const el = "el";
 /**

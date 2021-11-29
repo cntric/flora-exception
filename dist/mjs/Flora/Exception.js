@@ -1,4 +1,5 @@
-import { Append, IsArray, Not, Or, Reduce, Var, Select, If, IsObject, ContainsPath, Equals, Lambda, And } from "faunadb/query";
+import { query } from "faunadb";
+const { Append, IsArray, Not, Or, Reduce, Var, Select, If, IsObject, ContainsPath, Equals, Filter, Lambda, And, } = query;
 export const isFloraExceptionKey = "isFloraException";
 /**
  *

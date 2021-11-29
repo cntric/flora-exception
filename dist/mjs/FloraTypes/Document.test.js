@@ -1,4 +1,4 @@
-import { Var, Create, Collection, Let, } from "faunadb/query";
+import { Var, Create, Collection, Let, } from "faunadb";
 import { FaunaTestDb } from "fauna-test-setup";
 import { $Object, $Optional } from "./Object";
 import { $Number, $String } from "./Primitives";

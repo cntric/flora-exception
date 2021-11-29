@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.$Boolean = exports.$String = exports.$UInt8 = exports.$UInt = exports.$Int = exports.$Number = void 0;
-const query_1 = require("faunadb/query");
+const faunadb_1 = require("faunadb");
 /**
  * Number type predicate.
  * @param obj
  * @returns
  */
 const $Number = (obj) => {
-    return (0, query_1.IsNumber)(obj);
+    return (0, faunadb_1.IsNumber)(obj);
 };
 exports.$Number = $Number;
 /**
@@ -17,7 +17,7 @@ exports.$Number = $Number;
  * @returns
  */
 const $Int = (obj) => {
-    return (0, query_1.IsInteger)(obj);
+    return (0, faunadb_1.IsInteger)(obj);
 };
 exports.$Int = $Int;
 /**
@@ -25,7 +25,7 @@ exports.$Int = $Int;
  * @param obj
  */
 const $UInt = (obj) => {
-    return (0, query_1.If)((0, exports.$Int)(obj), (0, query_1.GT)(obj, -1), false);
+    return (0, faunadb_1.If)((0, exports.$Int)(obj), (0, faunadb_1.GT)(obj, -1), false);
 };
 exports.$UInt = $UInt;
 /**
@@ -34,7 +34,7 @@ exports.$UInt = $UInt;
  * @returns
  */
 const $UInt8 = (obj) => {
-    return (0, query_1.If)((0, exports.$UInt)(obj), (0, query_1.LT)(256), false);
+    return (0, faunadb_1.If)((0, exports.$UInt)(obj), (0, faunadb_1.LT)(256), false);
 };
 exports.$UInt8 = $UInt8;
 /**
@@ -43,7 +43,7 @@ exports.$UInt8 = $UInt8;
  * @returns
  */
 const $String = (obj) => {
-    return (0, query_1.IsString)(obj);
+    return (0, faunadb_1.IsString)(obj);
 };
 exports.$String = $String;
 /**
@@ -52,6 +52,6 @@ exports.$String = $String;
  * @returns
  */
 const $Boolean = (obj) => {
-    return (0, query_1.IsBoolean)(obj);
+    return (0, faunadb_1.IsBoolean)(obj);
 };
 exports.$Boolean = $Boolean;

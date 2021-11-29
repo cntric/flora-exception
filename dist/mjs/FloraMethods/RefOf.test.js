@@ -1,6 +1,6 @@
 import { Flora } from "../Flora";
 import { FaunaTestDb } from "fauna-test-setup";
-import * as q from "faunadb/query";
+import { query as q } from "faunadb";
 import { CreateCollection, Collection, Document } from "./Creation";
 import { generate } from "shortid";
 import { RefOf } from "./RefOf";

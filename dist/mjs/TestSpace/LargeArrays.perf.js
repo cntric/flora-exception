@@ -1,4 +1,4 @@
-import { Sum, } from "faunadb/query";
+import { Sum, } from "faunadb";
 import { FaunaTestDb } from "fauna-test-setup";
 import { Fx, Flora } from "../Flora";
 import { $Array, $Number } from "../FloraTypes";

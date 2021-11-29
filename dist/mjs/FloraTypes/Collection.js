@@ -1,4 +1,4 @@
-import * as q from "faunadb/query";
+import { query as q } from "faunadb";
 import { $Any } from "./Any";
 import { $Object } from "./Object";
 import { $String } from "./Primitives";

@@ -1,12 +1,6 @@
 import {
-    IsNumber,
-    IsArray,
-    Sum,
-    Concat,
-    ToString,
-    Add,
-    IsString
-} from "faunadb/query";
+    query
+} from "faunadb";
 import { FaunaTestDb, FaunaTestDbI, teardown } from "fauna-test-setup";
 import {
     blight,
@@ -23,6 +17,15 @@ import { FloraException, FloraExceptionI, isFloraException } from "./Exception";
 import { Yield } from "./Yield";
 import { extractArgs, Fx, FxArgI, mFx } from "./Fx";
 import { $String, $Number } from "../FloraTypes";
+const {
+    IsNumber,
+    IsArray,
+    Sum,
+    Concat,
+    ToString,
+    Add,
+    IsString
+} = query;
 
 export const FxSuiteA = ()=>{
 

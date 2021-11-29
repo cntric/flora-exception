@@ -5,7 +5,7 @@ import {
     Get,
     Ref, 
     Exists
-} from "faunadb/query";
+} from "faunadb";
 import {
     values
 } from "faunadb";
