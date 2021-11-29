@@ -1,7 +1,6 @@
 import { query } from "faunadb";
-import { FloraException, IsException } from "./Exception";
+import { FloraException } from "./Exception";
 import { Raise } from "./Raise";
-import { Yield } from "./Yield";
 import { generate } from "shortid";
 import { generateSlug } from "random-word-slugs";
 const { Concat, Map, If, Var, Lambda, Format, ToString, Let } = query;
@@ -92,27 +91,45 @@ export const getLocation = (errorStack) => {
 };
 const xargs = "xargs";
 export const Fx = (args, $ReturnType, expr) => {
-    if (FloraLocalState.performance) {
-        return expr(...stableExtractArgs(args));
-    }
-    const errorStack = new Error().stack || "";
+    return expr(...stableExtractArgs(args));
+    /*const errorStack = new Error().stack || "";
     const [mainLocation, yieldLocation] = getLocation(errorStack);
-    const predicateName = $ReturnType ? $ReturnType.name || "$Unspecified" : "$Unspecified";
-    return Let({
-        [result]: Yield({
-            name: yieldLocation,
-            args: extractArgs(args, mainLocation),
-            expr: expr
-        })
-    }, If($ReturnType(Var(result)), Var(result), If(IsException(Var(result)), Var(result), Raise(FloraException({
-        name: "ReturnTypeExcpetion",
-        msg: Concat([
-            `Return does not match type ${predicateName}: Value {`,
-            Format('%@', Var(result)),
-            `} is not of type ${predicateName}`
-        ]),
-        location: mainLocation
-    })))));
+    const predicateName = $ReturnType ? $ReturnType.name||"$Unspecified" : "$Unspecified";
+
+    return Let(
+        {
+            [result] : Yield({
+                name : yieldLocation,
+                args : extractArgs(args, mainLocation),
+                expr : expr
+            })
+        },
+        If(
+            $ReturnType(
+                Var(result)
+            ),
+            Var(result),
+            If(
+                IsException(
+                    Var(result)
+                ),
+                Var(result),
+                Raise(
+                    FloraException({
+                        name : "ReturnTypeExcpetion",
+                        msg :  Concat(
+                            [
+                                `Return does not match type ${predicateName}: Value {`,
+                                Format('%@', Var(result)),
+                                `} is not of type ${predicateName}`
+                            ]
+                        ) as unknown as string,
+                        location : mainLocation
+                    })
+                )
+            )
+        )
+    ) as GuardedT<R>*/
 };
 const reguardArgs = (args, argTypes) => {
     return args.map((arg, index) => {
@@ -130,8 +147,10 @@ const reguardArgs = (args, argTypes) => {
  * @returns
  */
 export const mFx = ($ArgTypes, $ReturnType, expr) => (...args) => {
-    if (FloraLocalState.performance) {
-        return expr(...args);
-    }
-    return Fx(reguardArgs(args, $ArgTypes), $ReturnType, expr);
+    return expr(...args);
+    /*return Fx(
+        reguardArgs(args, $ArgTypes),
+        $ReturnType,
+        expr as (...args : any[])=>GuardedT<R>
+    )*/
 };

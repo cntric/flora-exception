@@ -147,11 +147,10 @@ export const Fx = <A extends FxArgI[], R extends (obj : any)=>boolean>(
     expr : (...args : FxExtractedArgsT<A>)=>GuardedT<R>
 ) : GuardedT<R>=>{
 
-    if(FloraLocalState.performance){
-        return expr(...stableExtractArgs(args))
-    }
+    return expr(...stableExtractArgs(args))
+    
 
-    const errorStack = new Error().stack || "";
+    /*const errorStack = new Error().stack || "";
     const [mainLocation, yieldLocation] = getLocation(errorStack);
     const predicateName = $ReturnType ? $ReturnType.name||"$Unspecified" : "$Unspecified";
 
@@ -188,7 +187,7 @@ export const Fx = <A extends FxArgI[], R extends (obj : any)=>boolean>(
                 )
             )
         )
-    ) as GuardedT<R>
+    ) as GuardedT<R>*/
 }
 
 
@@ -223,13 +222,12 @@ export const mFx = <A extends (PredicateI<any>)[], R extends (obj : any)=>boolea
     expr : (...args : GuardedsT<A>)=>GuardedT<R>
 )=>(...args : GuardedsT<A>) : GuardedT<R> =>{
 
-    if(FloraLocalState.performance){
-        return expr(...args);
-    }
 
-    return Fx(
+    return expr(...args);
+
+    /*return Fx(
         reguardArgs(args, $ArgTypes),
         $ReturnType,
         expr as (...args : any[])=>GuardedT<R>
-    )
+    )*/
 }

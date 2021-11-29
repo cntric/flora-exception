@@ -4,7 +4,6 @@ exports.mFx = exports.Fx = exports.getLocation = exports.getInstance = exports.s
 const faunadb_1 = require("faunadb");
 const Exception_1 = require("./Exception");
 const Raise_1 = require("./Raise");
-const Yield_1 = require("./Yield");
 const shortid_1 = require("shortid");
 const random_word_slugs_1 = require("random-word-slugs");
 const { Concat, Map, If, Var, Lambda, Format, ToString, Let } = faunadb_1.query;
@@ -102,27 +101,45 @@ const getLocation = (errorStack) => {
 exports.getLocation = getLocation;
 const xargs = "xargs";
 const Fx = (args, $ReturnType, expr) => {
-    if (exports.FloraLocalState.performance) {
-        return expr(...(0, exports.stableExtractArgs)(args));
-    }
-    const errorStack = new Error().stack || "";
-    const [mainLocation, yieldLocation] = (0, exports.getLocation)(errorStack);
-    const predicateName = $ReturnType ? $ReturnType.name || "$Unspecified" : "$Unspecified";
-    return Let({
-        [result]: (0, Yield_1.Yield)({
-            name: yieldLocation,
-            args: (0, exports.extractArgs)(args, mainLocation),
-            expr: expr
-        })
-    }, If($ReturnType(Var(result)), Var(result), If((0, Exception_1.IsException)(Var(result)), Var(result), (0, Raise_1.Raise)((0, Exception_1.FloraException)({
-        name: "ReturnTypeExcpetion",
-        msg: Concat([
-            `Return does not match type ${predicateName}: Value {`,
-            Format('%@', Var(result)),
-            `} is not of type ${predicateName}`
-        ]),
-        location: mainLocation
-    })))));
+    return expr(...(0, exports.stableExtractArgs)(args));
+    /*const errorStack = new Error().stack || "";
+    const [mainLocation, yieldLocation] = getLocation(errorStack);
+    const predicateName = $ReturnType ? $ReturnType.name||"$Unspecified" : "$Unspecified";
+
+    return Let(
+        {
+            [result] : Yield({
+                name : yieldLocation,
+                args : extractArgs(args, mainLocation),
+                expr : expr
+            })
+        },
+        If(
+            $ReturnType(
+                Var(result)
+            ),
+            Var(result),
+            If(
+                IsException(
+                    Var(result)
+                ),
+                Var(result),
+                Raise(
+                    FloraException({
+                        name : "ReturnTypeExcpetion",
+                        msg :  Concat(
+                            [
+                                `Return does not match type ${predicateName}: Value {`,
+                                Format('%@', Var(result)),
+                                `} is not of type ${predicateName}`
+                            ]
+                        ) as unknown as string,
+                        location : mainLocation
+                    })
+                )
+            )
+        )
+    ) as GuardedT<R>*/
 };
 exports.Fx = Fx;
 const reguardArgs = (args, argTypes) => {
@@ -141,9 +158,11 @@ const reguardArgs = (args, argTypes) => {
  * @returns
  */
 const mFx = ($ArgTypes, $ReturnType, expr) => (...args) => {
-    if (exports.FloraLocalState.performance) {
-        return expr(...args);
-    }
-    return (0, exports.Fx)(reguardArgs(args, $ArgTypes), $ReturnType, expr);
+    return expr(...args);
+    /*return Fx(
+        reguardArgs(args, $ArgTypes),
+        $ReturnType,
+        expr as (...args : any[])=>GuardedT<R>
+    )*/
 };
 exports.mFx = mFx;
