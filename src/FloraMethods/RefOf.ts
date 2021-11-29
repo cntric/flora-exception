@@ -6,7 +6,6 @@ import { values } from "faunadb";
 /**
  * Gets the ref from a document.
  */
-export const RefOf = mFx(
-    [$Document($Any)], $Ref(),
-    (doc)=>q.Select("ref", doc) as unknown as values.Ref
-)
+export const RefOf = (doc : values.Document)=>{
+    return q.Select("ref", doc) as unknown as values.Ref
+}

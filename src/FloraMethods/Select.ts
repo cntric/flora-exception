@@ -12,10 +12,7 @@ export const Select = <
     $Predicate : P = $Any as P
 ) : T[Path]=>{
 
-    return Fx(
-        [ [ path, $String ], [obj, $Predicate] ], $Any,
-        (path, obj)=>q.Select(path as string, obj as q.ExprArg) as unknown as T[Path]
-    )
+    return q.Select(path as string, obj as q.ExprArg) as unknown as T[Path]
 
 }
 

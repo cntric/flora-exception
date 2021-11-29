@@ -2,10 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Dot = exports.mkDotProxyHandler = exports.NestedSelect = exports.Select = void 0;
 const faunadb_1 = require("faunadb");
-const Flora_1 = require("../Flora");
 const FloraTypes_1 = require("../FloraTypes");
 const Select = (path, obj, $Predicate = FloraTypes_1.$Any) => {
-    return (0, Flora_1.Fx)([[path, FloraTypes_1.$String], [obj, $Predicate]], FloraTypes_1.$Any, (path, obj) => faunadb_1.query.Select(path, obj));
+    return faunadb_1.query.Select(path, obj);
 };
 exports.Select = Select;
 /**

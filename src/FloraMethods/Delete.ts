@@ -8,20 +8,11 @@ export const Delete = <T extends any>(
     $Predicate : (obj : any)=>obj is T = $Any 
  ) : values.Document<T>=>{
 
-    return Fx(
-        [[ref, $Ref($Document($Predicate))]], $Document($Predicate),
-        (ref)=>q.If(
+    return q.If(
             q.Exists(ref),
             q.Delete(ref),
-            FloraException({
-                name : "NoDocMatchingRef",
-                msg : q.Concat(
-                    [
-                        `No document found for ref.`
-                    ]
-                ) as unknown as string
-            })
+            q.Abort("No ref")
         ) as unknown as values.Document<T>
-    )
+
 
 }

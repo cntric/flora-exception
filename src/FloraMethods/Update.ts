@@ -1,4 +1,4 @@
-import {query as q} from "faunadb";
+import {Abort, query as q} from "faunadb";
 import {
     values
 } from "faunadb";
@@ -42,9 +42,7 @@ export const UpdateDocument = <
     $Predicate : (obj : any)=>obj is T = $Any
 ) : values.Document<T> =>{
 
-    return Fx(
-        [ [ref, $Ref()], [data, $Predicate] ], $Document($Predicate),
-        (ref, data)=>q.If(
+    return q.If(
                 q.Exists(ref as q.ExprArg),
                 q.Update(
                     ref as q.ExprArg,
@@ -52,15 +50,7 @@ export const UpdateDocument = <
                         data : data
                     }
                 ),
-                FloraException({
-                    name : "NoDocMatchingRef",
-                    msg : q.Concat(
-                        [
-                            `No document found for ref.`
-                        ]
-                    ) as unknown as string
-                })
+                Abort("No matching ref.")
             ) as unknown as values.Document<T>
-    ) as unknown as values.Document<T>
 
 }

@@ -1,8 +1,7 @@
 import { query as q } from "faunadb";
-import { Fx } from "../Flora";
-import { $Any, $String } from "../FloraTypes";
+import { $Any } from "../FloraTypes";
 export const Select = (path, obj, $Predicate = $Any) => {
-    return Fx([[path, $String], [obj, $Predicate]], $Any, (path, obj) => q.Select(path, obj));
+    return q.Select(path, obj);
 };
 /**
  * Uses a path to perform a nested select, no type checks yet.

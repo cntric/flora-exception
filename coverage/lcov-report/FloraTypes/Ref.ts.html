@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>1/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.67% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>1/5</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -135,12 +135,10 @@
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -149,7 +147,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -182,13 +182,13 @@ export interface FloraRef&lt;T&gt; extends values.Ref{
  * @param Predicate is the predicate used to check the data.
  * @returns
  */
-export const $Ref = &lt;T extends any&gt;(
-    Predicate  : (obj : any)=&gt;obj is T = $Any
+export const $Ref = <span class="fstat-no" title="function not covered" >&lt;T</span> extends any&gt;(
+    Predicate  : (obj : any)=&gt;obj is T = <span class="branch-0 cbranch-no" title="branch not covered" >$Any</span>
 )=&gt;{
-    const name = `${Predicate.name}Ref`;
-    const map = {
-        [name] : (obj : any) : obj is FloraRef&lt;T&gt;=&gt;{
-            return Predicate ? If(
+    const name = <span class="cstat-no" title="statement not covered" >`${Predicate.name}Ref`;</span>
+    const map = <span class="cstat-no" title="statement not covered" >{</span>
+        [name] : <span class="fstat-no" title="function not covered" >(o</span>bj : any) : obj is FloraRef&lt;T&gt;=&gt;{
+<span class="cstat-no" title="statement not covered" >            return Predicate ? If(</span>
                 IsRef(obj),
                 If(
                     Exists(obj),
@@ -196,10 +196,10 @@ export const $Ref = &lt;T extends any&gt;(
                     Predicate(Get(obj)),
                 ),
                 false
-            ) as unknown as boolean : <span class="branch-1 cbranch-no" title="branch not covered" >IsRef(obj) as unknown as boolean</span>
+            ) as unknown as boolean : IsRef(obj) as unknown as boolean
         }
     }
-    return map[name];
+<span class="cstat-no" title="statement not covered" >    return map[name];</span>
 }
 &nbsp;
 export interface RefObjectI {
@@ -214,7 +214,7 @@ export interface RefObjectI {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun Nov 28 2021 20:37:18 GMT-0800 (Pacific Standard Time)
+                at Sun Nov 28 2021 21:04:11 GMT-0800 (Pacific Standard Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

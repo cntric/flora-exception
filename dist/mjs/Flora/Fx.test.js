@@ -104,6 +104,13 @@ export const FxSuiteA = () => {
             const result = await db.client.query(Flora(FloraAdd(2, 2)));
             expect(isFloraException(result)).toBe(true);
         });
+        test("Peformance mode", async () => {
+            const FloraAdd = mFx([$Number, $Number], $Number, (a, b) => {
+                return "hello";
+            });
+            // togglePerformance(true);
+            console.log(JSON.stringify(FloraAdd(2, 2)));
+        });
     });
 };
 FxSuiteA();

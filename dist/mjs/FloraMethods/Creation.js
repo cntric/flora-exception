@@ -1,6 +1,5 @@
 import { query as q } from "faunadb";
-import { $Any, $Collection, $Document, $String } from "../FloraTypes";
-import { Fx } from "../Flora/Fx";
+import { $Any } from "../FloraTypes";
 import { Raise } from "../Flora/Raise";
 import { FloraException } from "../Flora/Exception";
 /**
@@ -19,10 +18,10 @@ export const CreateCollection = (params, $Predicate = $Any) => {
  * @returns
  */
 export const Collection = (name, $Predicate = $Any) => {
-    return Fx([[name, $String]], $Collection(), (name) => q.If(q.Exists(q.Collection(name)), q.Collection(name), Raise(FloraException({
+    return q.If(q.Exists(q.Collection(name)), q.Collection(name), Raise(FloraException({
         name: "CollectionDoesNotExist",
         msg: `The collection ${name} does not exist.`
-    }))));
+    })));
 };
 /**
  * Documents an object. (Creates a Document.)
@@ -32,7 +31,7 @@ export const Collection = (name, $Predicate = $Any) => {
  * @returns
  */
 export const Document = (Collection, obj, $Predicate = $Any) => {
-    return Fx([[Collection, $Collection()], [obj, $Predicate]], $Document($Predicate), (Collection, obj) => q.Create(Collection, {
+    return q.Create(Collection, {
         data: obj
-    }));
+    });
 };

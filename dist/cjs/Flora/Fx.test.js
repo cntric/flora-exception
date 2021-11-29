@@ -116,6 +116,13 @@ const FxSuiteA = () => {
             const result = yield db.client.query((0, Flora_1.Flora)(FloraAdd(2, 2)));
             expect((0, Exception_1.isFloraException)(result)).toBe(true);
         }));
+        test("Peformance mode", () => __awaiter(void 0, void 0, void 0, function* () {
+            const FloraAdd = (0, Fx_1.mFx)([FloraTypes_1.$Number, FloraTypes_1.$Number], FloraTypes_1.$Number, (a, b) => {
+                return "hello";
+            });
+            // togglePerformance(true);
+            console.log(JSON.stringify(FloraAdd(2, 2)));
+        }));
     });
 };
 exports.FxSuiteA = FxSuiteA;

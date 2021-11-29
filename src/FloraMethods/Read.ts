@@ -8,19 +8,9 @@ export const Read = <T extends any>(
     ref : values.Ref,
     $Predicate : (obj : any)=>obj is T = $Any
 ) : values.Document<T>=>{
-    return Fx(
-        [[ref, $Ref($Predicate)]], $Document($Predicate),
-        (ref)=>q.If(
+    return q.If(
             q.Exists(ref),
             q.Get(ref),
-            Raise(FloraException({
-                name : "NoDocMatchingRef",
-                msg : q.Concat(
-                    [
-                        `No document found for ref.`
-                    ]
-                ) as unknown as string
-            }))
+            q.Abort("Could not read.")
         ) as unknown as values.Document<T>
-    )
 }

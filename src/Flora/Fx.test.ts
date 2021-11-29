@@ -15,7 +15,7 @@ import {
 import {Raise, Reraise} from "./Raise";
 import { FloraException, FloraExceptionI, isFloraException } from "./Exception";
 import { Yield } from "./Yield";
-import { extractArgs, Fx, FxArgI, mFx } from "./Fx";
+import { extractArgs, Fx, FxArgI, mFx, togglePerformance } from "./Fx";
 import { $String, $Number } from "../FloraTypes";
 const {
     IsNumber,
@@ -233,6 +233,21 @@ export const FxSuiteA = ()=>{
             ));
 
             expect(isFloraException(result)).toBe(true);
+
+
+        })
+
+        test("Peformance mode", async ()=>{
+
+            const FloraAdd = mFx(
+                [$Number, $Number], $Number,
+                (a , b)=>{
+                    return "hello" as unknown as number
+                }
+            )
+
+            // togglePerformance(true);
+            console.log(JSON.stringify(FloraAdd(2, 2)))
 
 
         })

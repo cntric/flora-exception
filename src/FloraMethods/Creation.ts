@@ -36,9 +36,7 @@ export const Collection = <P extends (obj : any)=>obj is any>(
     $Predicate : P = $Any as P
 ) : CollectionI<GuardedT<P>> =>{
 
-    return Fx(
-        [[name , $String]], $Collection(),
-        (name : string)=>q.If(
+    return q.If(
             q.Exists(q.Collection(name)),
             q.Collection(name),
             Raise(FloraException({
@@ -46,7 +44,6 @@ export const Collection = <P extends (obj : any)=>obj is any>(
                 msg : `The collection ${name} does not exist.`
             }))
         ) as unknown as CollectionI<GuardedT<P>>
-    )
 
 }
 
@@ -65,11 +62,8 @@ export const Document = <
     $Predicate : P = $Any as P
 ) : values.Document<GuardedT<P>> =>{
 
-    return Fx(
-        [ [Collection, $Collection()], [obj, $Predicate] ], $Document($Predicate),
-        (Collection, obj)=>q.Create(Collection, {
+    return q.Create(Collection, {
             data : obj
         }) as unknown as values.Document<GuardedT<P>>
-    )
 
 }
